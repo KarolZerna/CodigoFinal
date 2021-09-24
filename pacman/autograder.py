@@ -28,7 +28,7 @@ except:
     pass
 
 # register arguments and set default values
-def readCommand(argv):
+def read_command(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
     parser.set_defaults(generateSolutions=False, edxOutput=False, muteOutput=False, printTestCase=False, noGraphics=False)
     parser.add_option('--test-directory',
@@ -324,7 +324,7 @@ def getDisplay(graphicsByDefault, options=None):
 
 
 if __name__ == '__main__':
-    options = readCommand(sys.argv)
+    options = read_command(sys.argv)
     if options.generateSolutions:
         confirmGenerate()
     codePaths = options.studentCode.split(',')
