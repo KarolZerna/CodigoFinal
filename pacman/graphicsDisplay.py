@@ -136,22 +136,22 @@ class InfoPane:
                 changeText(self.ghostDistanceText[i], d)
 
     def drawGhost(self):
-        pass
+        pass #Empty
 
     def drawPacman(self):
-        pass
+        pass #Empty
 
     def drawWarning(self):
-        pass
+        pass #Empty
 
     def clearIcon(self):
-        pass
+        pass #Empty
 
     def updateMessage(self, message):
-        pass
+        pass #Empty
 
     def clearMessage(self):
-        pass
+        pass #Empty
     
     def __del__(self):
         remove_from_screen(self.scoreText)
