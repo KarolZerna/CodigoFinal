@@ -1,5 +1,5 @@
-import sys, pygame, time, Experiment, signal, ActionFunctions
-from pygame.locals import *
+import sys, time, Experiment, signal, ActionFunctions
+import pygame
 from networkreader import NetworkReader
 from RLObjects import Accion
 
