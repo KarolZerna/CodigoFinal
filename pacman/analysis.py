@@ -28,40 +28,40 @@ def question2():
 def question3a():
     answer_discount = 0.3
     answer_noice = 0
-    answerLivingReward = 0
-    return answer_discount, answer_noice, answerLivingReward
+    answer_living_reward = 0
+    return answer_discount, answer_noice, answer_living_reward
     # If not possible, return 'NOT POSSIBLE'
 
 #Prefer the close exit (+1), but avoiding the cliff (-10)
 def question3b():
     answer_discount = 0.2
     answer_noice = 0.2
-    answerLivingReward = -1.0
-    return answer_discount, answer_noice, answerLivingReward
+    answer_living_reward = -1.0
+    return answer_discount, answer_noice, answer_living_reward
     # If not possible, return 'NOT POSSIBLE'
 
 #Prefer the distant exit (+10), risking the cliff (-10)
 def question3c():
     answer_discount = 0.9
     answer_noice = 0.0
-    answerLivingReward = 0.0
-    return answer_discount, answer_noice, answerLivingReward
+    answer_living_reward = 0.0
+    return answer_discount, answer_noice, answer_living_reward
     # If not possible, return 'NOT POSSIBLE'
 
 #Prefer the distant exit (+10), avoiding the cliff (-10)
 def question3d():
     answer_discount = 0.9
     answer_noice = 0.4
-    answerLivingReward = 0.0
-    return answer_discount, answer_noice, answerLivingReward
+    answer_living_reward = 0.0
+    return answer_discount, answer_noice, answer_living_reward
     # If not possible, return 'NOT POSSIBLE'
 
 #Avoid both exits and the cliff (so an episode should never terminate)
 def question3e():
     answer_discount = 1
     answer_noice = 0.3
-    answerLivingReward = 100
-    return answer_discount, answer_noice, answerLivingReward
+    answer_living_reward = 100
+    return answer_discount, answer_noice, answer_living_reward
     # If not possible, return 'NOT POSSIBLE'
 
 def question6():
