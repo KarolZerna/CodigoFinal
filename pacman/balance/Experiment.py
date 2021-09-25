@@ -1,6 +1,6 @@
 from RLObjects import Posicion, Accion, Estado
 from Simulator import Simulator
-#from ODESim import ODESim
+
 
 _simulador = Simulator(True, True)
 
@@ -8,7 +8,7 @@ _simulador = Simulator(True, True)
 def inicializar(imprimirAngulo, imprimirTiempo):
     global _simulador
     _simulador = Simulator(imprimirAngulo, imprimirTiempo)
-    #_simulador = ODESim()
+ 
 
 
 def set_angulo_inicial(angulo):

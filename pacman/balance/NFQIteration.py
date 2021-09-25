@@ -54,7 +54,7 @@ class NFQIteration:
         while (k < self._epochs):
 
             if k % 10 == 0:
-                print "\t ", k
+                print ("\t "), k
                 
             TS.clear()
             
@@ -68,10 +68,10 @@ class NFQIteration:
                 
                 
                 if valDerecha >= 1 or valDerecha <= 0:
-                        print "Q incorrecta: ", valDerecha
+                        print ("Q incorrecta: "), valDerecha
 
                 if valIzquierda >= 1 or valIzquierda <= 0:
-                        print "Q incorrecta: ", valIzquierda
+                        print ("Q incorrecta: "), valIzquierda
                         
                 # Input y Target para la red neuronal
                 inputVal = (s.angulo, s.velocidadAngular, s.posicion, a)
@@ -82,7 +82,7 @@ class NFQIteration:
                     targetVal = costo + self._gamma * min(valDerecha, valIzquierda)
 
                 if targetVal > 1 or targetVal < 0:
-                    print "Target incorrecto: ", targetVal
+                    print ("Target incorrecto: "), targetVal
 
 
                 TS.addSample(inputVal, targetVal)

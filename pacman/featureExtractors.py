@@ -134,12 +134,6 @@ def distance_to_coords(pos, coords, walls, fbd_coords=[]):
 
     return [distances[coord] for coord in coords if coord in distances]
 
-#def distance_to_coords(pos, coords, walls):
-#    result = []
-#    for coord in coords:
-#        result.append(distance_to_coord(pos, coord, walls))
-#    return result
-
 def distance_to_closest_coord(pos, coords, walls):
     return min(distance_to_coords(pos, coords, walls))
 

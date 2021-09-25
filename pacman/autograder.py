@@ -112,9 +112,6 @@ def set_module_name(module, filename):
             # TODO: assign member __file__'s?
         #print i, type(o)
 
-
-#from cStringIO import StringIO
-
 def load_module_string(moduleSource):
     tmp = imp.new_module(k)
     exec (moduleCodeDict[k]) in tmp.__dict__
@@ -227,7 +224,7 @@ def get_test_subdirs(testParser, testRoot, questionToGrade):
     if questionToGrade != None:
         questions = get_depends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
-            print 'Note: due to dependencies, the following tests will be run: %s' % ' '.join(questions)
+            print ('Note: due to dependencies, the following tests will be run: %s') % ' '.join(questions)
         return questions
     if 'order' in problemDict:
         return problemDict['order'].split()

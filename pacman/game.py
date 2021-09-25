@@ -196,7 +196,6 @@ class Grid:
         return self.data == other.data
 
     def __hash__(self):
-        # return hash(str(self))
         base = 1
         h = 0
         for l in self.data:
@@ -431,8 +430,8 @@ class GameStateData:
             try:
                 int(hash(state))
             except TypeError, e:
-                print e
-                #hash(state)
+                print ('e')
+            
         return int((hash(tuple(self.agentStates)) + 13*hash(self.food) + 113* hash(tuple(self.capsules)) + 7 * hash(self.score)) % 1048575 )
 
     def __str__( self ):
