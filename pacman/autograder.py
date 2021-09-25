@@ -116,11 +116,6 @@ def set_module_name(module, filename):
 #from cStringIO import StringIO
 
 def load_module_string(moduleSource):
-    # Below broken, imp doesn't believe its being passed a file:
-    #    ValueError: load_module arg#2 should be a file or None
-    #
-    #f = StringIO(moduleCodeDict[k])
-    #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
     tmp = imp.new_module(k)
     exec (moduleCodeDict[k]) in tmp.__dict__
     set_module_name(tmp, k)
@@ -328,13 +323,6 @@ if __name__ == '__main__':
     if options.generateSolutions:
         confirm_generate()
     codePaths = options.studentCode.split(',')
-    # moduleCodeDict = {}
-    # for cp in codePaths:
-    #     moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
-    #     moduleCodeDict[moduleName] = read_file(cp, root=options.codeRoot)
-    # moduleCodeDict['projectTestClasses'] = read_file(options.testCaseCode, root=options.codeRoot)
-    # moduleDict = loadModuleDict(moduleCodeDict)
-
     moduleDict = {}
     for cp in codePaths:
         moduleName = re.match('.*?([^/]*)\.py', cp).group(1)

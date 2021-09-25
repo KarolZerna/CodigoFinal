@@ -49,7 +49,6 @@ class NFQIteration:
          
         k = 0
         trainer = RPropMinusTrainer(self.Q, batchlearning=True)
-        #trainer = BackpropTrainer(self.Q, batchlearning=False)
         TS = SupervisedDataSet(4, 1)
         
         while (k < self._epochs):
@@ -57,10 +56,6 @@ class NFQIteration:
             if k % 10 == 0:
                 print "\t ", k
                 
-            # Genero training set en base a las muestras
-            # Input: Vector de 4 dimensiones (angulo, vel.angular, pos, accion)
-            # Target: Valor
-            
             TS.clear()
             
             for s, a, s_1, costo in transitionSamples:

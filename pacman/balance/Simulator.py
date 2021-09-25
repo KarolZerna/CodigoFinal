@@ -42,9 +42,6 @@ class Simulator:
         self.enObjetivo_tiempoDeInicio = 0
         self.enObjetivo_tiempoMaximo = 0
         self.enObjetivo_ultimoTiempo = 0
-
-        #self.colorCarro = (255,0,0)
-        #self.colorPelota = (100,100,100)
         self.colorCarro = (150, 0, 0)
         self.colorPendulo = (0, 100, 0)
         self.colorPelota = (92, 51, 23)
@@ -57,15 +54,12 @@ class Simulator:
         self.fastMotion = False
 
 
-        # Inicializo pygame
+    
         pygame.init()
         pygame.display.set_caption('Cart Pole Balancing')
 
 
-        #Inicializo pantalla
-
         self.background = pygame.image.load("imgs/bg2.jpg")
-        #self.texturaCarro = pygame.image.load("imgs/carro2.jpg")
         self.backgroundRect = self.background.get_rect()
 
         self.x_size, self.y_size = 1000, 480
@@ -89,7 +83,7 @@ class Simulator:
 
         self.aplicacionFuerza = self.aplicacionFuerza-1
         
-        #print "FORCE {}, vueltas: {}".format(self.force, self.vueltas)
+        
 
         costheta = math.cos(self.cartPole_angulo)
         sintheta = math.sin(self.cartPole_angulo)

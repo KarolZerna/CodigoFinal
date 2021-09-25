@@ -109,10 +109,7 @@ if aprender:
 
         print "Episodio {}".format(episodio)
 
-        #transitionSamples = []
 
-
-        # Variables para graficar
         hoy = datetime.datetime.now()   # Para imprimir hora de inicio del episodio en txt de resultados 
         angulos = []                    # Angulos a los que llega durante el episodio (para sacar promedio)
         muestrasCostoCero = 0           # Cantidad de muestras que devolvieron costo 0
