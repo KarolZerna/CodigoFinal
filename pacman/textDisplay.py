@@ -25,10 +25,10 @@ QUIET = False # Supresses output
 
 class NullGraphics:
     def initialize(self, state, isBlue = False):
-        pass
+        pass #null graphics
 
     def update(self, state):
-        pass
+        pass #null graphics
 
     def checkNullDisplay(self):
         return True
@@ -37,13 +37,13 @@ class NullGraphics:
         time.sleep(SLEEP_TIME)
 
     def draw(self, state):
-        print state
+        print (state)
 
     def updateDistributions(self, dist):
-        pass
+        pass #null graphics
 
     def finish(self):
-        pass
+        pass #null graphics
 
 class PacmanGraphics:
     def __init__(self, speed=None):
@@ -75,7 +75,7 @@ class PacmanGraphics:
         time.sleep(SLEEP_TIME)
 
     def draw(self, state):
-        print state
+        print (state)
 
     def finish(self):
-        pass
+        pass #pacman graphics finish
