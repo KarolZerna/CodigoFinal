@@ -183,10 +183,6 @@ class KeyboardGhost( GhostAgent ):
                 # Try to move in the same direction as before
                 if self.lastMove in legal:
                     move = self.lastMove
-
-            #if move not in legal:
-            #    move = random.choice(legal)
-
             self.lastMove = move
             return move
 
