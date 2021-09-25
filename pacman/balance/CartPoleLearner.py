@@ -1,5 +1,5 @@
 import sys, time, datetime, random, atexit, pygame, signal
-from pygame.locals import *
+
 from sets import Set
 
 from networkwriter import NetworkWriter
