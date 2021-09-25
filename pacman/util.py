@@ -430,7 +430,7 @@ def raiseNotDefined():
     line = inspect.stack()[1][2]
     method = inspect.stack()[1][3]
 
-    print "*** Method not implemented: %s at line %s of %s" % (method, line, fileName)
+    print ("*** Method not implemented: %s at line %s of %s") % (method, line, fileName)
     sys.exit(1)
 
 def normalize(vectorOrCounter):
@@ -452,7 +452,7 @@ def normalize(vectorOrCounter):
         if s == 0: return vector
         return [el / s for el in vector]
 
-def nSample(distribution, values, n):
+def n_sample(distribution, values, n):
     if sum(distribution) != 1:
         distribution = normalize(distribution)
     rand = [random.random() for i in range(n)]
@@ -482,11 +482,11 @@ def sample(distribution, values = None):
         total += distribution[i]
     return values[i]
 
-def sampleFromCounter(ctr):
+def sample_from_counter(ctr):
     items = sorted(ctr.items())
     return sample([v for k,v in items], [k for k,v in items])
 
-def getProbability(value, distribution, values):
+def get_probability(value, distribution, values):
     """
       Gives the probability of a value under a discrete distribution
       defined by (distributions, values).
@@ -497,11 +497,11 @@ def getProbability(value, distribution, values):
             total += prob
     return total
 
-def flipCoin( p ):
+def flip_coin( p ):
     r = random.random()
     return r < p
 
-def chooseFromDistribution( distribution ):
+def choose_from_distribution( distribution ):
     "Takes either a counter or a list of (prob, key) pairs and samples"
     if type(distribution) == dict or type(distribution) == Counter:
         return sample(distribution)
@@ -511,7 +511,7 @@ def chooseFromDistribution( distribution ):
         base += prob
         if r <= base: return element
 
-def nearestPoint( pos ):
+def nearest_point( pos ):
     """
     Finds the nearest grid point to a position (discretizes).
     """
@@ -530,7 +530,7 @@ def sign( x ):
     else:
         return -1
 
-def arrayInvert(array):
+def array_invert(array):
     """
     Inverts a matrix stored as a list of lists.
     """
@@ -540,7 +540,7 @@ def arrayInvert(array):
             result[inner].append(outer[inner])
     return result
 
-def matrixAsList( matrix, value = True ):
+def matrix_asList( matrix, value = True ):
     """
     Turns a matrix into a list of coordinates matching the specified value
     """
@@ -574,7 +574,7 @@ def pause():
     """
     Pauses the output stream awaiting user feedback.
     """
-    print "<Press enter/return to continue>"
+    print ("<Press enter/return to continue>")
     raw_input()
 
 
@@ -602,9 +602,6 @@ class TimeoutFunction:
         raise TimeoutFunctionException()
 
     def __call__(self, *args, **keyArgs):
-        # If we have SIGALRM signal, use it to cause an exception if and
-        # when this function runs too long.  Otherwise check the time taken
-        # after the method has returned, and throw an exception then.
         if hasattr(signal, 'SIGALRM'):
             old = signal.signal(signal.SIGALRM, self.handle_timeout)
             signal.alarm(self.timeout)
@@ -629,25 +626,24 @@ _MUTED = False
 
 class WritableNull:
     def write(self, string):
-        pass #empty 'cause is needed for a writable null
+        pass #empty
 
-def mutePrint():
+def mute_print():
     global _ORIGINAL_STDOUT, _ORIGINAL_STDERR, _MUTED
     if _MUTED:
         return
     _MUTED = True
 
     _ORIGINAL_STDOUT = sys.stdout
-    #_ORIGINAL_STDERR = sys.stderr
     sys.stdout = WritableNull()
-    #sys.stderr = WritableNull()
 
-def unmutePrint():
+
+def unmute_print():
     global _ORIGINAL_STDOUT, _ORIGINAL_STDERR, _MUTED
     if not _MUTED:
         return
     _MUTED = False
 
     sys.stdout = _ORIGINAL_STDOUT
-    #sys.stderr = _ORIGINAL_STDERR
+    
 
