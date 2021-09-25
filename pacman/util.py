@@ -629,7 +629,7 @@ _MUTED = False
 
 class WritableNull:
     def write(self, string):
-        pass
+        pass #empty 'cause is needed for a writable null
 
 def mutePrint():
     global _ORIGINAL_STDOUT, _ORIGINAL_STDERR, _MUTED
