@@ -162,10 +162,14 @@ class CrawlingRobot:
             move the robot arm to 'newArmAngle'
         """
         oldArmAngle = self.armAngle
-        if newArmAngle > self.maxArmAngle:
-            raise 'Crawling Robot: Arm Raised too high. Careful!'
-        if newArmAngle < self.minArmAngle:
-            raise 'Crawling Robot: Arm Raised too low. Careful!'
+        try:
+            if newArmAngle > self.maxArmAngle:
+        except BaseException as error:
+            raise 'Crawling Robot: Arm Raised too high. Careful!'.format(error)
+        try:
+            if newArmAngle < self.minArmAngle:
+        except BaseException as error:
+            raise 'Crawling Robot: Arm Raised too low. Careful!'.format(error)
         disp = self.displacement(self.armAngle, self.handAngle,
                                   newArmAngle, self.handAngle)
         curXPos = self.robotPos[0]
@@ -184,11 +188,14 @@ class CrawlingRobot:
             move the robot hand to 'newArmAngle'
         """
         oldHandAngle = self.handAngle
-
-        if newHandAngle > self.maxHandAngle:
-            raise 'Crawling Robot: Hand Raised too high. Careful!'
-        if newHandAngle < self.minHandAngle:
-            raise 'Crawling Robot: Hand Raised too low. Careful!'
+        try:
+            if newHandAngle > self.maxHandAngle:
+        except BaseException as error:
+            raise 'Crawling Robot: Hand Raised too high. Careful!'.format(error)
+        try:
+            if newHandAngle < self.minHandAngle:
+        except BaseException as error:
+            raise 'Crawling Robot: Hand Raised too low. Careful!'.format(error)
         disp = self.displacement(self.armAngle, self.handAngle, self.armAngle, newHandAngle)
         curXPos = self.robotPos[0]
         self.robotPos = (curXPos+disp, self.robotPos[1])
@@ -247,17 +254,17 @@ class CrawlingRobot:
 
         x = self.armLength * armCos + self.handLength * handCos + self.robotWidth
         y = self.armLength * armSin + self.handLength * handSin + self.robotHeight
-
-        if y < 0:
-            if yOld <= 0:
-                return math.sqrt(xOld*xOld + yOld*yOld) - math.sqrt(x*x + y*y)
-            return (xOld - yOld*(x-xOld) / (y - yOld)) - math.sqrt(x*x + y*y)
-        else:
-            if yOld  >= 0:
-                return 0.0
-            return -(x - y * (xOld-x)/(yOld-y)) + math.sqrt(xOld*xOld + yOld*yOld)
-
-        raise 'Never Should See This!'
+        try:
+            if y < 0:
+                if yOld <= 0:
+                    return math.sqrt(xOld*xOld + yOld*yOld) - math.sqrt(x*x + y*y)
+                return (xOld - yOld*(x-xOld) / (y - yOld)) - math.sqrt(x*x + y*y)
+            else:
+                if yOld  >= 0:
+                    return 0.0
+                return -(x - y * (xOld-x)/(yOld-y)) + math.sqrt(xOld*xOld + yOld*yOld)
+        except BaseException as error:
+            raise 'Never Should See This!'.format(error)
 
     def draw(self, stepCount, stepDelay):
         x1, y1 = self.getRobotPosition()
