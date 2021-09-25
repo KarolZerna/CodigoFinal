@@ -30,7 +30,7 @@ except:
 # register arguments and set default values
 def read_command(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, edxOutput=False, muteOutput=False, printTestCase=False, noGraphics=False)
+    parser.set_defaults(generateSolutions=False, edxOutput=False, muteOutput=False, print_testCase=False, noGraphics=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -60,11 +60,11 @@ def read_command(argv):
                     action = 'store_true',
                     help = 'Mute output from executing tests')
     parser.add_option('--print-tests', '-p',
-                    dest = 'printTestCase',
+                    dest = 'print_testCase',
                     action = 'store_true',
                     help = 'Print each test case before running them.')
     parser.add_option('--test', '-t',
-                      dest = 'runTest',
+                      dest = 'run_test',
                       default = None,
                       help = 'Run one particular test.  Relative to test root.')
     parser.add_option('--question', '-q',
@@ -80,7 +80,7 @@ def read_command(argv):
 
 
 # confirm we should author solution files
-def confirmGenerate():
+def confirm_generate():
     print 'WARNING: this action will overwrite any solution files.'
     print 'Are you sure you want to proceed? (yes/no)'
     while True:
@@ -97,8 +97,8 @@ def confirmGenerate():
 # Looking at source of the traceback module, presuming it works
 # the same as the intepreters, it uses co_filename.  This is,
 # however, a readonly attribute.
-def setModuleName(module, filename):
-    functionType = type(confirmGenerate)
+def set_module_name(module, filename):
+    functionType = type(confirm_generate)
     classType = type(optparse.Option)
 
     for i in dir(module):
@@ -115,7 +115,7 @@ def setModuleName(module, filename):
 
 #from cStringIO import StringIO
 
-def loadModuleString(moduleSource):
+def load_module_string(moduleSource):
     # Below broken, imp doesn't believe its being passed a file:
     #    ValueError: load_module arg#2 should be a file or None
     #
@@ -123,17 +123,17 @@ def loadModuleString(moduleSource):
     #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
     tmp = imp.new_module(k)
     exec moduleCodeDict[k] in tmp.__dict__
-    setModuleName(tmp, k)
+    set_module_name(tmp, k)
     return tmp
 
 import py_compile
 
-def loadModuleFile(moduleName, filePath):
+def load_module_file(moduleName, filePath):
     with open(filePath, 'r') as f:
         return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
 
 
-def readFile(path, root=""):
+def read_file(path, root=""):
     "Read file from disk at specified path and return as string"
     with open(os.path.join(root, path), 'r') as handle:
         return handle.read()
@@ -170,7 +170,7 @@ ERROR_HINT_MAP = {
 
 import pprint
 
-def splitStrings(d):
+def split_strings(d):
     d2 = dict(d)
     for k in d:
         if k[0:2] == "__":
@@ -181,7 +181,7 @@ def splitStrings(d):
     return d2
 
 
-def printTest(testDict, solutionDict):
+def print_test(testDict, solutionDict):
     pp = pprint.PrettyPrinter(indent=4)
     print "Test case:"
     for line in testDict["__raw_lines__"]:
@@ -191,7 +191,7 @@ def printTest(testDict, solutionDict):
         print "   |", line
 
 
-def runTest(testName, moduleDict, printTestCase=False, display=None):
+def run_test(testName, moduleDict, print_testCase=False, display=None):
     import testParser
     import testClasses
     for module in moduleDict:
@@ -207,8 +207,8 @@ def runTest(testName, moduleDict, printTestCase=False, display=None):
     question = questionClass({'max_points': 0}, display)
     testCase = testClass(question, testDict)
 
-    if printTestCase:
-        printTest(testDict, solutionDict)
+    if print_testCase:
+        print_test(testDict, solutionDict)
 
     # This is a fragile hack to create a stub grades object
     grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)])
@@ -216,21 +216,21 @@ def runTest(testName, moduleDict, printTestCase=False, display=None):
 
 
 # returns all the tests you need to run in order to run question
-def getDepends(testParser, testRoot, question):
+def get_depends(testParser, testRoot, question):
     allDeps = [question]
     questionDict = testParser.TestParser(os.path.join(testRoot, question, 'CONFIG')).parse()
     if 'depends' in questionDict:
         depends = questionDict['depends'].split()
         for d in depends:
             # run dependencies first
-            allDeps = getDepends(testParser, testRoot, d) + allDeps
+            allDeps = get_depends(testParser, testRoot, d) + allDeps
     return allDeps
 
 # get list of questions to grade
-def getTestSubdirs(testParser, testRoot, questionToGrade):
+def get_test_subdirs(testParser, testRoot, questionToGrade):
     problemDict = testParser.TestParser(os.path.join(testRoot, 'CONFIG')).parse()
     if questionToGrade != None:
-        questions = getDepends(testParser, testRoot, questionToGrade)
+        questions = get_depends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
             print 'Note: due to dependencies, the following tests will be run: %s' % ' '.join(questions)
         return questions
@@ -241,7 +241,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 # evaluate student code
 def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, edxOutput=False, muteOutput=False,
-            printTestCase=False, questionToGrade=None, display=None):
+            print_testCase=False, questionToGrade=None, display=None):
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
     import testParser
@@ -251,7 +251,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
 
     questions = []
     questionDicts = {}
-    test_subdirs = getTestSubdirs(testParser, testRoot, questionToGrade)
+    test_subdirs = get_test_subdirs(testParser, testRoot, questionToGrade)
     for q in test_subdirs:
         subdir_path = os.path.join(testRoot, q)
         if not os.path.isdir(subdir_path) or q[0] == '.':
@@ -284,8 +284,8 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
                     # read in solution dictionary and pass as an argument
                     testDict = testParser.TestParser(test_file).parse()
                     solutionDict = testParser.TestParser(solution_file).parse()
-                    if printTestCase:
-                        return lambda grades: printTest(testDict, solutionDict) or testCase.execute(grades, moduleDict, solutionDict)
+                    if print_testCase:
+                        return lambda grades: print_test(testDict, solutionDict) or testCase.execute(grades, moduleDict, solutionDict)
                     else:
                         return lambda grades: testCase.execute(grades, moduleDict, solutionDict)
             question.addTestCase(testCase, makefun(testCase, solution_file))
@@ -307,7 +307,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
 
 
 
-def getDisplay(graphicsByDefault, options=None):
+def get_display(graphicsByDefault, options=None):
     graphics = graphicsByDefault
     if options is not None and options.noGraphics:
         graphics = False
@@ -326,26 +326,26 @@ def getDisplay(graphicsByDefault, options=None):
 if __name__ == '__main__':
     options = read_command(sys.argv)
     if options.generateSolutions:
-        confirmGenerate()
+        confirm_generate()
     codePaths = options.studentCode.split(',')
     # moduleCodeDict = {}
     # for cp in codePaths:
     #     moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
-    #     moduleCodeDict[moduleName] = readFile(cp, root=options.codeRoot)
-    # moduleCodeDict['projectTestClasses'] = readFile(options.testCaseCode, root=options.codeRoot)
+    #     moduleCodeDict[moduleName] = read_file(cp, root=options.codeRoot)
+    # moduleCodeDict['projectTestClasses'] = read_file(options.testCaseCode, root=options.codeRoot)
     # moduleDict = loadModuleDict(moduleCodeDict)
 
     moduleDict = {}
     for cp in codePaths:
         moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
-        moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
+        moduleDict[moduleName] = load_module_file(moduleName, os.path.join(options.codeRoot, cp))
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path.join(options.codeRoot, options.testCaseCode))
+    moduleDict['projectTestClasses'] = load_module_file(moduleName, os.path.join(options.codeRoot, options.testCaseCode))
 
 
-    if options.runTest != None:
-        runTest(options.runTest, moduleDict, printTestCase=options.printTestCase, display=getDisplay(True, options))
+    if options.run_test != None:
+        run_test(options.run_test, moduleDict, print_testCase=options.print_testCase, display=get_display(True, options))
     else:
         evaluate(options.generateSolutions, options.testRoot, moduleDict,
-            edxOutput=options.edxOutput, muteOutput=options.muteOutput, printTestCase=options.printTestCase,
-            questionToGrade=options.gradeQuestion, display=getDisplay(options.gradeQuestion!=None, options))
+            edxOutput=options.edxOutput, muteOutput=options.muteOutput, print_testCase=options.print_testCase,
+            questionToGrade=options.gradeQuestion, display=get_display(options.gradeQuestion!=None, options))
