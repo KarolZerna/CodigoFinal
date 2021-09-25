@@ -167,15 +167,18 @@ class Application:
         self.__initGUI(win)
 
         # Init environment
-        if robotType == 'crawler':
-            self.robot = crawler.CrawlingRobot(self.canvas)
-            self.robotEnvironment = crawler.CrawlingRobotEnvironment(self.robot)
-        elif robotType == 'pendulum':
-            self.robot = pendulum.PendulumRobot(self.canvas)
-            self.robotEnvironment = \
-                pendulum.PendulumRobotEnvironment(self.robot)
-        else:
-            raise "Unknown RobotType"
+        try:
+            if robotType == 'crawler':
+                self.robot = crawler.CrawlingRobot(self.canvas)
+                self.robotEnvironment = crawler.CrawlingRobotEnvironment(self.robot)
+            elif robotType == 'pendulum':
+                self.robot = pendulum.PendulumRobot(self.canvas)
+                self.robotEnvironment = \
+                    pendulum.PendulumRobotEnvironment(self.robot)
+            else:
+                pass
+        except BaseException as error:
+            raise "Unknown RobotType".format(error)
 
         # Init Agent
         simulationFn = lambda agent: \
@@ -225,8 +228,11 @@ class Application:
         self.learner.observeTransition(state, action, nextState, reward)
 
     def animatePolicy(self):
-        if robotType != 'pendulum':
-            raise 'Only pendulum can animatePolicy'
+        try:
+            pass
+        except BaseException as error:
+            if robotType != 'pendulum':
+                raise 'Only pendulum can animatePolicy'.type(error)
 
 
         totWidth = self.canvas.winfo_reqwidth()
