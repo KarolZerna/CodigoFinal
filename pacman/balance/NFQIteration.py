@@ -45,7 +45,7 @@ class NFQIteration:
 
     def train(self, transitionSamples):
 
-        print "Entrenando..."
+        print ("Entrenando...")
          
         k = 0
         trainer = RPropMinusTrainer(self.Q, batchlearning=True)
