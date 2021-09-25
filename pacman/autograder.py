@@ -122,7 +122,7 @@ def load_module_string(moduleSource):
     #f = StringIO(moduleCodeDict[k])
     #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
     tmp = imp.new_module(k)
-    exec moduleCodeDict[k] in tmp.__dict__
+    exec (moduleCodeDict[k]) in tmp.__dict__
     set_module_name(tmp, k)
     return tmp
 
