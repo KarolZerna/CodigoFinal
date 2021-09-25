@@ -94,11 +94,13 @@ class Gridworld(mdp.MarkovDecisionProcess):
         return self.livingReward
 
     def getStartState(self):
-        for x in range(self.grid.width):
-            for y in range(self.grid.height):
-                if self.grid[x][y] == 'S':
-                    return (x, y)
-        raise 'Grid has no start state'
+        try:
+            for x in range(self.grid.width):
+                for y in range(self.grid.height):
+                    if self.grid[x][y] == 'S':
+                        return (x, y)
+        except BaseException as error:
+            raise 'Grid has no start state'.type(error)
 
     def isTerminal(self, state):
         """
@@ -202,14 +204,18 @@ class GridworldEnvironment(environment.Environment):
             rand = randObj.random()
         sum = 0.0
         successors = self.gridWorld.getTransitionStatesAndProbs(state, action)
-        for nextState, prob in successors:
-            sum += prob
-            if sum > 1.0:
-                raise 'Total transition probability more than one; sample failure.'
-            if rand < sum:
-                reward = self.gridWorld.getReward(state, action, nextState)
-                return (nextState, reward)
-        raise 'Total transition probability less than one; sample failure.'
+        try:
+            for nextState, prob in successors:
+                sum += prob
+                try:
+                    if sum > 1.0:
+                except BaseException as error:
+                    raise 'Total transition probability more than one; sample failure.'.type(error)
+                if rand < sum:
+                    reward = self.gridWorld.getReward(state, action, nextState)
+                    return (nextState, reward)
+        except BaseException as error:
+            raise 'Total transition probability less than one; sample failure.'.type(error)
 
     def reset(self):
         self.state = self.gridWorld.getStartState()
@@ -358,8 +364,10 @@ def runEpisode(agent, environment, discount, decision, display, message, pause, 
 
         # GET ACTION (USUALLY FROM AGENT)
         action = decision(state)
-        if action == None:
-            raise 'Error: Agent returned None action'
+        try: 
+            if action == None:
+        except BaseException as error:
+            raise 'Error: Agent returned None action'.type(error)
 
         # EXECUTE ACTION
         nextState, reward = environment.doAction(action)

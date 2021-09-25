@@ -175,8 +175,6 @@ class Application:
                 self.robot = pendulum.PendulumRobot(self.canvas)
                 self.robotEnvironment = \
                     pendulum.PendulumRobotEnvironment(self.robot)
-            else:
-                pass
         except BaseException as error:
             raise "Unknown RobotType".format(error)
 
@@ -222,16 +220,17 @@ class Application:
             actions = self.robotEnvironment.getPossibleActions(state)
             print 'Reset!'
         action = self.learner.getAction(state)
-        if action == None:
-            raise 'None action returned: Code Not Complete'
+        try:
+            if action == None:
+        except BaseException as error:
+            raise 'None action returned: Code Not Complete'.type(error)
         nextState, reward = self.robotEnvironment.doAction(action)
         self.learner.observeTransition(state, action, nextState, reward)
 
     def animatePolicy(self):
         try:
-            pass
-        except BaseException as error:
             if robotType != 'pendulum':
+        except BaseException as error:
                 raise 'Only pendulum can animatePolicy'.type(error)
 
 
