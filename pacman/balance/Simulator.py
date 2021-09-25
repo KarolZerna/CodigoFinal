@@ -1,6 +1,5 @@
-import pygame, math, sys, time, random
+import math, sys, time, random
 from pygame import draw
-from pygame.locals import *
 
 class Simulator:
     
