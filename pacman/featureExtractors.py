@@ -41,9 +41,9 @@ class CoordinateExtractor(FeatureExtractor):
         feats['action=%s' % action] = 1.0
         return feats
 
-def closestFood(pos, food, ghosts, walls, area_coords=[], pills_coords=[]):
+def closest_food(pos, food, ghosts, walls, area_coords=[], pills_coords=[]):
     """
-    closestFood -- this is similar to the function that we have
+    closest_food -- this is similar to the function that we have
     worked on in the search project; here its all in one place
     """
     fbd_coords = []
@@ -69,13 +69,13 @@ def closestFood(pos, food, ghosts, walls, area_coords=[], pills_coords=[]):
     # no food found
     return None
 
-def coordVectSub(coord, vect):
+def coord_vect_sub(coord, vect):
     if vect is None:
         return (-1,-1)
     else:
         return (int(coord[0]-vect[0]), int(coord[1]-vect[1]))
 
-def getClosestIntersection(pos, walls, fbd_coords=[]):
+def get_closest_intersection(pos, walls, fbd_coords=[]):
     fringe = [(pos[0], pos[1], 0)]
     expanded = set(fbd_coords)
     while fringe:
@@ -94,7 +94,7 @@ def getClosestIntersection(pos, walls, fbd_coords=[]):
     # no intersections found
     return None
 
-def distanceToCoord(pos, coord, walls, fbd_coords=[]):
+def distance_to_coord(pos, coord, walls, fbd_coords=[]):
     fringe = [(pos[0], pos[1], 0)]
     expanded = set(fbd_coords)
     while fringe:
@@ -112,7 +112,7 @@ def distanceToCoord(pos, coord, walls, fbd_coords=[]):
     # coord not found
     return None
 
-def distanceToCoords(pos, coords, walls, fbd_coords=[]):
+def distance_to_coords(pos, coords, walls, fbd_coords=[]):
     fringe = [(pos[0], pos[1], 0)]
     expanded = set(fbd_coords)
     coords = map((lambda coord: (int(coord[0]), int(coord[1]))), coords)
@@ -134,25 +134,25 @@ def distanceToCoords(pos, coords, walls, fbd_coords=[]):
 
     return [distances[coord] for coord in coords if coord in distances]
 
-#def distanceToCoords(pos, coords, walls):
+#def distance_to_coords(pos, coords, walls):
 #    result = []
 #    for coord in coords:
-#        result.append(distanceToCoord(pos, coord, walls))
+#        result.append(distance_to_coord(pos, coord, walls))
 #    return result
 
-def distanceToClosestCoord(pos, coords, walls):
-    return min(distanceToCoords(pos, coords, walls))
+def distance_to_closest_coord(pos, coords, walls):
+    return min(distance_to_coords(pos, coords, walls))
 
-def closestCoord(pos, coords, walls):
+def closest_coord(pos, coords, walls):
     import operator
-    dst = distanceToCoords(pos, coords, walls)
+    dst = distance_to_coords(pos, coords, walls)
     min_index, min_value = min(enumerate(dst), key=operator.itemgetter(1))
     return (int(coords[min_index][0]), int(coords[min_index][1]))
 
-def isScared(state, ghost):
-    return state.getGhostStateFromPosition(ghost).isScared()
+def is_scared(state, ghost):
+    return state.getGhostStateFromPosition(ghost).is_scared()
 
-def getSafeIntersections(pos, ghosts, walls, fbd_coords=[]):
+def get_safe_intersections(pos, ghosts, walls, fbd_coords=[]):
     # set in -1 the ghosts dist value and add them to the starting queue, after pacman
     f = (lambda g_pos: (g_pos[0], g_pos[1], -1, 0))
     fringe = [(pos[0], pos[1], 0, 0)] + map(f, ghosts)
@@ -186,16 +186,16 @@ def getSafeIntersections(pos, ghosts, walls, fbd_coords=[]):
     # no intersections found
     return []
 
-def saferRouteDistance(pos, ghosts, walls, past_coord):
+def safer_route_distance(pos, ghosts, walls, past_coord):
     from operator import itemgetter
     att2use = 3
-    safe_intscs = getSafeIntersections(pos, ghosts, walls, [past_coord])
+    safe_intscs = get_safe_intersections(pos, ghosts, walls, [past_coord])
     if len(safe_intscs) == 0:
         return 0
     else:
         return max(safe_intscs,key=itemgetter(att2use))[att2use]
 
-def getCoordsArea(coords, rad):
+def get_coords_area(coords, rad):
     area = set([])
     for pos in coords:
         pos = (int(pos[0]), int(pos[1]))
@@ -250,18 +250,18 @@ class SimpleExtractor(FeatureExtractor):
         x, y = state.getPacmanPosition()
         dx, dy = Actions.directionToVector(action)
         next_x, next_y = int(x + dx), int(y + dy)
-        past_coord = coordVectSub((x, y), (dx, dy))
-        ns_ghosts = [g for g in ghosts if not isScared(state, g)]
+        past_coord = coord_vect_sub((x, y), (dx, dy))
+        ns_ghosts = [g for g in ghosts if not is_scared(state, g)]
 
         # count the number of ghosts 1-step away
-        ghosts_besides = sum((next_x, next_y) in Actions.getLegalNeighbors(g, walls) for g in ghosts if not isScared(state, g))
+        ghosts_besides = sum((next_x, next_y) in Actions.getLegalNeighbors(g, walls) for g in ghosts if not is_scared(state, g))
         features["#-of-ghosts-1-step-away"] = ghosts_besides
         
         # calculate distances
         #NOTA: getCoords limita el area de la que el pacman se aleja alrededor de un fantasma
-        area = getCoordsArea(ns_ghosts, int(round(2*pow(food.count()/float(ifood),2))))
-        food_dist = closestFood((next_x, next_y), food, ns_ghosts, walls, area, capsules)
-        ns_ghosts_dist = distanceToCoords((next_x, next_y), ns_ghosts, walls)
+        area = get_coords_area(ns_ghosts, int(round(2*pow(food.count()/float(ifood),2))))
+        food_dist = closest_food((next_x, next_y), food, ns_ghosts, walls, area, capsules)
+        ns_ghosts_dist = distance_to_coords((next_x, next_y), ns_ghosts, walls)
 
         
         # if there is no danger of ghosts then add the food feature
@@ -272,24 +272,24 @@ class SimpleExtractor(FeatureExtractor):
 
             # Distance to scared ghosts
             #for gi in range(len(ghostsDists)):
-            #    if isScared(state, ghosts[gi]):
+            #    if is_scared(state, ghosts[gi]):
             #        features["distance-to-scared-ghost-"+str(gi+1)] = (float(ghostsDists[gi]) / (walls.width * walls.height))
 
         # Distance to closest capsule
-        #capsules_dists = distanceToCoords((next_x, next_y), capsules, walls)
+        #capsules_dists = distance_to_coords((next_x, next_y), capsules, walls)
         #if len(capsules_dists) != 0:
         #    features["distance-to-closest-capsule"] = min(capsules_dists) / (walls.width * walls.height)
         
         # Distance to ghosts
         gi = 0
         for g in ghosts:
-            if not isScared(state, g):
+            if not is_scared(state, g):
                 features["ghost-"+str(gi+1)+"-distance"] = (float(ns_ghosts_dist[gi]) / (walls.width * walls.height))
                 gi += 1
 
         # Distance to closest intersection
         #if action != 'Stop':
-        #    closestIntersection = getClosestIntersection((next_x, next_y), walls, action)
+        #    closestIntersection = get_closest_intersection((next_x, next_y), walls, action)
         #    if closestIntersection is not None:
         #        features["closest-intersection-distance"] = closestIntersection[0] / (walls.width * walls.height)
         
@@ -297,12 +297,12 @@ class SimpleExtractor(FeatureExtractor):
 
         # Ghost danger
         #a = walls.width + walls.height
-        #not_scared_ghosts = [g for g in ghosts if not isScared(state, g)]
+        #not_scared_ghosts = [g for g in ghosts if not is_scared(state, g)]
         #if action != 'Stop' and len(not_scared_ghosts) > 1:
-        #    closestGhostCoords = closestCoord((next_x, next_y), ghosts, walls)
-        #    closestIntersection = getClosestIntersection((next_x, next_y), walls, action)
+        #    closestGhostCoords = closest_coord((next_x, next_y), ghosts, walls)
+        #    closestIntersection = get_closest_intersection((next_x, next_y), walls, action)
         #    if closestIntersection is not None:
-        #        ghost2intersection = distanceToCoord(closestGhostCoords, closestIntersection[1], walls)
+        #        ghost2intersection = distance_to_coord(closestGhostCoords, closestIntersection[1], walls)
         #        features["ghost-danger"] = (a + closestIntersection[0] - ghost2intersection) / float(a)
             #print features["ghost-danger"]
 

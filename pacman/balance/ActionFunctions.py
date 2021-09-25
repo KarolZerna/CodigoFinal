@@ -5,7 +5,7 @@ import random
 _epsilon = 0.1
 
 
-def GetSiguienteAccionGreedy(estado, Q):
+def get_siguiente_accion_greedy(estado, Q):
     
     # Tomo todos los valores de Q para el estado pasado por parametro
     Q_estado = [(b, Q.activate([estado.angulo, estado.velocidadAngular, estado.posicion, b])) for b in range(Accion.maxValor + 1) ]
@@ -25,7 +25,7 @@ def GetSiguienteAccionGreedy(estado, Q):
 
 
 
-def GetSiguienteAccionEpsilonGreedy(estado, Q):
+def get_siguiente_accion_epsilon_greedy(estado, Q):
     
     # Elijo siguiente accion de manera aleatoria con probabilidad
     # epsilon, y de manera greedy con probabilidad (1 - epsilon)
@@ -35,13 +35,13 @@ def GetSiguienteAccionEpsilonGreedy(estado, Q):
     if rndNumber <= _epsilon:
         accion = random.randint(0, Accion.maxValor)
     else:
-        accion = GetSiguienteAccionGreedy(estado, Q)
+        accion = get_siguiente_accion_greedy(estado, Q)
 
     return accion
 
 
 
-def GetSiguienteAccionRandom(estado):
+def get_siguiente_accion_random(estado):
 
     accion = random.randint(0, Accion.maxValor)
     return accion
