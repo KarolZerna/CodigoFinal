@@ -14,8 +14,8 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from graphicsUtils import *
-import math, time, graphicsUtils
+import graphicsUtils
+import math, time
 from game import Directions
 
 ###########################
