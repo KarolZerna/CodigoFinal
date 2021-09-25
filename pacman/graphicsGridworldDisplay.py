@@ -12,8 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-import util
-from graphicsUtils import *
+import util, graphicsUtils
 
 class GraphicsGridworldDisplay:
 
