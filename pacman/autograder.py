@@ -81,8 +81,8 @@ def read_command(argv):
 
 # confirm we should author solution files
 def confirm_generate():
-    print 'WARNING: this action will overwrite any solution files.'
-    print 'Are you sure you want to proceed? (yes/no)'
+    print ('WARNING: this action will overwrite any solution files.')
+    print ('Are you sure you want to proceed? (yes/no)')
     while True:
         ans = sys.stdin.readline().strip()
         if ans == 'yes':
@@ -90,7 +90,7 @@ def confirm_generate():
         elif ans == 'no':
             sys.exit(0)
         else:
-            print 'please answer either "yes" or "no"'
+            print ('please answer either "yes" or "no"')
 
 
 # TODO: Fix this so that it tracebacks work correctly
@@ -183,12 +183,12 @@ def split_strings(d):
 
 def print_test(testDict, solutionDict):
     pp = pprint.PrettyPrinter(indent=4)
-    print "Test case:"
+    print ("Test case:")
     for line in testDict["__raw_lines__"]:
-        print "   |", line
-    print "Solution:"
+        print ("   |"), line
+    print ("Solution:")
     for line in solutionDict["__raw_lines__"]:
-        print "   |", line
+        print ("   |"), line
 
 
 def run_test(testName, moduleDict, print_testCase=False, display=None):
@@ -232,7 +232,7 @@ def get_test_subdirs(testParser, testRoot, questionToGrade):
     if questionToGrade != None:
         questions = get_depends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
-            print 'Note: due to dependencies, the following tests will be run: %s' % ' '.join(questions)
+            print ('Note: due to dependencies, the following tests will be run: %s') % (' ').join(questions)
         return questions
     if 'order' in problemDict:
         return problemDict['order'].split()
