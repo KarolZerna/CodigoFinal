@@ -20,10 +20,10 @@ class TextGridworldDisplay:
         self.gridworld = gridworld
 
     def start(self):
-        pass
+        pass # used just for starting
 
     def pause(self):
-        pass
+        pass # used just for pausing
 
     def displayValues(self, agent, currentState = None, message = None):
         if message != None:
