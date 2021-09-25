@@ -1,5 +1,5 @@
 import sys, pygame, Experiment, signal
-from pygame.locals import *
+from pygame import *
 from RLObjects import Accion
 
 def exit_handler(signal, frame):
