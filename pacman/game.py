@@ -277,7 +277,7 @@ class Grid:
                 bools.append(False)
         return bools
 
-def reconstituteGrid(bitRep):
+def reconstitute_grid(bitRep):
     if type(bitRep) is not type((1,2)):
         return bitRep
     width, height = bitRep[:2]
@@ -439,7 +439,7 @@ class GameStateData:
         width, height = self.layout.width, self.layout.height
         map = Grid(width, height)
         if type(self.food) == type((1,2)):
-            self.food = reconstituteGrid(self.food)
+            self.food = reconstitute_grid(self.food)
         for x in range(width):
             for y in range(height):
                 food, walls = self.food, self.layout.walls

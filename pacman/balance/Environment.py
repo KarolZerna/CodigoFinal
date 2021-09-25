@@ -3,9 +3,9 @@ import math
 
 
 targetValue = 0.2
-penalizacion = 0.04             # Costo mayor
+penalizacion = 0.04             # costo mayor
 
-def Costo(estado):
+def costo(estado):
 
     # Penalizo los bordes
     if (estado.posicion == Posicion.BORDE_DERECHO or estado.posicion == Posicion.BORDE_IZQUIERDO):

@@ -482,7 +482,7 @@ class PacmanGraphics:
         self.infoPane.updateScore(newState.score)
         if 'ghostDistances' in dir(newState):
             self.infoPane.updateGhostDistances(newState.ghostDistances)
-        #saveFrame()
+        #save_frame()
     
     def makeWindow(self, width, height):
         self.make_window(width, height)
@@ -909,7 +909,7 @@ POSTSCRIPT_OUTPUT_DIR = 'frames'
 FRAME_NUMBER = 0
 import os
 
-def saveFrame():
+def save_frame():
     "Saves the current graphical output as a postscript file"
     global SAVE_POSTSCRIPT, FRAME_NUMBER, POSTSCRIPT_OUTPUT_DIR
     if not SAVE_POSTSCRIPT: return
