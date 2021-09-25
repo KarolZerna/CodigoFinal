@@ -76,4 +76,4 @@ if __name__ == '__main__':
     import analysis
     for q in [q for q in dir(analysis) if q.startswith('question')]:
         response = getattr(analysis, q)()
-        print ('  Question %s:\t%s') % (q, str(response))
+        print '  Question %s:\t%s' % (q, str(response))
