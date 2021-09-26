@@ -197,7 +197,7 @@ class ODESim:
                 c = 1.0-0.45**float(self.frame)
                 self.current_speed = (self.target_speed*float(c)) + (self.original_speed*(1.0-c))
 
-        vel=(0.0,0.0,0.0)
+        
         self.pos=self.pos-self.current_speed
         next_pos=(self.pos,0.0,0.0)
 

@@ -107,7 +107,7 @@ if aprender:
     # Loop principal    
     for episodio in range(episodios):
 
-        print "Episodio {}".format(episodio)
+        print ("Episodio {}").format(episodio)
 
 
         hoy = datetime.datetime.now()   # Para imprimir hora de inicio del episodio en txt de resultados 

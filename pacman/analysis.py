@@ -18,6 +18,7 @@
 
 # Set the given parameters to obtain the specified policies through
 # value iteration.
+from typing import Union
 
 def question2():
     answer_discount = 0.9
@@ -67,7 +68,7 @@ def question3e():
 def question6():
     answerEpsilon = None
     answerLearningRate = None
-    return 'NOT POSSIBLE'
+    print ('NOT POSSIBLE')
     return answerEpsilon, answerLearningRate
     # If not possible, return 'NOT POSSIBLE'
 
@@ -76,4 +77,4 @@ if __name__ == '__main__':
     import analysis
     for q in [q for q in dir(analysis) if q.startswith('question')]:
         response = getattr(analysis, q)()
-        print '  Question %s:\t%s' % (q, str(response))
+        print Union['  Question %s:\t%s',(q, str(response))]

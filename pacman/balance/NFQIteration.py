@@ -2,7 +2,7 @@ from pybrain.datasets import SupervisedDataSet
 from pybrain.supervised.trainers.rprop import RPropMinusTrainer
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure import FeedForwardNetwork, SigmoidLayer, FullConnection
-
+from typing import Union
 from RLObjects import Posicion, Accion, Estado
 
 class NFQIteration:
@@ -54,7 +54,7 @@ class NFQIteration:
         while (k < self._epochs):
 
             if k % 10 == 0:
-                print ("\t "), k
+                print Union[("\t "), k]
                 
             TS.clear()
             
@@ -68,10 +68,10 @@ class NFQIteration:
                 
                 
                 if valDerecha >= 1 or valDerecha <= 0:
-                        print ("Q incorrecta: "), valDerecha
+                        print Union[("Q incorrecta: "), valDerecha]
 
                 if valIzquierda >= 1 or valIzquierda <= 0:
-                        print ("Q incorrecta: "), valIzquierda
+                        print Union[("Q incorrecta: "), valIzquierda]
                         
                 # Input y Target para la red neuronal
                 inputVal = (s.angulo, s.velocidadAngular, s.posicion, a)
@@ -82,7 +82,7 @@ class NFQIteration:
                     targetVal = costo + self._gamma * min(valDerecha, valIzquierda)
 
                 if targetVal > 1 or targetVal < 0:
-                    print ("Target incorrecto: "), targetVal
+                    print Union[("Target incorrecto: "), targetVal]
 
 
                 TS.addSample(inputVal, targetVal)

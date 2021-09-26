@@ -5,6 +5,10 @@ from pybrain.utilities import fListToString
 from scipy import zeros
 import string
 
+class MyException(Exception):
+    pass
+
+
 class XMLHandling:
     """ general purpose methods for reading, writing and editing XML files. 
     This class should wrap all the XML-specific code, and then be subclassed
@@ -18,8 +22,10 @@ class XMLHandling:
         self.filename = filename
         if not newfile:
             self.dom = parse(filename)
-            if self.dom.firstChild.nodeName != 'PyBrain':
-                raise Exception, 'Not a correct PyBrain XML file'        
+            try:
+                if self.dom.firstChild.nodeName != 'PyBrain':
+            except BaseException as error:
+                raise MyException('Not a correct PyBrain XML file').format(e)       
         else:
             domimpl = getDOMImplementation()
             self.dom = domimpl.createDocument(None, 'PyBrain', None)
@@ -82,10 +88,9 @@ class XMLHandling:
         if root == None: 
             root = self.root
         for n in root.childNodes:
-            if n.nodeName == name:
-                if index == 0:
-                    return n
-                index -= 1
+            if n.nodeName == name and index == 0:
+                return n
+            index -= 1
         return None
         
     def findNamedNode(self, name, nameattr, root = None):
@@ -94,9 +99,8 @@ class XMLHandling:
             root = self.root
         for n in root.childNodes:
             if n.nodeName == name:
-                if 'name' in n.attributes:
-                    if n.attributes['name'] == nameattr:
-                        return n                
+                if 'name' in n.attributes and  n.attributes['name'] == nameattr:
+                    return n                
         return None
         
     def writeDoubles(self, node, l, precision = 6):

@@ -179,10 +179,9 @@ class KeyboardGhost( GhostAgent ):
             legal = state.getLegalActions(self.index)
             move = self.getMove(legal)
 
-            if move == Directions.STOP:
+            if move == Directions.STOP and self.lastMove in legal:
                 # Try to move in the same direction as before
-                if self.lastMove in legal:
-                    move = self.lastMove
+                move = self.lastMove
             self.lastMove = move
             return move
 
