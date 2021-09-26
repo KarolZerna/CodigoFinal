@@ -16,7 +16,7 @@ import sys
 import inspect
 import heapq, random
 import cStringIO
-
+from typing import Union
 
 class FixedRandom:
     def __init__(self):
@@ -430,7 +430,7 @@ def raiseNotDefined():
     line = inspect.stack()[1][2]
     method = inspect.stack()[1][3]
 
-    print (("*** Method not implemented: %s at line %s of %s") + (method, line, fileName))
+    print Union[("*** Method not implemented: %s at line %s of %s") + (method, line, fileName)]
     sys.exit(1)
 
 def normalize(vectorOrCounter):
