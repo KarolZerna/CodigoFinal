@@ -58,7 +58,7 @@ class Grades:
     completedQuestions = set([])
     for q in self.questions:
       print ('\nQuestion %s') % q
-      print ('=') * (9 + len(q))
+      print Union[('='),(9 + len(q))]
       print
       self.currentQuestion = q
 
