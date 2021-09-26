@@ -34,6 +34,9 @@ _canvas_col = None      # Current colour (set to black below)
 _canvas_tsize = 12
 _canvas_tserifs = 0
 
+class MyError(Exception):
+    pass:
+
 def formatColor(r, g, b):
     return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
 
@@ -161,7 +164,7 @@ def end_graphics():
             if _root_window != None:
                 _root_window.destroy()
         except BaseException as error:
-            raise 'Ending graphics raised an exception:'.format(error)
+            raise MyError('Ending graphics raised an exception:').format(error)
     finally:
         _root_window = None
         _canvas = None
@@ -370,7 +373,7 @@ def move_by(object, x, y=None,
     if y is None:
         try: x, y = x
         except BaseException as error:
-            raise 'incomprehensible coordinates'.format(error)
+            raise MyError('incomprehensible coordinates').format(error)
 
     horiz = True
     newCoords = []
