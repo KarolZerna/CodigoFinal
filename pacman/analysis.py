@@ -72,7 +72,7 @@ def question6():
     # If not possible, return 'NOT POSSIBLE'
 
 if __name__ == '__main__':
-    print 'Answers to analysis questions:'
+    print ('Answers to analysis questions:')
     import analysis
     for q in [q for q in dir(analysis) if q.startswith('question')]:
         response = getattr(analysis, q)()

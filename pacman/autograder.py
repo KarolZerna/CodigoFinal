@@ -81,8 +81,8 @@ def read_command(argv):
 
 # confirm we should author solution files
 def confirm_generate():
-    print 'WARNING: this action will overwrite any solution files.'
-    print 'Are you sure you want to proceed? (yes/no)'
+    print ('WARNING: this action will overwrite any solution files.')
+    print ('Are you sure you want to proceed? (yes/no)')
     while True:
         ans = sys.stdin.readline().strip()
         if ans == 'yes':
@@ -90,7 +90,7 @@ def confirm_generate():
         elif ans == 'no':
             sys.exit(0)
         else:
-            print 'please answer either "yes" or "no"'
+            print ('please answer either "yes" or "no"')
 
 
 # TODO: Fix this so that it tracebacks work correctly
@@ -112,15 +112,7 @@ def set_module_name(module, filename):
             # TODO: assign member __file__'s?
         #print i, type(o)
 
-
-#from cStringIO import StringIO
-
 def load_module_string(moduleSource):
-    # Below broken, imp doesn't believe its being passed a file:
-    #    ValueError: load_module arg#2 should be a file or None
-    #
-    #f = StringIO(moduleCodeDict[k])
-    #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
     tmp = imp.new_module(k)
     exec (moduleCodeDict[k]) in tmp.__dict__
     set_module_name(tmp, k)
@@ -183,12 +175,12 @@ def split_strings(d):
 
 def print_test(testDict, solutionDict):
     pp = pprint.PrettyPrinter(indent=4)
-    print "Test case:"
+    print ("Test case:")
     for line in testDict["__raw_lines__"]:
-        print "   |", line
-    print "Solution:"
+        print ("   |"), line
+    print ("Solution:")
     for line in solutionDict["__raw_lines__"]:
-        print "   |", line
+        print ("   |"), line
 
 
 def run_test(testName, moduleDict, print_testCase=False, display=None):
@@ -232,7 +224,7 @@ def get_test_subdirs(testParser, testRoot, questionToGrade):
     if questionToGrade != None:
         questions = get_depends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
-            print 'Note: due to dependencies, the following tests will be run: %s' % ' '.join(questions)
+            print ('Note: due to dependencies, the following tests will be run: %s') % ' '.join(questions)
         return questions
     if 'order' in problemDict:
         return problemDict['order'].split()
@@ -328,13 +320,6 @@ if __name__ == '__main__':
     if options.generateSolutions:
         confirm_generate()
     codePaths = options.studentCode.split(',')
-    # moduleCodeDict = {}
-    # for cp in codePaths:
-    #     moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
-    #     moduleCodeDict[moduleName] = read_file(cp, root=options.codeRoot)
-    # moduleCodeDict['projectTestClasses'] = read_file(options.testCaseCode, root=options.codeRoot)
-    # moduleDict = loadModuleDict(moduleCodeDict)
-
     moduleDict = {}
     for cp in codePaths:
         moduleName = re.match('.*?([^/]*)\.py', cp).group(1)

@@ -12,11 +12,8 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from game import *
+import random,util,math,game, featureExtractors
 from learningAgents import ReinforcementAgent
-from featureExtractors import *
-
-import random,util,math
 
 class QLearningAgent(ReinforcementAgent):
     """

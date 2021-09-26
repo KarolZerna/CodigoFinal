@@ -1,23 +1,21 @@
 from RLObjects import Posicion, Accion, Estado
 from Simulator import Simulator
-#from ODESim import ODESim
+
 
 _simulador = Simulator(True, True)
 
 
-def Inicializar(imprimirAngulo, imprimirTiempo):
+def inicializar(imprimirAngulo, imprimirTiempo):
     global _simulador
     _simulador = Simulator(imprimirAngulo, imprimirTiempo)
-    #_simulador = ODESim()
+ 
 
 
-def setAnguloInicial(angulo):
+def set_angulo_inicial(angulo):
     _simulador.cartPole_angulo = angulo
 
 
-def EjecutarAccion(accion):
-
-    
+def ejecutar_accion(accion):
     if (accion == Accion.DERECHA):
         accSim = 1
     elif (accion == Accion.IZQUIERDA):
@@ -30,7 +28,7 @@ def EjecutarAccion(accion):
         _simulador.run(accSim)
 
 
-def GetEstado():
+def get_estado():
     result = Estado()
 
     result.angulo = _simulador.cartPole_angulo
@@ -50,12 +48,12 @@ def GetEstado():
     return result
 
 
-def GetKeyPressed():
-    return _simulador.GetKeyPressed()
+def get_key_pressed():
+    return _simulador.get_key_pressed()
 
 
-def Finalizar():
-    _simulador.Finalizar()
+def finalizar():
+    _simulador.finalizar()
 
 
 

@@ -3,7 +3,6 @@ import math
 class Accion:
     DERECHA = 1
     IZQUIERDA = 0
-    #NADA = 2
     maxValor = 1
 
 

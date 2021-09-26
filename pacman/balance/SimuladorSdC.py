@@ -1,5 +1,5 @@
 import sys, pygame, Experiment, signal
-from pygame.locals import *
+
 from RLObjects import Accion
 
 def exit_handler(signal, frame):
@@ -18,12 +18,10 @@ while (True):
     for event in pygame.event.get():
         
         if event.type == KEYUP:
-            #mover = False          # Para que no se mueva constantemente
             pass
         
         elif event.type == KEYDOWN:
-            #if not hasattr(event, 'key'): continue
-        
+    
             if event.key == K_ESCAPE:
                 Experiment.Finalizar()
 
@@ -44,20 +42,3 @@ while (True):
     else:
         Experiment.EjecutarAccion(-25)
 
-
-##    key = Experiment.GetKeyPressed()
-##    
-##    if key[pygame.K_RIGHT]:
-##        print "derecha"
-##        Experiment.EjecutarAccion(Accion.DERECHA)
-##            
-##    elif key[pygame.K_LEFT]:
-##        print "izquierda"
-##        Experiment.EjecutarAccion(Accion.IZQUIERDA)
-##        
-##    else:
-##        print key
-##        Experiment.EjecutarAccion(-25)
-
-
-             
