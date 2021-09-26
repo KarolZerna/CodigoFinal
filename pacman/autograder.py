@@ -25,7 +25,7 @@ random.seed(0)
 try: 
     from pacman import GameState
 except:
-    pass
+    raise
 
 # register arguments and set default values
 def read_command(argv):
