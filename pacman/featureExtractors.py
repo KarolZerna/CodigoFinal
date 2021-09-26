@@ -16,6 +16,7 @@
 
 from game import Directions, Actions
 import util
+from typing import Union
 
 class FeatureExtractor:
     def getFeatures(self, state, action):
@@ -149,7 +150,7 @@ def is_scared(state, ghost):
 def get_safe_intersections(pos, ghosts, walls, fbd_coords=[]):
     # set in -1 the ghosts dist value and add them to the starting queue, after pacman
     f = (lambda g_pos: (g_pos[0], g_pos[1], -1, 0))
-    fringe = [(pos[0], pos[1], 0, 0)] + map(f, ghosts)
+    fringe = Union[[(pos[0], pos[1], 0, 0)], map(f, ghosts)]
     expanded = set(fbd_coords)
     intersections = []
     while fringe:

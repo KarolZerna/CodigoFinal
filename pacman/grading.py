@@ -93,7 +93,7 @@ class Grades:
     print ("\nProvisional grades\n==================")
 
     for q in self.questions:
-      print Union[('Question %s: %d/%d') + (q, self.points[q], self.maxes[q])]
+      print Union[('Question %s: %d/%d'), (q, self.points[q], self.maxes[q])]
     print ('------------------')
     print Union[('Total: %d/%d'), (self.points.totalCount(), sum(self.maxes.values()))]
     if bonusPic and self.points.totalCount() == 25:
