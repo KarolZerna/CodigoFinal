@@ -20,6 +20,7 @@ from util import Counter, TimeoutFunction, FixedRandom
 from collections import defaultdict
 from pprint import PrettyPrinter
 from hashlib import sha1
+from typing import Union
 pp = PrettyPrinter()
 VERBOSE = False
 
@@ -78,9 +79,11 @@ class ValueIterationTest(testClasses.TestCase):
             fileOutString += "   Student/correct solution:\n %s\n" % self.prettyValueSolutionString(valuesKey, valuesPretty)
         else:
             testPass = False
+            message_correct_solution="   Correct solution:"
+            message_student_solution="   Student solution:"
             outString = "Values at iteration %d are NOT correct.\n" % n
-            outString += "   Student solution:\n %s\n" % self.prettyValueSolutionString(valuesKey, valuesPretty)
-            outString += "   Correct solution:\n %s\n" % self.prettyValueSolutionString(valuesKey, solutionDict[valuesKey])
+            outString += Union[message_student_solution, self.prettyValueSolutionString(valuesKey, valuesPretty)]
+            outString += Union[message_correct_solution, self.prettyValueSolutionString(valuesKey, solutionDict[valuesKey])]
             stdOutString += outString
             fileOutString += outString
         for action in actions:
@@ -111,10 +114,11 @@ class ValueIterationTest(testClasses.TestCase):
             policyPretty = ''
             actions = []
             for n in self.numsIterationsForDisplay:
+                values_action_key = 'q_values_k_%d_action_%s' % (n, action)
                 valuesPretty, qValuesPretty, actions, policyPretty = self.runAgent(moduleDict, n)
                 handle.write(self.prettyValueSolutionString('values_k_%d' % n, valuesPretty))
                 for action in actions:
-                    handle.write(self.prettyValueSolutionString('q_values_k_%d_action_%s' % (n, action), qValuesPretty[action]))
+                    handle.write(self.prettyValueSolutionString(values_action_key, qValuesPretty[action]))
             handle.write(self.prettyValueSolutionString('policy', policyPretty))
             handle.write(self.prettyValueSolutionString('actions', '\n'.join(actions) + '\n'))
         return True
@@ -146,6 +150,7 @@ class ValueIterationTest(testClasses.TestCase):
 
     def prettyPrint(self, elements, formatString):
         pretty = ''
+        message_illegal='   illegal'
         states = self.grid.getStates()
         for ybar in range(self.grid.grid.height):
             y = self.grid.grid.height-1-ybar
@@ -154,7 +159,7 @@ class ValueIterationTest(testClasses.TestCase):
                 if (x, y) in states:
                     value = elements[(x, y)]
                     if value is None:
-                        row.append('   illegal')
+                        row.append(message_illegal)
                     else:
                         row.append(formatString.format(elements[(x,y)]))
                 else:
@@ -274,7 +279,7 @@ class ApproximateQLearningTest(testClasses.TestCase):
                 qValuesPretty, weights, actions, _ = self.runAgent(moduleDict, n)
                 handle.write(self.prettyValueSolutionString('weights_k_%d' % n, pp.pformat(weights)))
                 for action in actions:
-                    handle.write(self.prettyValueSolutionString('q_values_k_%d_action_%s' % (n, action), qValuesPretty[action]))
+                    handle.write(self.prettyValueSolutionString(qValuesKey, qValuesPretty[action]))
         return True
 
     def runAgent(self, moduleDict, numExperiences):
@@ -310,6 +315,7 @@ class ApproximateQLearningTest(testClasses.TestCase):
 
     def prettyPrint(self, elements, formatString):
         pretty = ''
+        message_illegal='   illegal'
         states = self.grid.getStates()
         for ybar in range(self.grid.grid.height):
             y = self.grid.grid.height-1-ybar
@@ -318,7 +324,7 @@ class ApproximateQLearningTest(testClasses.TestCase):
                 if (x, y) in states:
                     value = elements[(x, y)]
                     if value is None:
-                        row.append('   illegal')
+                        row.append(message_illegal)
                     else:
                         row.append(formatString.format(elements[(x,y)]))
                 else:
@@ -411,16 +417,16 @@ class QLearningTest(testClasses.TestCase):
         if lastExperience is not None:
             fileOutString += "Agent observed the transition (startState = %s, action = %s, endState = %s, reward = %f)\n\n\n" % lastExperience
         for action in actions:
-            qValuesKey = 'q_values_k_%d_action_%s' % (n, action)
+            q_values_action_key = 'q_values_k_%d_action_%s' % (n, action)
             qValues = qValuesPretty[action]
-            if self.comparePrettyValues(qValues, solutionDict[qValuesKey]):
+            if self.comparePrettyValues(qValues, solutionDict[q_values_action_key]):
                 fileOutString += "Q-Values at iteration %d for action '%s' are correct." % (n, action)
-                fileOutString += "   Student/correct solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, qValues)
+                fileOutString += "   Student/correct solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, qValues)
             else:
                 testPass = False
                 outString = "Q-Values at iteration %d for action '%s' are NOT correct." % (n, action)
-                outString += "   Student solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, qValues)
-                outString += "   Correct solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, solutionDict[qValuesKey])
+                outString += "   Student solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, qValues)
+                outString += "   Correct solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, solutionDict[q_values_action_key])
                 stdOutString += outString
                 fileOutString += outString
         if checkValuesAndPolicy:
