@@ -43,10 +43,9 @@ class KeyboardAgent(Agent):
         legal = state.getLegalActions(self.index)
         move = self.getMove(legal)
 
-        if move == Directions.STOP:
+        if move == Directions.STOP and self.lastMove in legal:
             # Try to move in the same direction as before
-            if self.lastMove in legal:
-                move = self.lastMove
+            move = self.lastMove
 
         if (self.STOP_KEY in self.keys) and Directions.STOP in legal: move = Directions.STOP
 

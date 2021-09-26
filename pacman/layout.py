@@ -128,7 +128,7 @@ class Layout:
         elif layoutChar in  ['1', '2', '3', '4']:
             self.agentPositions.append( (int(layoutChar), (x,y)))
             self.numGhosts += 1
-def getLayout(name, back = 2):
+def get_layout(name, back = 2):
     if name.endswith('.lay'):
         layout = tryToLoad('layouts/' + name)
         if layout == None: layout = tryToLoad(name)
@@ -138,7 +138,7 @@ def getLayout(name, back = 2):
     if layout == None and back >= 0:
         curdir = os.path.abspath('.')
         os.chdir('..')
-        layout = getLayout(name, back -1)
+        layout = get_layout(name, back -1)
         os.chdir(curdir)
     return layout
 

@@ -39,11 +39,9 @@ class GraphicsGridworldDisplay:
 
     def displayNullValues(self, currentState = None, message = ''):
         values = util.Counter()
-        #policy = {}
         states = self.gridworld.getStates()
         for state in states:
             values[state] = 0.0
-            #policy[state] = agent.getPolicy(state)
         draw_null_values(self.gridworld, currentState,'')
         # draw_values(self.gridworld, values, policy, currentState, message)
         sleep(0.05 / self.speed)
@@ -206,7 +204,6 @@ def draw_null_square(grid,x, y, isObstacle, isTerminal, isCurrent):
     if not isObstacle and isCurrent:
         circle( (screen_x, screen_y), 0.1*GRID_SIZE, LOCATION_COLOR, fillColor=LOCATION_COLOR )
 
-    # if not isObstacle:
     #   text( (screen_x, screen_y), text_color, valStr, "Courier", 24, "bold", "c")
 
 def draw_square(x, y, val, min, max, valStr, action, isObstacle, isTerminal, isCurrent):
@@ -340,8 +337,8 @@ def to_screen(point):
     return ( x, y )
 
 def to_grid(point):
-    (x, y) = point
-    x = int ((y - MARGIN + GRID_SIZE * 0.5) / GRID_SIZE)
-    y = int ((x - MARGIN + GRID_SIZE * 0.5) / GRID_SIZE)
-    print point, "-->", (x, y)
+    (x1, y1) = point
+    x = int ((y1 - MARGIN + GRID_SIZE * 0.5) / GRID_SIZE)
+    y = int ((x1 - MARGIN + GRID_SIZE * 0.5) / GRID_SIZE)
+    print (point, "-->", (x, y))
     return (x, y)

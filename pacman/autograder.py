@@ -106,12 +106,8 @@ def set_module_name(module, filename):
         o = getattr(module, i)
         if hasattr(o, '__file__'): continue
 
-        if type(o) == functionType:
+        if type(o) == functionType or type(o) == classType:
             setattr(o, '__file__', filename)
-        elif type(o) == classType:
-            setattr(o, '__file__', filename)
-            # TODO: assign member __file__'s?
-        #print i, type(o)
 
 def load_module_string(moduleSource):
     tmp = imp.new_module(k)

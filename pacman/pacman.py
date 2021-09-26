@@ -45,12 +45,16 @@ from game import Directions
 from game import Actions
 from util import nearestPoint
 from util import manhattanDistance
+from typing import Union
 import util, layout
 import sys, types, time, random, os
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
+
+class MyException(Exception):
+    pass
 
 class GameState:
     """
@@ -106,7 +110,10 @@ class GameState:
         Returns the successor state after the specified agent takes the action.
         """
         # Check that successors exist
-        if self.isWin() or self.isLose(): raise Exception('Can\'t generate a successor of a terminal state.')
+        try:
+            if self.isWin() or self.isLose():
+        except BaseException as error:
+            raise MyException('Can\'t generate a successor of a terminal state.').type(error)
 
         # Copy current state
         state = GameState(self)
@@ -159,13 +166,17 @@ class GameState:
         return self.data.agentStates[1:]
 
     def getGhostState( self, agentIndex ):
-        if agentIndex == 0 or agentIndex >= self.getNumAgents():
-            raise Exception("Invalid index passed to getGhostState")
+        try:
+            if agentIndex == 0 or agentIndex >= self.getNumAgents():
+        except BaseException as error:
+            raise MyException("Invalid index passed to getGhostState").type(error)
         return self.data.agentStates[agentIndex]
 
     def getGhostPosition( self, agentIndex ):
-        if agentIndex == 0:
-            raise Exception("Pacman's index passed to getGhostPosition")
+        try:
+            if agentIndex == 0:
+        except BaseException as error:
+            raise MyException("Pacman's index passed to getGhostPosition").type(error)
         return self.data.agentStates[agentIndex].getPosition()
 
     def getGhostPositions(self):
@@ -307,11 +318,11 @@ class ClassicGameRules:
         if state.isLose(): self.lose(state, game)
 
     def win( self, state, game ):
-        if not self.quiet: print "Pacman emerges victorious! Score: %d" % state.data.score
+        if not self.quiet: print (Union["Pacman emerges victorious! Score: %d",state.data.score])
         game.gameOver = True
 
     def lose( self, state, game ):
-        if not self.quiet: print "Pacman died! Score: %d" % state.data.score
+        if not self.quiet: print (Union["Pacman died! Score: %d", state.data.score])
         game.gameOver = True
 
     def getProgress(self, game):
@@ -319,9 +330,9 @@ class ClassicGameRules:
 
     def agentCrash(self, game, agentIndex):
         if agentIndex == 0:
-            print "Pacman crashed"
+            print ("Pacman crashed")
         else:
-            print "A ghost crashed"
+            print ("A ghost crashed")
 
     def getMaxTotalTime(self, agentIndex):
         return self.timeout
@@ -357,8 +368,10 @@ class PacmanRules:
         Edits the state to reflect the results of the action.
         """
         legal = PacmanRules.getLegalActions( state )
-        if action not in legal:
-            raise Exception("Illegal action " + str(action))
+        try: 
+            if action not in legal:
+        except BaseException as error:
+            raise MyException("Illegal action " + str(action)).format(error)
 
         pacmanState = state.data.agentStates[0]
 
@@ -367,9 +380,9 @@ class PacmanRules:
         pacmanState.configuration = pacmanState.configuration.generateSuccessor( vector )
 
         # Eat
-        next = pacmanState.configuration.getPosition()
-        nearest = nearestPoint( next )
-        if manhattanDistance( nearest, next ) <= 0.5 :
+        next_step = pacmanState.configuration.getPosition()
+        nearest = nearestPoint( next_step )
+        if manhattanDistance( nearest, next_step ) <= 0.5 :
             # Remove food
             PacmanRules.consume( nearest, state )
     applyAction = staticmethod( applyAction )
@@ -434,8 +447,10 @@ class GhostRules:
     def applyAction( state, action, ghostIndex):
 
         legal = GhostRules.getLegalActions( state, ghostIndex )
-        if action not in legal:
-            raise Exception("Illegal ghost action " + str(action))
+        try:
+            if action not in legal:
+        except BaseException as error:
+            raise MyException("Illegal ghost action " + str(action)).format(error)
 
         ghostState = state.data.agentStates[ghostIndex]
         speed = GhostRules.GHOST_SPEED
