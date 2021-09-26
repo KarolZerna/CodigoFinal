@@ -123,8 +123,11 @@ class InfoPane:
     def updateScore(self, score):
         changeText(self.scoreText, "PUNTOS: % 4d" % score)
 
+    def text(self):
+        return "RED TEAM"
+
     def setTeam(self, isBlue):
-        text = "RED TEAM"
+        text = text()
         if isBlue: text = "BLUE TEAM"
         self.teamText = text( self.toScreen(300, 0  ), self.textColor, text, "arcadepix", self.fontSize, "bold")
 
