@@ -85,16 +85,16 @@ class Grades:
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
 
-      print ('\n### Question %s: %d/%d ###\n') % (q, self.points[q], self.maxes[q])
+      print (('\n### Question %s: %d/%d ###\n') + (q, self.points[q], self.maxes[q]))
 
 
     print ('\nFinished at %d:%02d:%02d') % time.localtime()[3:6]
     print ("\nProvisional grades\n==================")
 
     for q in self.questions:
-      print ('Question %s: %d/%d') % (q, self.points[q], self.maxes[q])
+      print (('Question %s: %d/%d') + (q, self.points[q], self.maxes[q]))
     print ('------------------')
-    print ('Total: %d/%d') % (self.points.totalCount(), sum(self.maxes.values()))
+    print (('Total: %d/%d') + (self.points.totalCount(), sum(self.maxes.values())))
     if bonusPic and self.points.totalCount() == 25:
       print ("""
 
