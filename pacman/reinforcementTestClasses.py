@@ -28,6 +28,10 @@ import gridworld
 
 LIVINGREWARD = -0.1
 NOISE = 0.2
+const ILLEGAL = '   illegal'
+const STUDENT = "   Student solution:\n\t"
+const CORRECT = "   Correct solution:\n\t"
+const STUDENT_CORRECT =  "   Student/correct solution:\n\t"
 
 class ValueIterationTest(testClasses.TestCase):
 
@@ -150,7 +154,6 @@ class ValueIterationTest(testClasses.TestCase):
 
     def prettyPrint(self, elements, formatString):
         pretty = ''
-        message_illegal='   illegal'
         states = self.grid.getStates()
         for ybar in range(self.grid.grid.height):
             y = self.grid.grid.height-1-ybar
@@ -159,12 +162,12 @@ class ValueIterationTest(testClasses.TestCase):
                 if (x, y) in states:
                     value = elements[(x, y)]
                     if value is None:
-                        row.append(message_illegal)
+                        row.append(ILLEGAL)
                     else:
                         row.append(formatString.format(elements[(x,y)]))
                 else:
                     row.append('_' * 10)
-            pretty += '        %s\n' % ("   ".join(row), )
+            pretty +=  "   ".join(row)
         pretty += '\n'
         return pretty
 
@@ -175,7 +178,7 @@ class ValueIterationTest(testClasses.TestCase):
         return self.prettyPrint(policy, '{0:10s}')
 
     def prettyValueSolutionString(self, name, pretty):
-        return '%s: """\n%s\n"""\n\n' % (name, pretty.rstrip())
+        return name, pretty.rstrip()
 
     def comparePrettyValues(self, aPretty, bPretty, tolerance=0.01):
         aList = self.parsePrettyValues(aPretty)
@@ -263,12 +266,12 @@ class ApproximateQLearningTest(testClasses.TestCase):
             qValues = qValuesPretty[action]
             if self.comparePrettyValues(qValues, solutionDict[qValuesKey]):
                 fileOutString += "Q-Values at iteration %d for action '%s' are correct." % (n, action)
-                fileOutString += "   Student/correct solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, qValues)
+                fileOutString += Union[STUDENT_CORRECT, self.prettyValueSolutionString(qValuesKey, qValues)]
             else:
                 testPass = False
                 outString = "Q-Values at iteration %d for action '%s' are NOT correct." % (n, action)
-                outString += "   Student solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, qValues)
-                outString += "   Correct solution:\n\t%s" % self.prettyValueSolutionString(qValuesKey, solutionDict[qValuesKey])
+                outString += Union[STUDENT,self.prettyValueSolutionString(qValuesKey, qValues)]
+                outString += Union[CORRECT,self.prettyValueSolutionString(qValuesKey, solutionDict[qValuesKey])]
                 stdOutString += outString
                 fileOutString += outString
         return testPass, stdOutString, fileOutString
@@ -315,7 +318,6 @@ class ApproximateQLearningTest(testClasses.TestCase):
 
     def prettyPrint(self, elements, formatString):
         pretty = ''
-        message_illegal='   illegal'
         states = self.grid.getStates()
         for ybar in range(self.grid.grid.height):
             y = self.grid.grid.height-1-ybar
@@ -324,12 +326,12 @@ class ApproximateQLearningTest(testClasses.TestCase):
                 if (x, y) in states:
                     value = elements[(x, y)]
                     if value is None:
-                        row.append(message_illegal)
+                        row.append(ILLEGAL)
                     else:
                         row.append(formatString.format(elements[(x,y)]))
                 else:
                     row.append('_' * 10)
-            pretty += '        %s\n' % ("   ".join(row), )
+            pretty += "   ".join(row)
         pretty += '\n'
         return pretty
 
@@ -340,7 +342,7 @@ class ApproximateQLearningTest(testClasses.TestCase):
         return self.prettyPrint(policy, '{0:10s}')
 
     def prettyValueSolutionString(self, name, pretty):
-        return '%s: """\n%s\n"""\n\n' % (name, pretty.rstrip())
+        return name, pretty.rstrip()
 
     def comparePrettyValues(self, aPretty, bPretty, tolerance=0.01):
         aList = self.parsePrettyValues(aPretty)
@@ -421,12 +423,12 @@ class QLearningTest(testClasses.TestCase):
             qValues = qValuesPretty[action]
             if self.comparePrettyValues(qValues, solutionDict[q_values_action_key]):
                 fileOutString += "Q-Values at iteration %d for action '%s' are correct." % (n, action)
-                fileOutString += "   Student/correct solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, qValues)
+                fileOutString += Union[STUDENT_CORRECT,% self.prettyValueSolutionString(q_values_action_key, qValues)]
             else:
                 testPass = False
                 outString = "Q-Values at iteration %d for action '%s' are NOT correct." % (n, action)
-                outString += "   Student solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, qValues)
-                outString += "   Correct solution:\n\t%s" % self.prettyValueSolutionString(q_values_action_key, solutionDict[q_values_action_key])
+                outString += Union[STUDENT,self.prettyValueSolutionString(q_values_action_key, qValues)]
+                outString += Union[CORRECT, self.prettyValueSolutionString(q_values_action_key, solutionDict[q_values_action_key])]
                 stdOutString += outString
                 fileOutString += outString
         if checkValuesAndPolicy:

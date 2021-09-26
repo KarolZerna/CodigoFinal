@@ -672,16 +672,16 @@ def replayGame( layout, actions, display ):
 def runHistoryGames(layout, pacman, ghosts, display, record, catchExceptions, timeout, keyboardGhosts):
 
     n_games = 3
-
+    message_ghosts_1_step_away = '#-of-ghosts-1-step-away'
     # n juegos sin entrenamiento
     games, display = runGames(layout, pacman, ghosts, display, n_games, record, 0, catchExceptions, timeout, keyboardGhosts)
 
     # n juegos con entrenamiento medio
-    pacman.setWeights({'ghost-1-distance': -0.2727409769903002, 'closest-food': -1.3621110078124379, 'bias': -63.15332754401044, 'ghost-2-distance': -0.3484213977577863, '#-of-ghosts-1-step-away': -455.4892921836355, 'eats-food': 165.53617208004533})
+    pacman.setWeights({'ghost-1-distance': -0.2727409769903002, 'closest-food': -1.3621110078124379, 'bias': -63.15332754401044, 'ghost-2-distance': -0.3484213977577863, message_ghosts_1_step_away: -455.4892921836355, 'eats-food': 165.53617208004533})
     games, display = runGames(layout, pacman, ghosts, display, n_games+1, record, 1, catchExceptions, timeout, keyboardGhosts)
 
     # n juegos con entrenamiento alto
-    pacman.setWeights({'ghost-1-distance': 1.7875370795732135, 'closest-food': -10.779379630972068, 'bias': 151.09488651951617, 'ghost-2-distance': 0.33101683742778343, '#-of-ghosts-1-step-away': -1133.2887795678223})
+    pacman.setWeights({'ghost-1-distance': 1.7875370795732135, 'closest-food': -10.779379630972068, 'bias': 151.09488651951617, 'ghost-2-distance': 0.33101683742778343, message_ghosts_1_step_away: -1133.2887795678223})
     games, display = runGames(layout, pacman, ghosts, display, n_games+1, record, 1, catchExceptions, timeout, keyboardGhosts)
 
 
@@ -692,6 +692,7 @@ def runGamesWithMenu( layout, pacman, ghosts, display, numGames, record, numTrai
     __main__.__dict__['_display'] = display
     
     max_players = len(ghosts)
+    message_ghosts_1_step_away = '#-of-ghosts-1-step-away'
 
     #mid_wights = {'ghost-1-distance': 7.505496605864388, 'closest-food': -40.75997789941222, '#-of-safe-intersections': 10.690708333578042, 'bias': 55.10377398236568, 'ghost-2-distance': 6.101402173364152, '#-of-ghosts-1-step-away': -2604.0274454689475, 'eats-food': 349.29952193184727}
     #pacman.setWeights(mid_wights)
@@ -721,14 +722,14 @@ def runGamesWithMenu( layout, pacman, ghosts, display, numGames, record, numTrai
             # 100 juegos con entrenamiento en alto
             #pacman.setWeights({'ghost-1-distance': 12.94359242827336, 'closest-food': -52.46911132365448, '#-of-safe-intersections': 7.850194983873335, 'bias': 406.81171059627815, 'ghost-2-distance': 8.38662059308811, '#-of-ghosts-1-step-away': -2736.7332471165696})
             #pacman.setWeights({'ghost-1-distance': 1.7875370795732135, 'closest-food': -10.779379630972068, 'bias': 151.09488651951617, 'ghost-2-distance': 0.33101683742778343, '#-of-ghosts-1-step-away': -1133.2887795678223})
-            pacman.setWeights({'ghost-1-distance': 1.202518331355906, 'closest-food': -17.52317063612606, 'bias': 244.92598082600026, 'ghost-2-distance': 0.39391543570184373, '#-of-ghosts-1-step-away': -1709.0923916869842})
+            pacman.setWeights({'ghost-1-distance': 1.202518331355906, 'closest-food': -17.52317063612606, 'bias': 244.92598082600026, 'ghost-2-distance': 0.39391543570184373, message_ghosts_1_step_away: -1709.0923916869842})
             games, display = runGames(layout, pacman, ghosts, display, 10, record, 0, catchExceptions, timeout, keyboardGhosts)
 
         if display.selection == 3:  # Demo
             # 10 juegos con entrenamiento alto, modo automatico
             #pacman.setWeights({'ghost-1-distance': 7.90677231488944, 'closest-food': -8.138224422237991, 'bias': 138.95803700868277, 'ghost-2-distance': 0.06922797164020886, '#-of-ghosts-1-step-away': -2987.7748161856716, 'eats-food': 346.1886947796438})
             #pacman.setWeights({'ghost-1-distance': 1.7875370795732135, 'closest-food': -10.779379630972068, 'bias': 151.09488651951617, 'ghost-2-distance': 0.33101683742778343, '#-of-ghosts-1-step-away': -1133.2887795678223})
-            pacman.setWeights({'ghost-1-distance': 1.202518331355906, 'closest-food': -17.52317063612606, 'bias': 244.92598082600026, 'ghost-2-distance': 0.39391543570184373, '#-of-ghosts-1-step-away': -1709.0923916869842})
+            pacman.setWeights({'ghost-1-distance': 1.202518331355906, 'closest-food': -17.52317063612606, 'bias': 244.92598082600026, 'ghost-2-distance': 0.39391543570184373, message_ghosts_1_step_away: -1709.0923916869842})
             games, display = runGames(layout, pacman, ghosts, display, 100, record, 0, catchExceptions, timeout, [])
         # Una vez seleccionados damos 1 juego de practica y 3 juegos sin entrenamiento
         #pacman.setWeights({'ghost-1-distance': 18.667905261805245, 'closest-food': -84.14869086938502, '#-of-safe-intersections': 8.381229445965635, 'bias': 376.62628903913554, 'ghost-2-distance': 7.797186841612915, '#-of-ghosts-1-step-away': -3183.3103376329946})
