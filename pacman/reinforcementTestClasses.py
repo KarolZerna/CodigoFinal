@@ -229,13 +229,14 @@ class ApproximateQLearningTest(testClasses.TestCase):
     def execute(self, grades, moduleDict, solutionDict):
         failureOutputFileString = ''
         failureOutputStdString = ''
+        failure_message = 'For more details to help you debug, see test output file'
         for n in self.numsExperiencesForDisplay:
             testPass, stdOutString, fileOutString = self.executeNExperiences(grades, moduleDict, solutionDict, n)
             failureOutputStdString += stdOutString
             failureOutputFileString += fileOutString
             if not testPass:
                 self.addMessage(failureOutputStdString)
-                self.addMessage('For more details to help you debug, see test output file %s\n\n' % self.testOutFile)
+                self.addMessage(failure_message, self.testOutFile)
                 self.writeFailureFile(failureOutputFileString)
                 return self.testFail(grades)
         self.removeFailureFileIfExists()
