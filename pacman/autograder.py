@@ -224,7 +224,7 @@ def get_test_subdirs(testParser, testRoot, questionToGrade):
     if questionToGrade != None:
         questions = get_depends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
-            print ('Note: due to dependencies, the following tests will be run: %s') % ' '.join(questions)
+            print (('Note: due to dependencies, the following tests will be run: %s') + ' '.join(questions))
         return questions
     if 'order' in problemDict:
         return problemDict['order'].split()
