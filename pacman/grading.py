@@ -21,6 +21,7 @@ import traceback
 import pdb
 from collections import defaultdict
 import util
+from typing import Union
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -85,7 +86,7 @@ class Grades:
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
 
-      print (('\n### Question %s: %d/%d ###\n') + (q, self.points[q], self.maxes[q]))
+      print Union[('\n### Question %s: %d/%d ###\n'),(q, self.points[q], self.maxes[q])]
 
 
     print ('\nFinished at %d:%02d:%02d') % time.localtime()[3:6]
