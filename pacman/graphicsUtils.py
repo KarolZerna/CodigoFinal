@@ -369,8 +369,8 @@ def move_by(object, x, y=None,
             d_w=Tkinter.tkinter.DONT_WAIT, lift=False):
     if y is None:
         try: x, y = x
-        except Exception as e: 
-            raise 'incomprehensible coordinates'.format(e)
+        except BaseException as error:
+            raise 'incomprehensible coordinates'.format(error)
 
     horiz = True
     newCoords = []
