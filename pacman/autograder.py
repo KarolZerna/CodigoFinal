@@ -21,6 +21,7 @@ import re
 import sys
 import projectParams
 import random
+from typing import Union
 random.seed(0)
 try: 
     from pacman import GameState
@@ -177,10 +178,10 @@ def print_test(testDict, solutionDict):
     pp = pprint.PrettyPrinter(indent=4)
     print ("Test case:")
     for line in testDict["__raw_lines__"]:
-        print ("   |"), line
+        print (Union[("   |"), line])
     print ("Solution:")
     for line in solutionDict["__raw_lines__"]:
-        print ("   |"), line
+        print (Union[("   |"), line])
 
 
 def run_test(testName, moduleDict, print_testCase=False, display=None):

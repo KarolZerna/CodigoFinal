@@ -64,7 +64,6 @@ GHOST_VEC_COLORS = map(colorToVector, GHOST_COLORS)
 
 PACMAN_COLOR = formatColor(255.0/255.0,255.0/255.0,61.0/255)
 PACMAN_SCALE = 0.5
-#pacman_speed = 0.25
 
 # Food
 FOOD_COLOR = formatColor(1,1,1)
@@ -198,21 +197,19 @@ class PacmanGraphics:
 
         self.selection = 1
         
-        print self.lastMode, mode
+        print (self.lastMode, mode)
         if self.lastMode == "pacman":   # Clear pacman screen
             # not mode == "pacman"
             self.removeStaticObjects(True)
             self.removeAgents()
             del self.infoPane
         
-        if self.lastMode == "training": # Clear training screen
-            if mode != "training":
-                self.hideTrainingMessage()
+        if self.lastMode == "training" and mode != "training": # Clear training screen
+            self.hideTrainingMessage()
                 
         if self.lastMode == "start":    # Clear start screen
             self.hideStartMessage()
         
-        #graphicsUtils._clear_keys()
         #graphicsUtils.resetBindings()
 
         if mode == "pacman":            # Initialize pacman screen
@@ -242,7 +239,6 @@ class PacmanGraphics:
         self.startMessage6 = text ((x,y-120), self.textColor, "PACMAN","arcadepix", self.fontSize*3, "bold")
 
         self.startMessage5 = text ((x+120,y-30), self.textColor, "Inteligente","arcadepix", self.fontSize, "bold")
-        #self.startMessage1 = text ((x,y), self.textColor, "Cantidad de jugadores:","arcadepix", self.fontSize, "bold")
         x += 370
         self.startMessage7 = text ((x-260,y+30), self.textColor, "ᗧ  ", "arcadepix", self.fontSize, "bold")
         self.startMessage8 = text ((x-250,y+30), SCARED_COLOR, " •••    •• ", "arcadepix", self.fontSize, "bold")
@@ -549,7 +545,7 @@ class PacmanGraphics:
 
     def animatePacman(self, pacman, prevPacman, image):
         if self.frameTime < 0:
-            print 'Press any key to step forward, "q" to play'
+            print ('Press any key to step forward, "q" to play')
             keys = wait_for_keys()
             if 'q' in keys:
                 self.frameTime = 0.1
@@ -575,7 +571,7 @@ class PacmanGraphics:
 
     def drawGhost(self, ghost, agentIndex):
         pos = self.getPosition(ghost)
-        dir = self.getDirection(ghost)
+        direction = self.getDirection(ghost)
         (screen_x, screen_y) = (self.to_screen(pos) )
         coords = []
         for (x, y) in GHOST_SHAPE:
@@ -588,13 +584,13 @@ class PacmanGraphics:
 
         dx = 0
         dy = 0
-        if dir == 'North':
+        if direction == 'North':
             dy = -0.2
-        if dir == 'South':
+        if direction == 'South':
             dy = 0.2
-        if dir == 'East':
+        if direction == 'East':
             dx = 0.2
-        if dir == 'West':
+        if direction == 'West':
             dx = -0.2
         leftEye = circle((screen_x+self.gridSize*GHOST_SIZE*(-0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2, WHITE, WHITE)
         rightEye = circle((screen_x+self.gridSize*GHOST_SIZE*(0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2, WHITE, WHITE)
@@ -609,17 +605,17 @@ class PacmanGraphics:
 
         return ghostImageParts
 
-    def moveEyes(self, pos, dir, eyes):
+    def moveEyes(self, pos, direction, eyes):
         (screen_x, screen_y) = (self.to_screen(pos) )
         dx = 0
         dy = 0
-        if dir == 'North':
+        if direction == 'North':
             dy = -0.2
-        if dir == 'South':
+        if direction == 'South':
             dy = 0.2
-        if dir == 'East':
+        if direction == 'East':
             dx = 0.2
-        if dir == 'West':
+        if direction == 'West':
             dx = -0.2
         moveCircle(eyes[0],(screen_x+self.gridSize*GHOST_SIZE*(-0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2)
         moveCircle(eyes[1],(screen_x+self.gridSize*GHOST_SIZE*(0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2)
@@ -656,15 +652,6 @@ class PacmanGraphics:
 
     def to_screen(self, point):
         ( x, y ) = point
-        #y = self.height - y
-        x = (x + 1)*self.gridSize
-        y = (self.height  - y)*self.gridSize
-        return ( x, y )
-
-    # Fixes some TK issue with off-center circles
-    def to_screen2(self, point):
-        ( x, y ) = point
-        #y = self.height - y
         x = (x + 1)*self.gridSize
         y = (self.height  - y)*self.gridSize
         return ( x, y )
@@ -680,7 +667,7 @@ class PacmanGraphics:
                 if cell: # There's a wall here
                     pos = (xNum, yNum)
                     screen = self.to_screen(pos)
-                    screen2 = self.to_screen2(pos)
+                    screen2 = self.to_screen(pos)
 
                     # draw each quadrant of the square based on adjacent walls
                     wIsWall = self.isWall(xNum-1, yNum, wallMatrix)
@@ -841,7 +828,7 @@ class PacmanGraphics:
                 weights = [dist[ (x,y) ] for dist in distributions]
 
                 if sum(weights) != 0:
-                    pass
+                    return 0
                 # Fog of war
                 color = [0.0,0.0,0.0]
                 colors = GHOST_VEC_COLORS[1:] # With Pacman

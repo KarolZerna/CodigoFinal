@@ -18,7 +18,7 @@ while (True):
     for event in pygame.event.get():
         
         if event.type == KEYUP:
-            raise
+            return 0
         
         elif event.type == KEYDOWN:
     
