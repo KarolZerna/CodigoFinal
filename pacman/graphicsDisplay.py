@@ -857,7 +857,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
         self.showGhosts = showGhosts
         self.capture = capture
 
-    def initialize(self, state, isBlue = False):
+    def initialize_graphics(self, state, isBlue = False):
 
         self.isBlue = isBlue
         PacmanGraphics.startGraphics(self, state)
