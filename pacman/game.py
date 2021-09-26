@@ -508,8 +508,8 @@ class GameStateData:
 try:
     import boinc
     _BOINC_ENABLED = True
-except:
-    _BOINC_ENABLED = False
+except Exception as e:
+    raise type(e), _BOINC_ENABLED = False
 
 class Game:
     """

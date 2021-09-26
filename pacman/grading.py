@@ -78,8 +78,8 @@ class Grades:
       except Exception, inst:
         self.addExceptionMessage(q, inst, traceback)
         self.addErrorHints(exceptionMap, inst, q[1])
-      except:
-        self.fail('FAIL: Terminated with a string exception.')
+      except Exception as e:
+        raise type(e), self.fail('FAIL: Terminated with a string exception.')
       finally:
         if self.mute: util.unmutePrint()
 

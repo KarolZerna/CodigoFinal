@@ -15,8 +15,8 @@
 import time
 try: 
     import pacman
-except:
-    pass
+except KeyboardInterrupt:
+    raise
 
 DRAW_EVERY = 1
 SLEEP_TIME = 0 # This can be overwritten by __init__

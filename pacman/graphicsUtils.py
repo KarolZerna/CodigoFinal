@@ -160,8 +160,8 @@ def end_graphics():
             sleep(1)
             if _root_window != None:
                 _root_window.destroy()
-        except SystemExit as e:
-            print 'Ending graphics raised an exception:', e
+        except BaseException as error:
+            raise 'Ending graphics raised an exception:'.format(error)
     finally:
         _root_window = None
         _canvas = None
@@ -277,8 +277,8 @@ def _keyrelease(event):
     #remap_arrows(event)
     try:
         del _keysdown[event.keysym]
-    except:
-        pass
+    except KeyboardInterrupt:
+        raise
     _got_release = 1
 
 def remap_arrows(event):
@@ -369,7 +369,8 @@ def move_by(object, x, y=None,
             d_w=Tkinter.tkinter.DONT_WAIT, lift=False):
     if y is None:
         try: x, y = x
-        except: raise Exception, 'incomprehensible coordinates'
+        except Exception as e: 
+            raise 'incomprehensible coordinates'.format(e)
 
     horiz = True
     newCoords = []
