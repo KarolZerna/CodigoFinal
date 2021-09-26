@@ -446,7 +446,7 @@ class PacmanGraphics:
         self.removeStaticObjects()
         self.removeAgents()
         
-        self.drawStaticObjects(self, state)
+        self.drawStaticObjects(state)
         
         self.previousState = state
         
