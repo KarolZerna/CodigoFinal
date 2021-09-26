@@ -19,6 +19,8 @@ import string
 import time
 import types
 import Tkinter
+from colorama import init, Fore, Back, Style
+
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
@@ -413,5 +415,5 @@ if __name__ == '__main__':
     ghost_shape = [(x * 10 + 20, y * 10 + 20) for x, y in ghost_shape]
     g = polygon(ghost_shape, formatColor(1, 1, 1))
     move_to(g, (50, 50))
-    circle((150, 150), 20, formatColor(0.7, 0.3, 0.0), endpoints=[15, - 15])
+    circle((150, 150), 20, Back.WHITE, formatColor(0.7, 0.3, 0.0), endpoints=[15, - 15], style=pieslice, width=2)
     sleep(2)
