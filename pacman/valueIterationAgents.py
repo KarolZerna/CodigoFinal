@@ -114,7 +114,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         return total
 
 
-    def process():
+    def process(self):
         raise ConfigurationError("Wrong configuration")
 
     def computeActionFromValues(self, state):
