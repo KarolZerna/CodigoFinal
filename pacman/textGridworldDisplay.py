@@ -281,14 +281,14 @@ def indent(rows, hasHeader=False, headerChar='-', delim=' | ', justify='left',
     # select the appropriate justify method
     justify = {'center':str.center, 'right':str.rjust, 'left':str.ljust}[justify.lower()]
     output=cStringIO.StringIO()
-    if separateRows: print >> output, rowSeparator
+    if separateRows: print (output, rowSeparator)
     for physicalRows in logicalRows:
         for row in physicalRows:
-            print >> output, \
+            print (output, \
                 prefix \
                 + delim.join([justify(str(item),width) for (item,width) in zip(row,maxWidths)]) \
-                + postfix
-        if separateRows or hasHeader: print >> output, rowSeparator; hasHeader=False
+                + postfix)
+        if separateRows or hasHeader: print (output, rowSeparator; hasHeader=False)
     return output.getvalue()
 
 import math

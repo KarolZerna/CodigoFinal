@@ -18,6 +18,9 @@ import heapq, random
 import cStringIO
 from typing import Union
 
+class MyException(Exception):
+    pass
+
 class FixedRandom:
     def __init__(self):
         fixedState = (3, (2147483648L, 507801126L, 683453281L, 310439348L, 2597246090L, \
@@ -170,8 +173,7 @@ class PriorityQueue:
         self.count = 0
 
     def push(self, item, priority):
-        # FIXME: restored old behaviour to check against old results better
-        # FIXED: restored to stable behaviour
+        # FIXED: restored to stable behaviour to check against old results better
         entry = (priority, self.count, item)
        
         heapq.heappush(self.heap, entry)
@@ -275,10 +277,10 @@ class Counter(dict):
         Returns the key with the highest value.
         """
         if len(self.keys()) == 0: return None
-        all = self.items()
-        values = [x[1] for x in all]
+        all_items = self.items()
+        values = [x[1] for x in all_items]
         maxIndex = values.index(max(values))
-        return all[maxIndex][0]
+        return all_items[maxIndex][0]
 
     def sortedKeys(self):
         """
@@ -345,15 +347,15 @@ class Counter(dict):
         >>> a * b
         14
         """
-        sum = 0
+        sum_add = 0
         x = self
         if len(x) > len(y):
             x,y = y,x
         for key in x:
             if key not in y:
                 continue
-            sum += x[key] * y[key]
-        return sum
+            sum_add += x[key] * y[key]
+        return sum_add
 
     def __radd__(self, y):
         """
@@ -552,6 +554,9 @@ def matrix_as_list( matrix, value = True ):
                 cells.append( ( row, col ) )
     return cells
 
+def process():
+    raise ConfigurationError("Wrong configuration")
+
 def lookup(name, namespace):
     """
     Get a method or class from any imported module from its name.
@@ -567,8 +572,14 @@ def lookup(name, namespace):
         options = [getattr(module, name) for module in modules if name in dir(module)]
         options += [obj[1] for obj in namespace.items() if obj[0] == name ]
         if len(options) == 1: return options[0]
-        if len(options) > 1: raise Exception, 'Name conflict for %s'
-        raise Exception, '%s not found as a method or class' % name
+        try: 
+            if len(options) > 1:
+        except BaseException as error:
+            raise MyException('Name conflict for %s').format(error)        
+        try:
+            process()
+        except BaseException as error:
+            raise MyException('%s not found as a method or class', name).format(error) 
 
 def pause():
     """
@@ -579,8 +590,6 @@ def pause():
 
 
 # code to handle timeouts
-#
-# FIXME
 # NOTE: TimeoutFuncton is NOT reentrant.  Later timeouts will silently
 # disable earlier timeouts.  Could be solved by maintaining a global list
 # of active time outs.  Currently, questions which have test cases calling

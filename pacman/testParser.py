@@ -15,6 +15,10 @@
 import re
 import sys
 
+
+class MyException(Exception):
+    pass
+
 class TestParser(object):
 
     def __init__(self, path):
@@ -75,11 +79,12 @@ class TestParser(object):
 
 def emit_test_dict(testDict, handle):
     for kind, data in testDict['__emit__']:
-        if kind == "raw":
-            handle.write(data + "\n")
-        elif kind == "oneline":
-            handle.write('%s: "%s"\n' % (data, testDict[data]))
-        elif kind == "multiline":
-            handle.write('%s: """\n%s\n"""\n' % (data, testDict[data]))
-        else:
-            raise Exception("Bad __emit__")
+        try: 
+            if kind == "raw":
+                handle.write(data + "\n")
+            elif kind == "oneline":
+                handle.write('%s: "%s"\n' % (data, testDict[data]))
+            elif kind == "multiline":
+                handle.write('%s: """\n%s\n"""\n' % (data, testDict[data]))
+        except BaseException as error:
+            raise MyException("Bad __emit__").format(error)
