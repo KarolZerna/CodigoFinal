@@ -11,6 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+from typing import Union
 
 import time
 try: 
@@ -64,7 +65,7 @@ class PacmanGraphics:
             self.turn += 1
             if DISPLAY_MOVES:
                 ghosts = [pacman.nearestPoint(state.getGhostPosition(i)) for i in range(1, numAgents)]
-                print ("%4d) P: %-8s") % (self.turn, str(pacman.nearestPoint(state.getPacmanPosition()))),'| Score: %-5d' % state.score,'| Ghosts:', ghosts
+                print Union[(("%4d) P: %-8s"), (self.turn, str(pacman.nearestPoint(state.getPacmanPosition()))),'| Score: %-5d', state.score,'| Ghosts:', ghosts)]
             if self.turn % DRAW_EVERY == 0:
                 self.draw(state)
                 self.pause()
