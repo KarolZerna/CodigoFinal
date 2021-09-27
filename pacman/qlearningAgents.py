@@ -141,7 +141,7 @@ class QLearningAgent(ReinforcementAgent):
         qvalue = self.getQValue(state, action)
         next_value = self.getValue(nextState)
         
-        #new_value = qvalue + alpha * (reward + disc * next_value - qvalue)
+        
         new_value = (1-alpha) * qvalue + alpha * (reward + disc * next_value)
         
         self.setQValue(state, action, new_value) 
@@ -233,6 +233,6 @@ class ApproximateQAgent(PacmanQAgent):
         if self.episodesSoFar == self.numTraining:
             # you might want to print your weights here for debugging
             "*** YOUR CODE HERE ***"
-            print "Final weights vector: "
-            print self.weights
+            print ("Final weights vector: ")
+            print (self.weights)
             pass
