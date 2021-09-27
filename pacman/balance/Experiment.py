@@ -5,9 +5,9 @@ from Simulator import Simulator
 _simulador = Simulator(True, True)
 
 
-def inicializar(imprimirAngulo, imprimirTiempo):
+def inicializar(imprimir_angulo, imprimir_tiempo):
     global _simulador
-    _simulador = Simulator(imprimirAngulo, imprimirTiempo)
+    _simulador = Simulator(imprimir_angulo, imprimir_tiempo)
  
 
 
@@ -17,15 +17,15 @@ def set_angulo_inicial(angulo):
 
 def ejecutar_accion(accion):
     if (accion == Accion.DERECHA):
-        accSim = 1
+        acc_sim = 1
     elif (accion == Accion.IZQUIERDA):
-        accSim = -1
+        acc_sim = -1
     else:
-        accSim = 0
+        acc_sim = 0
 
     # Corro las veces necesarias para mostrar el resultado
-    for i in range(_simulador.vueltasPorMovimiento):
-        _simulador.run(accSim)
+    for _ in range(_simulador.vueltasPorMovimiento):
+        _simulador.run(acc_sim)
 
 
 def get_estado():

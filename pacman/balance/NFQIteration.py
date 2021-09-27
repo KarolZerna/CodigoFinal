@@ -9,7 +9,7 @@ class NFQIteration:
 
     _gamma = 0.9
     _epochs = 500      #1000
-    _epochsNN = 100
+    _epochs_nn = 100
     
     def __init__(self):
 
@@ -21,19 +21,19 @@ class NFQIteration:
         # Output: Valor
         # 2 capas ocultas de 5 neuronas cada una
         # Funcion de activacion sigmoidea
-        inLayer = SigmoidLayer(4, name="Input Layer")
-        hiddenLayer1 = SigmoidLayer(5, name="Hidden Layer 1")
-        hiddenLayer2 = SigmoidLayer(5, name="Hidden Layer 2")
-        outLayer = SigmoidLayer(1, name="Output Layer")
+        in_layer = SigmoidLayer(4, name="Input Layer")
+        hidden_layer_one = SigmoidLayer(5, name="Hidden Layer 1")
+        hidden_layer_two = SigmoidLayer(5, name="Hidden Layer 2")
+        out_layer = SigmoidLayer(1, name="Output Layer")
 
-        self.Q.addInputModule(inLayer)
-        self.Q.addModule(hiddenLayer1)
-        self.Q.addModule(hiddenLayer2)
-        self.Q.addOutputModule(outLayer)
+        self.Q.addInputModule(in_layer)
+        self.Q.addModule(hidden_layer_one)
+        self.Q.addModule(hidden_layer_two)
+        self.Q.addOutputModule(out_layer)
 
-        connInToHidden1 = FullConnection(inLayer, hiddenLayer1)
-        connHidden1ToHidden2 = FullConnection(hiddenLayer1, hiddenLayer2)
-        connHidden2ToOut = FullConnection(hiddenLayer2, outLayer)
+        connInToHidden1 = FullConnection(in_layer, hidden_layer_one)
+        connHidden1ToHidden2 = FullConnection(hidden_layer_one, hidden_layer_two)
+        connHidden2ToOut = FullConnection(hidden_layer_two, out_layer)
 
         self.Q.addConnection(connInToHidden1)
         self.Q.addConnection(connHidden1ToHidden2)
@@ -90,7 +90,7 @@ class NFQIteration:
             # Entreno la red neuronal
             trainer.setData(TS)
             trainer.train()     # 1 epoch
-            #trainer.trainEpochs(self._epochsNN)
+            #trainer.trainEpochs(self._epochs_nn)
                 
 
             k = k + 1

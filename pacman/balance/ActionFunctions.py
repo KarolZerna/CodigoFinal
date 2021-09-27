@@ -5,21 +5,21 @@ import random
 _epsilon = 0.1
 
 
-def get_siguiente_accion_greedy(estado, Q):
-    Q_estado = [(b, Q.activate([estado.angulo, estado.velocidadAngular, estado.posicion, b])) for b in range(Accion.maxValor + 1) ]
-    accionMin, valorMin = Q_estado[0]
+def get_siguiente_accion_greedy(estado, q_state):
+    q_estado = [(b, Q.activate([estado.angulo, estado.velocidadAngular, estado.posicion, b])) for b in range(Accion.maxValor + 1) ]
+    accion_min, valor_min = q_estado[0]
     
-    for (acc, valor) in Q_estado:
-        if (valor < valorMin):
-            accionMin = acc
-            valorMin = valor
-    return accionMin
+    for (acc, valor) in q_estado:
+        if (valor < valor_min):
+            accion_min = acc
+            valor_min = valor
+    return accion_min
     
 
-def get_siguiente_accion_epsilon_greedy(estado, Q):
-    rndNumber = random.random()
+def get_siguiente_accion_epsilon_greedy(estado, q_estado):
+    random_num = random.random()
 
-    if rndNumber <= _epsilon:
+    if random_num <= _epsilon:
         accion = random.randint(0, Accion.maxValor)
     else:
         accion = get_siguiente_accion_greedy(estado, Q)
