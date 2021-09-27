@@ -113,6 +113,10 @@ class ValueIterationAgent(ValueEstimationAgent):
         util.raiseNotDefined()
         return total
 
+
+    def process():
+        raise ConfigurationError("Wrong configuration")
+
     def computeActionFromValues(self, state):
         """
           The policy is the best action in the given state
@@ -125,7 +129,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           V_{k+1}(s) = max[a] Q*(s,a)
         """
         if self.mdp.isTerminal(state):
-            pass
+            process()
         else:
             actions = self.mdp.getPossibleActions(state)
             max_value = self.getQValue(state, actions[0])
