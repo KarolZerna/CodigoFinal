@@ -173,13 +173,13 @@ class PriorityQueue:
         # FIXME: restored old behaviour to check against old results better
         # FIXED: restored to stable behaviour
         entry = (priority, self.count, item)
-        # entry = (priority, item)
+       
         heapq.heappush(self.heap, entry)
         self.count += 1
 
     def pop(self):
         (_, _, item) = heapq.heappop(self.heap)
-        #  (_, item) = heapq.heappop(self.heap)
+        
         return item
 
     def isEmpty(self):
@@ -202,7 +202,7 @@ class PriorityQueueWithFunction(PriorityQueue):
         PriorityQueue.push_function(self, item, self.priorityFunction(item))
 
 
-def manhattanDistance( xy1, xy2 ):
+def manhattan_distance( xy1, xy2 ):
     "Returns the Manhattan distance between points xy1 and xy2"
     return abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )
 
@@ -425,12 +425,12 @@ class Counter(dict):
             addend[key] = -1 * y[key]
         return addend
 
-def raiseNotDefined():
+def raise_not_defined():
     fileName = inspect.stack()[1][1]
     line = inspect.stack()[1][2]
     method = inspect.stack()[1][3]
 
-    print Union[("*** Method not implemented: %s at line %s of %s"),(method, line, fileName)]
+    print (Union[("*** Method not implemented: %s at line %s of %s"),(method, line, fileName)])
     sys.exit(1)
 
 def normalize(vectorOrCounter):
