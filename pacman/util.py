@@ -540,7 +540,7 @@ def array_invert(array):
             result[inner].append(outer[inner])
     return result
 
-def matrix_asList( matrix, value = True ):
+def matrix_as_list( matrix, value = True ):
     """
     Turns a matrix into a list of coordinates matching the specified value
     """
