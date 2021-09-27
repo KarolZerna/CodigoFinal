@@ -27,30 +27,30 @@ class TextGridworldDisplay:
 
     def displayValues(self, agent, currentState = None, message = None):
         if message != None:
-            print message
+            print (message)
         values = util.Counter()
         policy = {}
         states = self.gridworld.getStates()
         for state in states:
             values[state] = agent.getValue(state)
             policy[state] = agent.getPolicy(state)
-        prettyPrintValues(self.gridworld, values, policy, currentState)
+        pretty_print_values(self.gridworld, values, policy, currentState)
 
     def displayNullValues(self, agent, currentState = None, message = None):
-        if message != None: print message
-        prettyPrintNullValues(self.gridworld, currentState)
+        if message != None: print (message)
+        pretty_print_null_values(self.gridworld, currentState)
 
     def displayQValues(self, agent, currentState = None, message = None):
-        if message != None: print message
+        if message != None: print (message)
         qValues = util.Counter()
         states = self.gridworld.getStates()
         for state in states:
             for action in self.gridworld.getPossibleActions(state):
                 qValues[(state, action)] = agent.getQValue(state, action)
-        prettyPrintQValues(self.gridworld, qValues, currentState)
+        pretty_print_q_values(self.gridworld, qValues, currentState)
 
 
-def prettyPrintValues(gridWorld, values, policy=None, currentState = None):
+def pretty_print_values(gridWorld, values, policy=None, currentState = None):
     grid = gridWorld.grid
     maxLen = 11
     newRows = []
@@ -103,10 +103,10 @@ def prettyPrintValues(gridWorld, values, policy=None, currentState = None):
     colLabels = [str(colNum) for colNum in range(numCols)]
     colLabels.insert(0,' ')
     finalRows = [colLabels] + newRows
-    print indent(finalRows,separateRows=True,delim='|', prefix='|',postfix='|', justify='center',hasHeader=True)
+    print (indent(finalRows,separateRows=True,delim='|', prefix='|',postfix='|', justify='center',hasHeader=True))
 
 
-def prettyPrintNullValues(gridWorld, currentState = None):
+def pretty_print_null_values(gridWorld, currentState = None):
     grid = gridWorld.grid
     maxLen = 11
     newRows = []
@@ -115,24 +115,18 @@ def prettyPrintNullValues(gridWorld, currentState = None):
         for x in range(grid.width):
             state = (x, y)
 
-            # value = values[state]
+            
 
             action = None
-            # if policy != None and state in policy:
-            #   action = policy[state]
-            #
+            
+            
             actions = gridWorld.getPossibleActions(state)
 
             if action not in actions and 'exit' in actions:
                 action = 'exit'
 
             valString = None
-            # if action == 'exit':
-            #   valString = border('%.2f' % value)
-            # else:
-            #   valString = '\n\n%.2f\n\n' % value
-            #   valString += ' '*maxLen
-
+          
             if grid[x][y] == 'S':
                 valString = '\n\nS\n\n'
                 valString += ' '*maxLen
@@ -171,9 +165,9 @@ def prettyPrintNullValues(gridWorld, currentState = None):
     colLabels = [str(colNum) for colNum in range(numCols)]
     colLabels.insert(0,' ')
     finalRows = [colLabels] + newRows
-    print indent(finalRows,separateRows=True,delim='|', prefix='|',postfix='|', justify='center',hasHeader=True)
+    print (indent(finalRows,separateRows=True,delim='|', prefix='|',postfix='|', justify='center',hasHeader=True))
 
-def prettyPrintQValues(gridWorld, qValues, currentState=None):
+def pretty_print_q_values(gridWorld, qValues, currentState=None):
     grid = gridWorld.grid
     maxLen = 11
     newRows = []
@@ -242,7 +236,7 @@ def prettyPrintQValues(gridWorld, qValues, currentState=None):
     colLabels.insert(0,' ')
     finalRows = [colLabels] + newRows
 
-    print indent(finalRows,separateRows=True,delim='|',prefix='|',postfix='|', justify='center',hasHeader=True)
+    print (indent(finalRows,separateRows=True,delim='|',prefix='|',postfix='|', justify='center',hasHeader=True))
 
 def border(text):
     length = len(text)
@@ -273,11 +267,11 @@ def indent(rows, hasHeader=False, headerChar='-', delim=' | ', justify='left',
        - wrapfunc: A function f(text) for wrapping text; each element in
          the table is first wrapped by this function."""
     # closure for breaking logical rows to physical, using wrapfunc
-    def rowWrapper(row):
+    def row_wrapper(row):
         newRows = [wrapfunc(item).split('\n') for item in row]
         return [[substr or '' for substr in item] for item in map(None,*newRows)]
     # break each logical row into one or more physical ones
-    logicalRows = [rowWrapper(row) for row in rows]
+    logicalRows = [row_wrapper(row) for row in rows]
     # columns of physical rows
     columns = map(None,*reduce(operator.add,logicalRows))
     # get the maximum of each column by the string length of its items
@@ -311,14 +305,14 @@ if __name__ == '__main__':
     import gridworld, util
 
     grid = gridworld.getCliffGrid3()
-    print grid.getStates()
+    print (grid.getStates())
 
     policy = dict([(state,'east') for state in grid.getStates()])
     values = util.Counter(dict([(state,1000.23) for state in grid.getStates()]))
-    prettyPrintValues(grid, values, policy, currentState = (0,0))
+    pretty_print_values(grid, values, policy, currentState = (0,0))
 
     stateCrossActions = [[(state, action) for action in grid.getPossibleActions(state)] for state in grid.getStates()]
     qStates = reduce(lambda x,y: x+y, stateCrossActions, [])
     qValues = util.Counter(dict([((state, action), 10.5) for state, action in qStates]))
     qValues = util.Counter(dict([((state, action), 10.5) for state, action in reduce(lambda x,y: x+y, stateCrossActions, [])]))
-    prettyPrintQValues(grid, qValues, currentState = (0,0))
+    pretty_print_q_values(grid, qValues, currentState = (0,0))

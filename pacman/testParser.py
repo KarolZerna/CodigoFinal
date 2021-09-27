@@ -68,12 +68,12 @@ class TestParser(object):
                 test['__emit__'].append(("multiline", m.group(1)))
                 i += 1
                 continue
-            print 'error parsing test file: %s' % self.path
+            print ('error parsing test file: %s') % self.path
             sys.exit(1)
         return test
 
 
-def emitTestDict(testDict, handle):
+def emit_test_dict(testDict, handle):
     for kind, data in testDict['__emit__']:
         if kind == "raw":
             handle.write(data + "\n")
