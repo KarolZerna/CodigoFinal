@@ -3,11 +3,11 @@ from pygame import draw
 
 class Simulator:
     
-    def __init__(self, imprimir_angulo, imprimirTiempo):
+    def __init__(self, imprimir_angulo, imprimir_tiempo):
 
         self.imprimir_angulo = imprimir_angulo        # Imprime angulo y velocidad angular en pantalla
-        self.imprimirTiempo = imprimirTiempo        # Imprime cantidad de tiempo que mantiene seguido en la region target
-        self.targetValue = 0.5
+        self.imprimir_tiempo = imprimir_tiempo        # Imprime cantidad de tiempo que mantiene seguido en la region target
+        self.target_value = 0.5
         
 
         # Inicializo variables
@@ -22,27 +22,27 @@ class Simulator:
         self.FOURTHIRDS = 1.3333333333333
         
         self.vueltas = 0
-        self.movimientoSeleccionado = 0
-        self.vueltasPorMovimiento = 5  #cada cuantas vueltas del TAU va a durar una desicion
-        self.acumuladorVueltasPorMovimiento = self.vueltasPorMovimiento
-        self.movTotales = 1
-        self.movimientoTemporario = 0
-        self.aplicacionFuerza = 0
+        self.movimiento_seleccionado = 0
+        self.vueltas_por_movimiento = 5  #cada cuantas vueltas del TAU va a durar una desicion
+        self.acumulador_vueltas_por_movimiento = self.vueltas_por_movimiento
+        self.mov_totales = 1
+        self.movimiento_temporario = 0
+        self.aplicacion_fuerza = 0
         
-        self.screenWidth = 1000
-        self.cartWidth = 80
+        self.screen_width = 1000
+        self.cart_width = 80
         self.altura = 150
 
-        self.cartPole_x = 0.5
-        self.cartPole_velocidadX = 0.0
-        self.cartPole_angulo = math.pi
-        self.cartPole_velocidadAngular = 0.0
+        self.cart_pole_x = 0.5
+        self.cart_pole_velocidad_x = 0.0
+        self.cart_pole_angulo = math.pi
+        self.cart_pole_velocidad_angular = 0.0
 
-        self.enObjetivo = False         # Indica si el pendulo esta dentro del angulo objetivo - para contador de tiempo
-        self.enObjetivo_tiempoDeInicio = 0
-        self.enObjetivo_tiempoMaximo = 0
-        self.enObjetivo_ultimoTiempo = 0
-        self.colorCarro = (150, 0, 0)
+        self.en_objetivo = False         # Indica si el pendulo esta dentro del angulo objetivo - para contador de tiempo
+        self.en_objetivo_tiempo_de_inicio = 0
+        self.en_objetivo_tiempo_maximo = 0
+        self.en_objetivo_ultimo_tiempo = 0
+        self.color_carro = (150, 0, 0)
         self.colorPendulo = (0, 100, 0)
         self.colorPelota = (92, 51, 23)
 
@@ -74,34 +74,34 @@ class Simulator:
     
     def calcPhysics(self):
         
-        force = (self.movimientoSeleccionado*250) * (1 + random.random()/10 - 0.05)
+        force = (self.movimiento_seleccionado*250) * (1 + random.random()/10 - 0.05)
 
-        if self.movimientoSeleccionado != 0:
-            self.movimientoSeleccionado = 0
-            self.aplicacionFuerza = self.vueltasPorMovimiento
-            self.cartPole_velocidadX = 0
+        if self.movimiento_seleccionado != 0:
+            self.movimiento_seleccionado = 0
+            self.aplicacion_fuerza = self.vueltas_por_movimiento
+            self.cart_pole_velocidad_x = 0
 
-        self.aplicacionFuerza = self.aplicacionFuerza-1
+        self.aplicacion_fuerza = self.aplicacion_fuerza-1
         
         
 
-        costheta = math.cos(self.cartPole_angulo)
-        sintheta = math.sin(self.cartPole_angulo)
+        costheta = math.cos(self.cart_pole_angulo)
+        sintheta = math.sin(self.cart_pole_angulo)
 
-        temp = ((force + self.POLEMASS_LENGTH * self.cartPole_velocidadAngular * \
-                 self.cartPole_velocidadAngular * sintheta)
+        temp = ((force + self.POLEMASS_LENGTH * self.cart_pole_velocidad_angular * \
+                 self.cart_pole_velocidad_angular * sintheta)
                              / self.TOTAL_MASS)
 
         gravedadModificada = self.GRAVITY
 
         # Intento de rozamiento
-        if self.cartPole_angulo > 0:
-            if self.cartPole_velocidadAngular > 0:
+        if self.cart_pole_angulo > 0:
+            if self.cart_pole_velocidad_angular > 0:
                 gravedadModificada = gravedadModificada * 0.8
             else:
                 gravedadModificada = gravedadModificada * 1.2
         else:
-            if self.cartPole_velocidadAngular > 0:
+            if self.cart_pole_velocidad_angular > 0:
                 gravedadModificada = gravedadModificada * 1.2
             else:
                 gravedadModificada = gravedadModificada * 0.8
@@ -115,30 +115,30 @@ class Simulator:
 
         # Update the four state variables, using Euler's method.
 
-        self.cartPole_x  += self.TAU * self.cartPole_velocidadX
-        self.cartPole_velocidadX += self.TAU * xacc
+        self.cart_pole_x  += self.TAU * self.cart_pole_velocidad_x
+        self.cart_pole_velocidad_x += self.TAU * xacc
         
-        if (self.aplicacionFuerza <= 0):
-            self.aplicacionFuerza = 0
-            self.cartPole_velocidadX = 0
+        if (self.aplicacion_fuerza <= 0):
+            self.aplicacion_fuerza = 0
+            self.cart_pole_velocidad_x = 0
             
-        self.cartPole_angulo += self.TAU * self.cartPole_velocidadAngular
-        self.cartPole_velocidadAngular += self.TAU * thetaacc
+        self.cart_pole_angulo += self.TAU * self.cart_pole_velocidad_angular
+        self.cart_pole_velocidad_angular += self.TAU * thetaacc
 
-        while self.cartPole_angulo > math.pi:
-            self.cartPole_angulo -= 2.0 * math.pi
+        while self.cart_pole_angulo > math.pi:
+            self.cart_pole_angulo -= 2.0 * math.pi
 
-        while self.cartPole_angulo < -math.pi:
-            self.cartPole_angulo += 2.0 * math.pi
+        while self.cart_pole_angulo < -math.pi:
+            self.cart_pole_angulo += 2.0 * math.pi
 
     def rendering(self):
         # RENDERING
         self.calcPhysics()
 
-        tetha = self.cartPole_angulo
+        tetha = self.cart_pole_angulo
         length = 150
         
-        self.position = self.cartPole_x*(self.screenWidth/self.movTotales), self.y_size - self.altura - 25
+        self.position = self.cart_pole_x*(self.screen_width/self.mov_totales), self.y_size - self.altura - 25
         self.top_position = int(self.position[0] + math.sin(tetha)*length), \
                     int(self.position[1] - math.cos(tetha)*length)
 
@@ -163,46 +163,46 @@ class Simulator:
 
     def car_and_text(self):
         # Carro
-        draw.rect(self.screen, self.colorCarro , base)
+        draw.rect(self.screen, self.color_carro , base)
         #self.screen.blit(self.texturaCarro, base, pygame.Rect(0,0,75,50))
         draw.line(self.screen, self.colorPendulo, self.position, self.top_position, 4)
         draw.circle(self.screen, self.colorPelota, self.top_position, 10)
 
         # Texto
         font = pygame.font.SysFont("Arial", 18, bold = True)
-        textAngulo = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f} ".format(self.cartPole_velocidadAngular, self.cartPole_angulo) \
+        textAngulo = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f} ".format(self.cart_pole_velocidad_angular, self.cart_pole_angulo) \
                     , 1, (0,0,0))
 
     def printing(self):
         if self.imprimir_angulo:
             self.screen.blit(textAngulo, (50, 30))
 
-        if self.imprimirTiempo:
+        if self.imprimir_tiempo:
             # Chequeo si llego a la zona objetivo,
             # y si es la primera vez que entra
-            if abs(self.cartPole_angulo) <= self.targetValue:
+            if abs(self.cart_pole_angulo) <= self.target_value:
 
-                if not self.enObjetivo:
+                if not self.en_objetivo:
                     # Primera vez que llega
-                    self.enObjetivo = True;
-                    self.enObjetivo_tiempoDeInicio = time.time()
+                    self.en_objetivo = True;
+                    self.en_objetivo_tiempo_de_inicio = time.time()
                     tiempoTranscurrido = 0
 
                 else:
-                    tiempoTranscurrido = time.time() - self.enObjetivo_tiempoDeInicio
+                    tiempoTranscurrido = time.time() - self.en_objetivo_tiempo_de_inicio
     
-                self.enObjetivo_ultimoTiempo = tiempoTranscurrido
+                self.en_objetivo_ultimo_tiempo = tiempoTranscurrido
                 
             else:    
-                self.enObjetivo = False
+                self.en_objetivo = False
                 tiempoTranscurrido = 0
 
 
-            if (tiempoTranscurrido > self.enObjetivo_tiempoMaximo):
-                self.enObjetivo_tiempoMaximo = tiempoTranscurrido
+            if (tiempoTranscurrido > self.en_objetivo_tiempo_maximo):
+                self.en_objetivo_tiempo_maximo = tiempoTranscurrido
                 
-            textTiempo = font.render("Tiempo Arriba: {0:.2f}".format(self.enObjetivo_ultimoTiempo), 1, (0, 0, 0))
-            textTiempoMaximo = font.render("Maximo: {0:.2f} segundos".format(self.enObjetivo_tiempoMaximo), 1, (0, 0, 0))
+            textTiempo = font.render("Tiempo Arriba: {0:.2f}".format(self.en_objetivo_ultimo_tiempo), 1, (0, 0, 0))
+            textTiempoMaximo = font.render("Maximo: {0:.2f} segundos".format(self.en_objetivo_tiempo_maximo), 1, (0, 0, 0))
 
             self.screen.blit(textTiempo, (750, 30))
             #self.screen.blit(textUltimoTiempo, (750, 50))
@@ -210,21 +210,21 @@ class Simulator:
 
     def run(self, accion):
 
-        if(self.acumuladorVueltasPorMovimiento == self.vueltasPorMovimiento):
-            self.acumuladorVueltasPorMovimiento = 0
+        if(self.acumulador_vueltas_por_movimiento == self.vueltas_por_movimiento):
+            self.acumulador_vueltas_por_movimiento = 0
 
-            self.movimientoSeleccionado = accion
+            self.movimiento_seleccionado = accion
 
             # Bordes
-            if self.cartPole_x >= 1 and self.movimientoSeleccionado == 1:
-                self.cartPole_x = 1
-                self.movimientoSeleccionado = 0
+            if self.cart_pole_x >= 1 and self.movimiento_seleccionado == 1:
+                self.cart_pole_x = 1
+                self.movimiento_seleccionado = 0
 
-            if self.cartPole_x <= 0 and self.movimientoSeleccionado == -1:
-                self.cartPole_x = 0
-                self.movimientoSeleccionado = 0
+            if self.cart_pole_x <= 0 and self.movimiento_seleccionado == -1:
+                self.cart_pole_x = 0
+                self.movimiento_seleccionado = 0
             
-        self.acumuladorVueltasPorMovimiento = self.acumuladorVueltasPorMovimiento + 1
+        self.acumulador_vueltas_por_movimiento = self.acumulador_vueltas_por_movimiento + 1
         rendering()
         car_and_text()
         printing()
