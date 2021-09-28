@@ -255,8 +255,7 @@ def draw_square(x, y, val, min, max, valStr, action, isObstacle, isTerminal, isC
     if not isObstacle:
         text( (screen_x, screen_y), text_color, valStr, "Courier", -30, "bold", "c")
 
-def square_actions(self):
-    actions = qVals.keys()
+def square_actions(self, actions):
     for action in actions:
         wedge_color = get_color(qVals[action], minVal, maxVal)
         if action == 'north':
@@ -272,8 +271,7 @@ def square_actions(self):
             polygon( (center, nw, sw), wedge_color, filled = 1, smoothed = False)
             #text(w, text_color, valStr, "Courier", 8, "bold", "w")
 
-def square_actions_text(self):
-    actions = qVals.keys()
+def square_actions_text(self, actions):
     for action in actions:
         text_color = TEXT_COLOR
         if qVals[action] < max(qVals.values()): text_color = MUTED_TEXT_COLOR
@@ -306,9 +304,8 @@ def draw_square_q(x, y, qVals, minVal, maxVal, valStrs, bestActions, isCurrent):
     s = (screen_x, screen_y+0.5*GRID_SIZE-5)
     w = (screen_x-0.5*GRID_SIZE+5, screen_y)
     e = (screen_x+0.5*GRID_SIZE-5, screen_y)
-
-    square_actions()
-
+    actions = qVals.keys()
+    square_actions(actions)
     square( (screen_x, screen_y),
                    0.5* GRID_SIZE,
                    color = EDGE_COLOR,
@@ -319,8 +316,7 @@ def draw_square_q(x, y, qVals, minVal, maxVal, valStrs, bestActions, isCurrent):
 
     if isCurrent:
         circle( (screen_x, screen_y), 0.1*GRID_SIZE, LOCATION_COLOR, fillColor=LOCATION_COLOR )
-    
-    square_actions_text()
+    square_actions_text(actions)
     
 
 

@@ -41,6 +41,15 @@ class Layout:
     def getNumGhosts(self):
         return self.numGhosts
 
+    def matrix_directions(self):
+        if self.walls[x][y] == False:
+            for vec, direction in zip(vecs, dirs):
+                dx, dy = vec
+                nextx, nexty = x + dx, y + dy
+                while (nextx + nexty) != int(nextx) + int(nexty) or not self.walls[int(nextx)][int(nexty)] :
+                    vis[x][y][direction].add((nextx, nexty))
+                    nextx, nexty = x + dx, y + dy
+
     def initializeVisibilityMatrix(self):
         global VISIBILITY_MATRIX_CACHE
         if reduce(str.__add__, self.layoutText) not in VISIBILITY_MATRIX_CACHE:
@@ -49,13 +58,7 @@ class Layout:
             vis = Grid(self.width, self.height, {Directions.NORTH:set(), Directions.SOUTH:set(), Directions.EAST:set(), Directions.WEST:set(), Directions.STOP:set()})
             for x in range(self.width):
                 for y in range(self.height):
-                    if self.walls[x][y] == False:
-                        for vec, direction in zip(vecs, dirs):
-                            dx, dy = vec
-                            nextx, nexty = x + dx, y + dy
-                            while (nextx + nexty) != int(nextx) + int(nexty) or not self.walls[int(nextx)][int(nexty)] :
-                                vis[x][y][direction].add((nextx, nexty))
-                                nextx, nexty = x + dx, y + dy
+                   matrix_directions()
             self.visibility = vis
             VISIBILITY_MATRIX_CACHE[reduce(str.__add__, self.layoutText)] = vis
         else:
