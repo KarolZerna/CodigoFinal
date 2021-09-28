@@ -3,9 +3,9 @@ from pygame import draw
 
 class Simulator:
     
-    def __init__(self, imprimirAngulo, imprimirTiempo):
+    def __init__(self, imprimir_angulo, imprimirTiempo):
 
-        self.imprimirAngulo = imprimirAngulo        # Imprime angulo y velocidad angular en pantalla
+        self.imprimir_angulo = imprimir_angulo        # Imprime angulo y velocidad angular en pantalla
         self.imprimirTiempo = imprimirTiempo        # Imprime cantidad de tiempo que mantiene seguido en la region target
         self.targetValue = 0.5
         
@@ -174,7 +174,7 @@ class Simulator:
                     , 1, (0,0,0))
 
     def printing(self):
-        if self.imprimirAngulo:
+        if self.imprimir_angulo:
             self.screen.blit(textAngulo, (50, 30))
 
         if self.imprimirTiempo:

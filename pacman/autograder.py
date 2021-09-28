@@ -232,7 +232,6 @@ def files_tests(test_dict):
     test_dict = test_parser.TestParser(test_file).parse()
     if test_dict.get("disabled", "false").lower() == "true":
         test_dict['test_out_file'] = test_out_file
-        test_class = getattr(projecttestClasses, test_dict['class'])
 
  def makefun(test_case, solution_file):
     if generate_solutions:
