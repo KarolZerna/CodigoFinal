@@ -103,27 +103,26 @@ class ODESim:
         self.x_min = -2.0
         self.x_max = 2.0
 
-        self.acumuladorVueltasPorMovimiento = 1
-        self.vueltasPorMovimiento = 10
+        self.acumulador_vueltas_por_movimiento = 1
+        self.vueltas_por_movimiento = 10
         self.pos = 0
-        self.cartPole_velocidadAngular = 0.0
-        self.cartPole_angulo = 0.0
+        self.cart_pole_velocidad_angular = 0.0
+        self.cart_pole_angulo = 0.0
 
 
     def run(self, accion):
         movement_scale = 0.02
-        if(self.acumuladorVueltasPorMovimiento == self.vueltasPorMovimiento):
-            self.acumuladorVueltasPorMovimiento = 0
-            self.movimientoSeleccionado = accion
+        if(self.acumulador_vueltas_por_movimiento == self.vueltas_por_movimiento):
+            self.acumulador_vueltas_por_movimiento = 0
+            self.movimiento_seleccionado = accion
             self.changeSpeed(accion*movement_scale)
 
-        self.acumuladorVueltasPorMovimiento+=1
+        self.acumulador_vueltas_por_movimiento+=1
         self.simLoop()
         self.drawScreen()
 
             # Try to keep the specified framerate
         self.clk.tick(self.fps)
-        return
 
 
     # Utility functions
@@ -166,7 +165,7 @@ class ODESim:
         pygame.draw.circle(self.screen, self.SPHERE2_COLOR, self.coord(x2, y2, integer=True), sph2_rad, 0)
 
         font = pygame.font.SysFont("Courier New",18)
-        fonttext = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f}   Posicion: {2:.1f}".format(self.cartPole_velocidadAngular, self.cartPole_angulo, self.cart_pole_x) \
+        fonttext = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f}   Posicion: {2:.1f}".format(self.cart_pole_velocidad_angular, self.cart_pole_angulo, self.cart_pole_x) \
                     , 1, (0,0,0), (255,255,255))
 
         self.screen.blit(fonttext, (50,450))
@@ -190,7 +189,7 @@ class ODESim:
     def simLoop(self):
 
         if(abs(self.current_speed-self.target_speed)>self.EPS):
-            if(self.frame>=self.vueltasPorMovimiento):
+            if(self.frame>=self.vueltas_por_movimiento):
                 self.current_speed=self.target_speed
             else:
                 self.frame+=1
@@ -215,8 +214,8 @@ class ODESim:
 
         self.kbody.setLinearVel(vel)
 
-        self.cartPole_angulo = self.j2.getAngle()
-        self.cartPole_velocidadAngular=self.body2.getAngularVel()[2]
+        self.cart_pole_angulo = self.j2.getAngle()
+        self.cart_pole_velocidad_angular=self.body2.getAngularVel()[2]
 
         self.cart_pole_x=curr_pos
 
