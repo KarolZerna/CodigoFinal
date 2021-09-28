@@ -278,7 +278,7 @@ def evaluate(generate_solutions, test_root, module_dict, exception_map=ERROR_HIN
         # load test cases into question
         tests = filter(lambda t: re.match('[^#~.].*\.test\Z', t), os.listdir(subdir_path))
         tests = map(lambda t: re.match('(.*)\.test\Z', t).group(1), tests)
-        for t in sorted(tests):
+        for _ in sorted(tests):
             files_tests(test_dict)
             make_fun(test_case, solution_file)
             question.addtest_case(test_case, make_fun(test_case, solution_file))
