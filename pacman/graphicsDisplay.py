@@ -232,6 +232,38 @@ class PacmanGraphics:
         # Save last mode
         self.lastMode = mode
     
+
+    def options (self):
+        keys = []
+        keys = wait_for_keys()
+        if 'Return' in keys:
+            break
+        if 'Escape' in keys:
+            exit()
+
+    def movements(self):
+        keys = []
+        keys = wait_for_keys()
+        if 'Down' in keys:
+            self.hideStartMessage()
+            if posY == y:
+                posY = y - 100
+                self.selection = 1
+            else:
+                posY += 50
+                self.selection += 1
+            self.startMessage = text ((posX,posY), self.textColor, ">","arcadepix", self.fontSize, "bold")
+
+        if 'Up' in keys:
+            self.hideStartMessage()
+            if posY == y - 100:
+                posY = y
+                self.selection = 3
+            else: 
+                posY -= 50
+                self.selection -= 1
+            self.startMessage = text ((posX,posY), self.textColor, ">","arcadepix", self.fontSize, "bold")
+
     def showStartMessage(self):
         x = self.screen_width/2-self.gridSize-200
         y = self.screen_height/2-self.gridSize-20
@@ -257,39 +289,13 @@ class PacmanGraphics:
         keys = []
         wait_for_release()
         while True:
-            keys = wait_for_keys()
-            if 'Return' in keys:
-                break
-            if 'Escape' in keys:
-                exit()
-
-            if 'Down' in keys:
-                self.hideStartMessage()
-                if posY == y:
-                    posY = y - 100
-                    self.selection = 1
-                else:
-                    posY += 50
-                    self.selection += 1
-                self.startMessage = text ((posX,posY), self.textColor, ">","arcadepix", self.fontSize, "bold")
-
-            if 'Up' in keys:
-                self.hideStartMessage()
-                if posY == y - 100:
-                    posY = y
-                    self.selection = 3
-                else: 
-                    posY -= 50
-                    self.selection -= 1
-                self.startMessage = text ((posX,posY), self.textColor, ">","arcadepix", self.fontSize, "bold")
-
+            options()
+            movements()
             # Wait for release
             keys = keys_waiting() + keys_pressed()
             while len(keys) != 0:
                 keys = keys_waiting() + keys_pressed()
                 sleep(0.05)
-
-
         self.clearStartScreen()
 
 
