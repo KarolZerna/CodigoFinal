@@ -480,7 +480,7 @@ class PacmanGraphics:
         if agent_state.isPacman:
             self.animate_pacman(agent_state, prev_state, prev_image)
         else:
-            self.moveGhost(agent_state, agent_index, prev_state, prev_image)
+            self.move_ghost(agent_state, agent_index, prev_state, prev_image)
         self.agent_images[agent_index] = (agent_state, prev_image)
 
         if new_state._foodEaten != None:
@@ -508,9 +508,9 @@ class PacmanGraphics:
         #TODO: Esto depende de grid_size, no deberia. O habria que buscar algun comando para resize.
 
     def draw_pacman(self, pacman, index):
-        position = self.getPosition(pacman)
+        position = self.get_position(pacman)
         screen_point = self.to_screen(position)
-        endpoints = self.get_end_points(self.getDirection(pacman))
+        endpoints = self.get_end_points(self.get_direction(pacman))
 
         width = PACMAN_OUTLINE_WIDTH
         outline_color = PACMAN_COLOR
@@ -557,16 +557,16 @@ class PacmanGraphics:
                 self.frame_time = 0.1
         if self.frame_time > 0.01 or self.frame_time < 0:
             start = time.time()
-            fx, fy = self.getPosition(prev_pacman)
-            px, py = self.getPosition(pacman)
+            fx, fy = self.get_position(prev_pacman)
+            px, py = self.get_position(pacman)
             frames = 4.0
             for i in range(1,int(frames) + 1):
                 pos = px*i/frames + fx*(frames-i)/frames, py*i/frames + fy*(frames-i)/frames
-                self.move_pacman(pos, self.getDirection(pacman), image)
+                self.move_pacman(pos, self.get_direction(pacman), image)
                 refresh()
                 sleep(abs(self.frame_time) / frames)
         else:
-            self.move_pacman(self.getPosition(pacman), self.getDirection(pacman), image)
+            self.move_pacman(self.get_position(pacman), self.get_direction(pacman), image)
         refresh()
 
     def get_ghost_color(self, ghost, ghost_index):
@@ -576,8 +576,8 @@ class PacmanGraphics:
             return GHOST_COLORS[ghost_index]
 
     def draw_ghost(self, ghost, agent_index):
-        pos = self.getPosition(ghost)
-        direction = self.getDirection(ghost)
+        pos = self.get_position(ghost)
+        direction = self.get_direction(ghost)
         (screen_x, screen_y) = (self.to_screen(pos) )
         coords = []
         for (x, y) in GHOST_SHAPE:
@@ -628,13 +628,13 @@ class PacmanGraphics:
         moveCircle(eyes[2],(screen_x+self.grid_size*GHOST_SIZE*(-0.3+dx), screen_y-self.grid_size*GHOST_SIZE*(0.3-dy)), self.grid_size*GHOST_SIZE*0.08)
         moveCircle(eyes[3],(screen_x+self.grid_size*GHOST_SIZE*(0.3+dx), screen_y-self.grid_size*GHOST_SIZE*(0.3-dy)), self.grid_size*GHOST_SIZE*0.08)
 
-    def moveGhost(self, ghost, ghost_index, prev_ghost, ghost_image_parts):
-        old_x, old_y = self.to_screen(self.getPosition(prev_ghost))
-        new_x, new_y = self.to_screen(self.getPosition(ghost))
+    def move_ghost(self, ghost, ghost_index, prev_ghost, ghost_image_parts):
+        old_x, old_y = self.to_screen(self.get_position(prev_ghost))
+        new_x, new_y = self.to_screen(self.get_position(ghost))
         delta = new_x - old_x, new_y - old_y
 
-        for ghostImagePart in ghost_image_parts:
-            move_by(ghostImagePart, delta)
+        for ghost_image_part in ghost_image_parts:
+            move_by(ghost_image_part, delta)
         refresh()
 
         if ghost.scaredTimer > 0:
@@ -642,16 +642,16 @@ class PacmanGraphics:
         else:
             color = GHOST_COLORS[ghost_index]
         edit(ghost_image_parts[0], ('fill', color), ('outline', color))
-        self.move_eyes(self.getPosition(ghost), self.getDirection(ghost), ghost_image_parts[-4:])
+        self.move_eyes(self.get_position(ghost), self.get_direction(ghost), ghost_image_parts[-4:])
         refresh()
 
-    def getPosition(self, agent_state):
+    def get_position(self, agent_state):
         if agent_state.configuration == None: return (-1000, -1000)
-        return agent_state.getPosition()
+        return agent_state.get_position()
 
-    def getDirection(self, agent_state):
+    def get_direction(self, agent_state):
         if agent_state.configuration == None: return Directions.STOP
-        return agent_state.configuration.getDirection()
+        return agent_state.configuration.get_direction()
 
     def finish(self):
         end_graphics()
@@ -663,69 +663,69 @@ class PacmanGraphics:
         return ( x, y )
 
 
-    def ne_quadrant(self, nIsWall, eIsWall):
+    def ne_quadrant(self, n_is_wall, e_is_wall):
         # NE quadrant
-        if (not nIsWall) and (not eIsWall):
+        if (not n_is_wall) and (not e_is_wall):
             # inner circle
             boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (0,91), 'arc'))
-        if (nIsWall) and (not eIsWall):
+        if (n_is_wall) and (not e_is_wall):
             # vertical line
             boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5)-1)), wallColor))
-        if (not nIsWall) and (eIsWall):
+        if (not n_is_wall) and (e_is_wall):
             # horizontal line
             boardImages.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
-        if (nIsWall) and (eIsWall) and (not neIsWall):
+        if (n_is_wall) and (e_is_wall) and (not neIsWall):
             # outer circle
             boardImages.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (180,271), 'arc'))
             boardImages.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
             boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5))), wallColor))
     
-    def nw_quadrant(self, nIsWall, wIsWall):
+    def nw_quadrant(self, n_is_wall, w_is_wall):
         # NW quadrant
-        if (not nIsWall) and (not wIsWall):
+        if (not n_is_wall) and (not w_is_wall):
             # inner circle
             boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (90,181), 'arc'))
-        if (nIsWall) and (not wIsWall):
+        if (n_is_wall) and (not w_is_wall):
             # vertical line
             boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5)-1)), wallColor))
-        if (not nIsWall) and (wIsWall):
+        if (not n_is_wall) and (w_is_wall):
             # horizontal line
             boardImages.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
-        if (nIsWall) and (wIsWall) and (not nwIsWall):
+        if (n_is_wall) and (w_is_wall) and (not nwIsWall):
             # outer circle
             boardImages.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (270,361), 'arc'))
             boardImages.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(-1)*WALL_RADIUS)), wallColor))
             boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5))), wallColor))
     
-    def se_quadrant(self, sIsWall, eIsWall):
+    def se_quadrant(self, sIsWall, e_is_wall):
         # SE quadrant
-        if (not sIsWall) and (not eIsWall):
+        if (not sIsWall) and (not e_is_wall):
            # inner circle
             boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (270,361), 'arc'))
-        if (sIsWall) and (not eIsWall):
+        if (sIsWall) and (not e_is_wall):
             # vertical line
             boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5)+1)), wallColor))
-        if (not sIsWall) and (eIsWall):
+        if (not sIsWall) and (e_is_wall):
             # horizontal line
             boardImages.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(1)*WALL_RADIUS)), wallColor))
-        if (sIsWall) and (eIsWall) and (not seIsWall):
+        if (sIsWall) and (e_is_wall) and (not seIsWall):
             # outer circle
             boardImages.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (90,181), 'arc'))
             boardImages.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5, self.grid_size*(1)*WALL_RADIUS)), wallColor))
             boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5))), wallColor))
     
-    def sw_quadrant(self, sIsWall, wIsWall):
+    def sw_quadrant(self, sIsWall, w_is_wall):
         # SW quadrant
-        if (not sIsWall) and (not wIsWall):
+        if (not sIsWall) and (not w_is_wall):
         # inner circle
             boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (180,271), 'arc'))
-        if (sIsWall) and (not wIsWall):
+        if (sIsWall) and (not w_is_wall):
             # vertical line
             boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(0.5)+1)), wallColor))
-        if (not sIsWall) and (wIsWall):
+        if (not sIsWall) and (w_is_wall):
             # horizontal line
             boardImages.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(1)*WALL_RADIUS)), wallColor))
-        if (sIsWall) and (wIsWall) and (not swIsWall):
+        if (sIsWall) and (w_is_wall) and (not swIsWall):
             # outer circle
             boardImages.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (0,91), 'arc'))
             boardImages.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(1)*WALL_RADIUS)), wallColor))
@@ -745,19 +745,19 @@ class PacmanGraphics:
                     screen2 = self.to_screen(pos)
                     
                     # draw each quadrant of the square based on adjacent walls
-                    wIsWall = self.isWall(xNum-1, yNum, wallMatrix)
-                    eIsWall = self.isWall(xNum+1, yNum, wallMatrix)
-                    nIsWall = self.isWall(xNum, yNum+1, wallMatrix)
+                    w_is_wall = self.isWall(xNum-1, yNum, wallMatrix)
+                    e_is_wall = self.isWall(xNum+1, yNum, wallMatrix)
+                    n_is_wall = self.isWall(xNum, yNum+1, wallMatrix)
                     sIsWall = self.isWall(xNum, yNum-1, wallMatrix)
                     nwIsWall = self.isWall(xNum-1, yNum+1, wallMatrix)
                     swIsWall = self.isWall(xNum-1, yNum-1, wallMatrix)
                     neIsWall = self.isWall(xNum+1, yNum+1, wallMatrix)
                     seIsWall = self.isWall(xNum+1, yNum-1, wallMatrix)
 
-                    ne_quadrant(nIsWall, eIsWall)
-                    nw_quadrant(nIsWall, wIsWall)
-                    se_quadrant(sIsWall, eIsWall)
-                    sw_quadrant(sIsWall, wIsWall)
+                    ne_quadrant(n_is_wall, e_is_wall)
+                    nw_quadrant(n_is_wall, w_is_wall)
+                    se_quadrant(sIsWall, e_is_wall)
+                    sw_quadrant(sIsWall, w_is_wall)
 
             return boardImages
 
@@ -879,7 +879,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
         self.previous_state = state
 
     def lookAhead(self, config, state):
-        if config.getDirection() == 'Stop':
+        if config.get_direction() == 'Stop':
             return
         else:
             pass
@@ -895,11 +895,11 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
     def get_ghost_color(self, ghost, ghost_index):
         return GHOST_COLORS[ghost_index]
 
-    def getPosition(self, ghostState):
-        if not self.showGhosts and not ghostState.isPacman and ghostState.getPosition()[1] > 1:
+    def get_position(self, ghostState):
+        if not self.showGhosts and not ghostState.isPacman and ghostState.get_position()[1] > 1:
             return (-1000, -1000)
         else:
-            return PacmanGraphics.getPosition(self, ghostState)
+            return PacmanGraphics.get_position(self, ghostState)
 
 def add(x, y):
     return (x[0] + y[0], x[1] + y[1])
