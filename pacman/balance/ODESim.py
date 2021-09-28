@@ -115,11 +115,11 @@ class ODESim:
         if(self.acumulador_vueltas_por_movimiento == self.vueltas_por_movimiento):
             self.acumulador_vueltas_por_movimiento = 0
             self.movimiento_seleccionado = accion
-            self.changeSpeed(accion*movement_scale)
+            self.change_speed(accion*movement_scale)
 
         self.acumulador_vueltas_por_movimiento+=1
-        self.simLoop()
-        self.drawScreen()
+        self.sim_loop()
+        self.draw_screen()
 
             # Try to keep the specified framerate
         self.clk.tick(self.fps)
@@ -141,7 +141,7 @@ class ODESim:
 
 
 
-    def changeSpeed(self, new_speed):
+    def change_speed(self, new_speed):
 
         self.original_speed = self.current_speed
         self.target_speed = new_speed
@@ -149,7 +149,7 @@ class ODESim:
 
 
 
-    def drawScreen(self):
+    def draw_screen(self):
         # Clear the screen
         self.screen.fill(self.BACKGROUND_COLOR)
         # Draw the two bodies and the lines representing the joints
@@ -170,7 +170,6 @@ class ODESim:
 
         self.screen.blit(fonttext, (50,450))
         pygame.display.flip()
-        return
 
 
     def scale(self,tup,coef):
@@ -186,7 +185,7 @@ class ODESim:
             l.append(tup1[i]-tup2[i])
         return tuple(l)
 
-    def simLoop(self):
+    def sim_loop(self):
 
         if(abs(self.current_speed-self.target_speed)>self.EPS):
             if(self.frame>=self.vueltas_por_movimiento):
@@ -222,7 +221,7 @@ class ODESim:
         # Next simulation step
         self.world.step(self.TIME_STEP)
 
-    def Finalizar(self):
+    def finalizar(self):
         pygame.quit()
 
 
