@@ -404,7 +404,7 @@ class PacmanGraphics:
 
     def draw_static_objects(self, state):
         layout = self.layout
-        self.walls_images = self.drawWalls(layout.walls)
+        self.walls_images = self.draw_walls(layout.walls)
         self.food = self.drawFood(layout.food)
         self.capsules = self.drawCapsules(layout.capsules)
         refresh()
@@ -667,99 +667,99 @@ class PacmanGraphics:
         # NE quadrant
         if (not n_is_wall) and (not e_is_wall):
             # inner circle
-            boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (0,91), 'arc'))
+            board_images.append(circle(screen2, WALL_RADIUS * self.grid_size, wall_color, wall_color, (0,91), 'arc'))
         if (n_is_wall) and (not e_is_wall):
             # vertical line
-            boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5)-1)), wallColor))
+            board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5)-1)), wall_color))
         if (not n_is_wall) and (e_is_wall):
             # horizontal line
-            boardImages.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
+            board_images.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
         if (n_is_wall) and (e_is_wall) and (not neIsWall):
             # outer circle
-            boardImages.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (180,271), 'arc'))
-            boardImages.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
-            boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5))), wallColor))
+            board_images.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (180,271), 'arc'))
+            board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
+            board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5))), wall_color))
     
     def nw_quadrant(self, n_is_wall, w_is_wall):
         # NW quadrant
         if (not n_is_wall) and (not w_is_wall):
             # inner circle
-            boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (90,181), 'arc'))
+            board_images.append(circle(screen2, WALL_RADIUS * self.grid_size, wall_color, wall_color, (90,181), 'arc'))
         if (n_is_wall) and (not w_is_wall):
             # vertical line
-            boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5)-1)), wallColor))
+            board_images.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5)-1)), wall_color))
         if (not n_is_wall) and (w_is_wall):
             # horizontal line
-            boardImages.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(-1)*WALL_RADIUS)), wallColor))
+            board_images.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
         if (n_is_wall) and (w_is_wall) and (not nwIsWall):
             # outer circle
-            boardImages.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (270,361), 'arc'))
-            boardImages.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(-1)*WALL_RADIUS)), wallColor))
-            boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5))), wallColor))
+            board_images.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (270,361), 'arc'))
+            board_images.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(-1)*WALL_RADIUS)), wall_color))
+            board_images.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5))), wall_color))
     
-    def se_quadrant(self, sIsWall, e_is_wall):
+    def se_quadrant(self, s_is_wall, e_is_wall):
         # SE quadrant
-        if (not sIsWall) and (not e_is_wall):
+        if (not s_is_wall) and (not e_is_wall):
            # inner circle
-            boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (270,361), 'arc'))
-        if (sIsWall) and (not e_is_wall):
+            board_images.append(circle(screen2, WALL_RADIUS * self.grid_size, wall_color, wall_color, (270,361), 'arc'))
+        if (s_is_wall) and (not e_is_wall):
             # vertical line
-            boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5)+1)), wallColor))
-        if (not sIsWall) and (e_is_wall):
+            board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, 0)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5)+1)), wall_color))
+        if (not s_is_wall) and (e_is_wall):
             # horizontal line
-            boardImages.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(1)*WALL_RADIUS)), wallColor))
-        if (sIsWall) and (e_is_wall) and (not seIsWall):
+            board_images.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(1)*WALL_RADIUS)), wall_color))
+        if (s_is_wall) and (e_is_wall) and (not seIsWall):
             # outer circle
-            boardImages.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (90,181), 'arc'))
-            boardImages.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5, self.grid_size*(1)*WALL_RADIUS)), wallColor))
-            boardImages.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5))), wallColor))
+            board_images.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (90,181), 'arc'))
+            board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5, self.grid_size*(1)*WALL_RADIUS)), wall_color))
+            board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5))), wall_color))
     
-    def sw_quadrant(self, sIsWall, w_is_wall):
+    def sw_quadrant(self, s_is_wall, w_is_wall):
         # SW quadrant
-        if (not sIsWall) and (not w_is_wall):
+        if (not s_is_wall) and (not w_is_wall):
         # inner circle
-            boardImages.append(circle(screen2, WALL_RADIUS * self.grid_size, wallColor, wallColor, (180,271), 'arc'))
-        if (sIsWall) and (not w_is_wall):
+            board_images.append(circle(screen2, WALL_RADIUS * self.grid_size, wall_color, wall_color, (180,271), 'arc'))
+        if (s_is_wall) and (not w_is_wall):
             # vertical line
-            boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(0.5)+1)), wallColor))
-        if (not sIsWall) and (w_is_wall):
+            board_images.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, 0)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(0.5)+1)), wall_color))
+        if (not s_is_wall) and (w_is_wall):
             # horizontal line
-            boardImages.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(1)*WALL_RADIUS)), wallColor))
-        if (sIsWall) and (w_is_wall) and (not swIsWall):
+            board_images.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(1)*WALL_RADIUS)), wall_color))
+        if (s_is_wall) and (w_is_wall) and (not swIsWall):
             # outer circle
-            boardImages.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wallColor, wallColor, (0,91), 'arc'))
-            boardImages.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(1)*WALL_RADIUS)), wallColor))
-            boardImages.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(0.5))), wallColor))
+            board_images.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (0,91), 'arc'))
+            board_images.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(1)*WALL_RADIUS)), wall_color))
+            board_images.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(0.5))), wall_color))
 
-    def drawWalls(self, wallMatrix):
-        boardImages = []
-        wallColor = WALL_COLOR
-        for xNum, x in enumerate(wallMatrix):
-            if self.capture and (xNum * 2) < wallMatrix.width: wallColor = TEAM_COLORS[0]
-            if self.capture and (xNum * 2) >= wallMatrix.width: wallColor = TEAM_COLORS[1]
+    def draw_walls(self, wall_matrix):
+        board_images = []
+        wall_color = WALL_COLOR
+        for x_num, x in enumerate(wall_matrix):
+            if self.capture and (x_num * 2) < wall_matrix.width: wall_color = TEAM_COLORS[0]
+            if self.capture and (x_num * 2) >= wall_matrix.width: wall_color = TEAM_COLORS[1]
 
-            for yNum, cell in enumerate(x):
+            for y_num, cell in enumerate(x):
                 if cell: # There's a wall here
-                    pos = (xNum, yNum)
+                    pos = (x_num, y_num)
                     screen = self.to_screen(pos)
                     screen2 = self.to_screen(pos)
                     
                     # draw each quadrant of the square based on adjacent walls
-                    w_is_wall = self.isWall(xNum-1, yNum, wallMatrix)
-                    e_is_wall = self.isWall(xNum+1, yNum, wallMatrix)
-                    n_is_wall = self.isWall(xNum, yNum+1, wallMatrix)
-                    sIsWall = self.isWall(xNum, yNum-1, wallMatrix)
-                    nwIsWall = self.isWall(xNum-1, yNum+1, wallMatrix)
-                    swIsWall = self.isWall(xNum-1, yNum-1, wallMatrix)
-                    neIsWall = self.isWall(xNum+1, yNum+1, wallMatrix)
-                    seIsWall = self.isWall(xNum+1, yNum-1, wallMatrix)
+                    w_is_wall = self.isWall(x_num-1, y_num, wall_matrix)
+                    e_is_wall = self.isWall(x_num+1, y_num, wall_matrix)
+                    n_is_wall = self.isWall(x_num, y_num+1, wall_matrix)
+                    s_is_wall = self.isWall(x_num, y_num-1, wall_matrix)
+                    nwIsWall = self.isWall(x_num-1, y_num+1, wall_matrix)
+                    swIsWall = self.isWall(x_num-1, y_num-1, wall_matrix)
+                    neIsWall = self.isWall(x_num+1, y_num+1, wall_matrix)
+                    seIsWall = self.isWall(x_num+1, y_num-1, wall_matrix)
 
                     ne_quadrant(n_is_wall, e_is_wall)
                     nw_quadrant(n_is_wall, w_is_wall)
-                    se_quadrant(sIsWall, e_is_wall)
-                    sw_quadrant(sIsWall, w_is_wall)
+                    se_quadrant(s_is_wall, e_is_wall)
+                    sw_quadrant(s_is_wall, w_is_wall)
 
-            return boardImages
+            return board_images
 
     def isWall(self, x, y, walls):
         if x < 0 or y < 0:
@@ -771,14 +771,14 @@ class PacmanGraphics:
     def drawFood(self, foodMatrix ):
         foodImages = []
         color = FOOD_COLOR
-        for xNum, x in enumerate(foodMatrix):
-            if self.capture and (xNum * 2) <= foodMatrix.width: color = TEAM_COLORS[0]
-            if self.capture and (xNum * 2) > foodMatrix.width: color = TEAM_COLORS[1]
+        for x_num, x in enumerate(foodMatrix):
+            if self.capture and (x_num * 2) <= foodMatrix.width: color = TEAM_COLORS[0]
+            if self.capture and (x_num * 2) > foodMatrix.width: color = TEAM_COLORS[1]
             imageRow = []
             foodImages.append(imageRow)
-            for yNum, cell in enumerate(x):
+            for y_num, cell in enumerate(x):
                 if cell: # There's food here
-                    screen = self.to_screen((xNum, yNum ))
+                    screen = self.to_screen((x_num, y_num ))
                     dot = circle( screen,
                                   FOOD_SIZE * self.grid_size,
                                   outline_color = color, fill_color = color,
