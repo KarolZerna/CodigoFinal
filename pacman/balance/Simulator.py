@@ -169,7 +169,7 @@ class Simulator:
         draw.circle(self.screen, self.color_pelota, self.top_position, 10)
 
         # Texto
-        font = pygame.font.SysFont("Arial", 18, bold = True)
+        
 
     def printing(self):
         if self.imprimir_angulo:
@@ -199,12 +199,12 @@ class Simulator:
             if (tiempo_transcurrido > self.en_objetivo_tiempo_maximo):
                 self.en_objetivo_tiempo_maximo = tiempo_transcurrido
                 
-            textTiempo = font.render("Tiempo Arriba: {0:.2f}".format(self.en_objetivo_ultimo_tiempo), 1, (0, 0, 0))
-            textTiempoMaximo = font.render("Maximo: {0:.2f} segundos".format(self.en_objetivo_tiempo_maximo), 1, (0, 0, 0))
+            text_tiempo = font.render("Tiempo Arriba: {0:.2f}".format(self.en_objetivo_ultimo_tiempo), 1, (0, 0, 0))
+            text_tiempo_maximo = font.render("Maximo: {0:.2f} segundos".format(self.en_objetivo_tiempo_maximo), 1, (0, 0, 0))
 
-            self.screen.blit(textTiempo, (750, 30))
+            self.screen.blit(text_tiempo, (750, 30))
             #self.screen.blit(textUltimoTiempo, (750, 50))
-            self.screen.blit(textTiempoMaximo, (750, 50))    
+            self.screen.blit(text_tiempo_maximo, (750, 50))    
 
     def run(self, accion):
 
@@ -229,11 +229,9 @@ class Simulator:
         pygame.display.flip()
 
 
-    def Finalizar(self):
+    def finalizar(self):
         pygame.quit()
 
 
-    def GetKeyPressed(self):
+    def get_key_pressed(self):
         return pygame.key.get_pressed()
-        
-        
