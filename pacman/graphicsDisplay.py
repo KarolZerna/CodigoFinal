@@ -232,16 +232,39 @@ class PacmanGraphics:
         # Save last mode
         self.lastMode = mode
     
+    def positions(self, posY, posX):
+        x = self.screen_width/2-self.gridSize-200
+        y = self.screen_height/2-self.gridSize-20
+
+        self.startMessage6 = text ((x,y-120), self.textColor, "PACMAN","arcadepix", self.fontSize*3, "bold")
+
+        self.startMessage5 = text ((x+120,y-30), self.textColor, "Inteligente","arcadepix", self.fontSize, "bold")
+        x += 370
+        self.startMessage7 = text ((x-260,y+30), self.textColor, "ᗧ  ", "arcadepix", self.fontSize, "bold")
+        self.startMessage8 = text ((x-250,y+30), SCARED_COLOR, " •••    •• ", "arcadepix", self.fontSize, "bold")
+        self.startMessage9 = text ((x-240,y+30), formatColor(0,.3,.9), "    ᗣ ", "arcadepix", self.fontSize, "bold")
+
+        x -= 270
+        y += 100
+        self.startMessage2 = text ((x+40,y), self.textColor, "Historia","arcadepix", self.fontSize, "bold")
+        y += 50
+        self.startMessage3 = text ((x+43,y), self.textColor, "Infinito","arcadepix", self.fontSize, "bold")
+        y += 50
+        self.startMessage4 = text ((x+68,y), self.textColor, "Demo","arcadepix", self.fontSize, "bold")
+        posX = x - 20
+        self.startMessage = text ((posX, y-100), self.textColor, ">","arcadepix", self.fontSize, "bold")
+        posY = y - 100
+
 
     def options (self):
         keys = []
         keys = wait_for_keys()
         if 'Return' in keys:
-            break
+            yield
         if 'Escape' in keys:
             exit()
 
-    def movements(self):
+    def movements(self, posY, posX):
         keys = []
         keys = wait_for_keys()
         if 'Down' in keys:
@@ -265,32 +288,12 @@ class PacmanGraphics:
             self.startMessage = text ((posX,posY), self.textColor, ">","arcadepix", self.fontSize, "bold")
 
     def showStartMessage(self):
-        x = self.screen_width/2-self.gridSize-200
-        y = self.screen_height/2-self.gridSize-20
-
-        self.startMessage6 = text ((x,y-120), self.textColor, "PACMAN","arcadepix", self.fontSize*3, "bold")
-
-        self.startMessage5 = text ((x+120,y-30), self.textColor, "Inteligente","arcadepix", self.fontSize, "bold")
-        x += 370
-        self.startMessage7 = text ((x-260,y+30), self.textColor, "ᗧ  ", "arcadepix", self.fontSize, "bold")
-        self.startMessage8 = text ((x-250,y+30), SCARED_COLOR, " •••    •• ", "arcadepix", self.fontSize, "bold")
-        self.startMessage9 = text ((x-240,y+30), formatColor(0,.3,.9), "    ᗣ ", "arcadepix", self.fontSize, "bold")
-
-        x -= 270
-        y += 100
-        self.startMessage2 = text ((x+40,y), self.textColor, "Historia","arcadepix", self.fontSize, "bold")
-        y += 50
-        self.startMessage3 = text ((x+43,y), self.textColor, "Infinito","arcadepix", self.fontSize, "bold")
-        y += 50
-        self.startMessage4 = text ((x+68,y), self.textColor, "Demo","arcadepix", self.fontSize, "bold")
-        posX = x - 20
-        self.startMessage = text ((posX, y-100), self.textColor, ">","arcadepix", self.fontSize, "bold")
-        posY = y - 100
+        positions(posY, posX)
         keys = []
         wait_for_release()
         while True:
             options()
-            movements()
+            movements(posY, posX)
             # Wait for release
             keys = keys_waiting() + keys_pressed()
             while len(keys) != 0:
