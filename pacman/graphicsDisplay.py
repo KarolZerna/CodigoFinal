@@ -168,27 +168,27 @@ class PacmanGraphics:
         self.grid_size = DEFAULT_GRID_SIZE * zoom
         self.capture = capture
         self.frame_time = frame_time
-        self.distributionImages = None
+        self.distribution_images = None
         
-        self.isWindowOpen = False
-        self.lastMode = None
+        self.is_window_open = False
+        self.last_mode = None
         self.font_size = 24
         self.text_color = PACMAN_COLOR
-        self.resultMessage = None
-        self.showTrainingScreen = False
-        self.trainingMessage = None
-        self.trainingScreenCount = 0
-        self.startMessage = None
-        self.startMessage1 = None
-        self.startMessage2 = None
-        self.startMessage3 = None
-        self.startMessage4 = None
-        self.startMessage5 = None
-        self.startMessage7 = None
+        self.result_message = None
+        self.show_training_screen = False
+        self.training_message = None
+        self.training_screen_count = 0
+        self.start_message = None
+        self.start_message1 = None
+        self.start_message2 = None
+        self.start_message3 = None
+        self.start_message4 = None
+        self.start_message5 = None
+        self.start_message7 = None
 
         self.selection = 1
 
-    def checkNullDisplay(self):
+    def check_null_display(self):
         return False
     
     # TODO: Investigar la pantalla completa :
@@ -197,17 +197,17 @@ class PacmanGraphics:
 
         self.selection = 1
         
-        print (self.lastMode, mode)
-        if self.lastMode == "pacman":   # Clear pacman screen
+        print (self.last_mode, mode)
+        if self.last_mode == "pacman":   # Clear pacman screen
             # not mode == "pacman"
             self.removeStaticObjects(True)
             self.removeAgents()
             del self.infoPane
         
-        if self.lastMode == "training" and mode != "training": # Clear training screen
+        if self.last_mode == "training" and mode != "training": # Clear training screen
             self.hideTrainingMessage()
                 
-        if self.lastMode == "start":    # Clear start screen
+        if self.last_mode == "start":    # Clear start screen
             self.hideStartMessage()
         
         #graphicsUtils.resetBindings()
@@ -219,41 +219,41 @@ class PacmanGraphics:
             self.drawAgentObjects(state)
 
             # Information
-            self.previousState = state
+            self.previous_state = state
             
         if mode == "training":          # Initialize training screen
-            if self.lastMode == "training":
-                self.trainingScreenCount += 1
+            if self.last_mode == "training":
+                self.training_screen_count += 1
             self.showTrainingMessage()
             
         if mode == "start":          # Initialize starting screen
             self.showStartMessage()
         
         # Save last mode
-        self.lastMode = mode
+        self.last_mode = mode
     
-    def positions(self, posY, posX):
+    def positions(self, pos_y, pos_x):
         x = self.screen_width/2-self.grid_size-200
         y = self.screen_height/2-self.grid_size-20
 
-        self.startMessage6 = text ((x,y-120), self.text_color, "PACMAN","arcadepix", self.font_size*3, "bold")
+        self.start_message6 = text ((x,y-120), self.text_color, "PACMAN","arcadepix", self.font_size*3, "bold")
 
-        self.startMessage5 = text ((x+120,y-30), self.text_color, "Inteligente","arcadepix", self.font_size, "bold")
+        self.start_message5 = text ((x+120,y-30), self.text_color, "Inteligente","arcadepix", self.font_size, "bold")
         x += 370
-        self.startMessage7 = text ((x-260,y+30), self.text_color, "ᗧ  ", "arcadepix", self.font_size, "bold")
-        self.startMessage8 = text ((x-250,y+30), SCARED_COLOR, " •••    •• ", "arcadepix", self.font_size, "bold")
-        self.startMessage9 = text ((x-240,y+30), formatColor(0,.3,.9), "    ᗣ ", "arcadepix", self.font_size, "bold")
+        self.start_message7 = text ((x-260,y+30), self.text_color, "ᗧ  ", "arcadepix", self.font_size, "bold")
+        self.start_message8 = text ((x-250,y+30), SCARED_COLOR, " •••    •• ", "arcadepix", self.font_size, "bold")
+        self.start_message9 = text ((x-240,y+30), formatColor(0,.3,.9), "    ᗣ ", "arcadepix", self.font_size, "bold")
 
         x -= 270
         y += 100
-        self.startMessage2 = text ((x+40,y), self.text_color, "Historia","arcadepix", self.font_size, "bold")
+        self.start_message2 = text ((x+40,y), self.text_color, "Historia","arcadepix", self.font_size, "bold")
         y += 50
-        self.startMessage3 = text ((x+43,y), self.text_color, "Infinito","arcadepix", self.font_size, "bold")
+        self.start_message3 = text ((x+43,y), self.text_color, "Infinito","arcadepix", self.font_size, "bold")
         y += 50
-        self.startMessage4 = text ((x+68,y), self.text_color, "Demo","arcadepix", self.font_size, "bold")
-        posX = x - 20
-        self.startMessage = text ((posX, y-100), self.text_color, ">","arcadepix", self.font_size, "bold")
-        posY = y - 100
+        self.start_message4 = text ((x+68,y), self.text_color, "Demo","arcadepix", self.font_size, "bold")
+        pos_x = x - 20
+        self.start_message = text ((pos_x, y-100), self.text_color, ">","arcadepix", self.font_size, "bold")
+        pos_y = y - 100
 
 
     def options (self):
@@ -264,36 +264,36 @@ class PacmanGraphics:
         if 'Escape' in keys:
             exit()
 
-    def movements(self, posY, posX):
+    def movements(self, pos_y, pos_x):
         keys = []
         keys = wait_for_keys()
         if 'Down' in keys:
             self.hideStartMessage()
-            if posY == y:
-                posY = y - 100
+            if pos_y == y:
+                pos_y = y - 100
                 self.selection = 1
             else:
-                posY += 50
+                pos_y += 50
                 self.selection += 1
-            self.startMessage = text ((posX,posY), self.text_color, ">","arcadepix", self.font_size, "bold")
+            self.start_message = text ((pos_x,pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
 
         if 'Up' in keys:
             self.hideStartMessage()
-            if posY == y - 100:
-                posY = y
+            if pos_y == y - 100:
+                pos_y = y
                 self.selection = 3
             else: 
-                posY -= 50
+                pos_y -= 50
                 self.selection -= 1
-            self.startMessage = text ((posX,posY), self.text_color, ">","arcadepix", self.font_size, "bold")
+            self.start_message = text ((pos_x,pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
 
     def showStartMessage(self):
-        positions(posY, posX)
+        positions(pos_y, pos_x)
         keys = []
         wait_for_release()
         while True:
             options()
-            movements(posY, posX)
+            movements(pos_y, pos_x)
             # Wait for release
             keys = keys_waiting() + keys_pressed()
             while len(keys) != 0:
@@ -304,45 +304,45 @@ class PacmanGraphics:
 
     def clearStartScreen(self):
 
-        remove_from_screen(self.startMessage)
-        remove_from_screen(self.startMessage1)
-        remove_from_screen(self.startMessage2)
-        remove_from_screen(self.startMessage3)
-        remove_from_screen(self.startMessage4)
-        remove_from_screen(self.startMessage5)
-        remove_from_screen(self.startMessage6)
-        remove_from_screen(self.startMessage7)
-        remove_from_screen(self.startMessage8)
-        remove_from_screen(self.startMessage9)
+        remove_from_screen(self.start_message)
+        remove_from_screen(self.start_message1)
+        remove_from_screen(self.start_message2)
+        remove_from_screen(self.start_message3)
+        remove_from_screen(self.start_message4)
+        remove_from_screen(self.start_message5)
+        remove_from_screen(self.start_message6)
+        remove_from_screen(self.start_message7)
+        remove_from_screen(self.start_message8)
+        remove_from_screen(self.start_message9)
 
     def hideStartMessage(self):
-        if self.startMessage is not None:
-            remove_from_screen(self.startMessage)
-            self.startMessage = None
+        if self.start_message is not None:
+            remove_from_screen(self.start_message)
+            self.start_message = None
     
     def showTrainingMessage(self):
         x = self.screen_width/2-self.grid_size-60
         y = self.screen_height/2-self.grid_size-5
         
-        if self.trainingMessage is None:
-            self.trainingMessage = text( (x,y), self.text_color, "TRAINING", "arcadepix", self.font_size, "bold")
-            self.trainingScreenCount = 0
+        if self.training_message is None:
+            self.training_message = text( (x,y), self.text_color, "TRAINING", "arcadepix", self.font_size, "bold")
+            self.training_screen_count = 0
         
-        if self.trainingScreenCount % 4 == 0:
-            changeText(self.trainingMessage, "TRAINING")
-        if self.trainingScreenCount % 4 == 1:
-            changeText(self.trainingMessage, "TRAINING.")
-        if self.trainingScreenCount % 4 == 2:
-            changeText(self.trainingMessage, "TRAINING..")
-        if self.trainingScreenCount % 4 == 3:
-            changeText(self.trainingMessage, "TRAINING...")
+        if self.training_screen_count % 4 == 0:
+            changeText(self.training_message, "TRAINING")
+        if self.training_screen_count % 4 == 1:
+            changeText(self.training_message, "TRAINING.")
+        if self.training_screen_count % 4 == 2:
+            changeText(self.training_message, "TRAINING..")
+        if self.training_screen_count % 4 == 3:
+            changeText(self.training_message, "TRAINING...")
             
         refresh()
             
     def hideTrainingMessage(self):
-        if self.trainingMessage is not None:
-            remove_from_screen(self.trainingMessage)
-            self.trainingMessage = None
+        if self.training_message is not None:
+            remove_from_screen(self.training_message)
+            self.training_message = None
         refresh()
     
     def showResultMessage(self, isWin):
@@ -351,15 +351,15 @@ class PacmanGraphics:
         # TODO: Fondo atras del mensaje
         #self.resultMessageBackground = 
         if isWin:
-            self.resultMessage = text( (x,y), self.text_color, "WIN", "arcadepix", self.font_size, "bold")
+            self.result_message = text( (x,y), self.text_color, "WIN", "arcadepix", self.font_size, "bold")
         else:
-            self.resultMessage = text( (x-20,y), self.text_color, "LOSS", "arcadepix", self.font_size, "bold")
+            self.result_message = text( (x-20,y), self.text_color, "LOSS", "arcadepix", self.font_size, "bold")
         refresh()
     
     def hideResultMessage(self):
-        if self.resultMessage is not None:
-            remove_from_screen(self.resultMessage)
-            self.resultMessage = None
+        if self.result_message is not None:
+            remove_from_screen(self.result_message)
+            self.result_message = None
         refresh()
         
     def to_screen(self, pos, y = None):
@@ -382,7 +382,7 @@ class PacmanGraphics:
         layout = self.layout
         self.width = layout.width
         self.height = layout.height
-        if not self.isWindowOpen:
+        if not self.is_window_open:
             self.make_window(self.width, self.height)
         self.infoPane = InfoPane(layout, self.grid_size)
         self.currentState = layout
@@ -400,7 +400,7 @@ class PacmanGraphics:
                                 color = BACKGROUND_COLOR,
                                 filled = 1, behind=2)
                 distx.append(block)
-        self.distributionImages = dist
+        self.distribution_images = dist
 
     def drawStaticObjects(self, state):
         layout = self.layout
@@ -453,7 +453,7 @@ class PacmanGraphics:
         
         self.drawStaticObjects(state)
         
-        self.previousState = state
+        self.previous_state = state
         
         refresh()
 
@@ -496,7 +496,7 @@ class PacmanGraphics:
         self.make_window(width, height)
         
     def make_window(self, width, height):
-        if not self.isWindowOpen:
+        if not self.is_window_open:
             grid_width = (width-1) * self.grid_size
             grid_height = (height-1) * self.grid_size
             self.screen_width = 2*self.grid_size + grid_width
@@ -507,7 +507,7 @@ class PacmanGraphics:
                         BACKGROUND_COLOR,
                         "CS188 Pacman")
             
-            self.isWindowOpen = True
+            self.is_window_open = True
         #TODO: Esto depende de grid_size, no deberia. O habria que buscar algun comando para resize.
 
     def draw_pacman(self, pacman, index):
@@ -840,11 +840,11 @@ class PacmanGraphics:
         "Draws an agent's belief distributions"
         # copy all distributions so we don't change their state
         distributions = map(lambda x: x.copy(), distributions)
-        if self.distributionImages == None:
-            self.drawDistributions(self.previousState)
-        for x in range(len(self.distributionImages)):
-            for y in range(len(self.distributionImages[0])):
-                image = self.distributionImages[x][y]
+        if self.distribution_images == None:
+            self.drawDistributions(self.previous_state)
+        for x in range(len(self.distribution_images)):
+            for y in range(len(self.distribution_images[0])):
+                image = self.distribution_images[x][y]
                 weights = [dist[ (x,y) ] for dist in distributions]
 
                 if sum(weights) != 0:
@@ -874,12 +874,12 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
         self.layout = state.layout
 
         # Draw the rest
-        self.distributionImages = None  # initialize lazily
+        self.distribution_images = None  # initialize lazily
         self.drawStaticObjects(state)
         self.drawAgentObjects(state)
 
         # Information
-        self.previousState = state
+        self.previous_state = state
 
     def lookAhead(self, config, state):
         if config.getDirection() == 'Stop':
