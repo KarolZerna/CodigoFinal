@@ -493,9 +493,6 @@ class PacmanGraphics:
         #save_frame()
     
     def make_window(self, width, height):
-        self.make_window(width, height)
-        
-    def make_window(self, width, height):
         if not self.is_window_open:
             grid_width = (width-1) * self.grid_size
             grid_height = (height-1) * self.grid_size
@@ -631,8 +628,8 @@ class PacmanGraphics:
         moveCircle(eyes[2],(screen_x+self.grid_size*GHOST_SIZE*(-0.3+dx), screen_y-self.grid_size*GHOST_SIZE*(0.3-dy)), self.grid_size*GHOST_SIZE*0.08)
         moveCircle(eyes[3],(screen_x+self.grid_size*GHOST_SIZE*(0.3+dx), screen_y-self.grid_size*GHOST_SIZE*(0.3-dy)), self.grid_size*GHOST_SIZE*0.08)
 
-    def moveGhost(self, ghost, ghost_index, prevGhost, ghost_image_parts):
-        old_x, old_y = self.to_screen(self.getPosition(prevGhost))
+    def moveGhost(self, ghost, ghost_index, prev_ghost, ghost_image_parts):
+        old_x, old_y = self.to_screen(self.getPosition(prev_ghost))
         new_x, new_y = self.to_screen(self.getPosition(ghost))
         delta = new_x - old_x, new_y - old_y
 
