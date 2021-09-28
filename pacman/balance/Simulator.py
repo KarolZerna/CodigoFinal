@@ -43,15 +43,15 @@ class Simulator:
         self.en_objetivo_tiempo_maximo = 0
         self.en_objetivo_ultimo_tiempo = 0
         self.color_carro = (150, 0, 0)
-        self.colorPendulo = (0, 100, 0)
-        self.colorPelota = (92, 51, 23)
+        self.color_pendulo = (0, 100, 0)
+        self.color_pelota = (92, 51, 23)
 
         
-        self.xMin = 0
-        self.xMax = 1
+        self.x_min = 0
+        self.x_max = 1
 
         
-        self.fastMotion = False
+        self.fast_motion = False
 
 
     
@@ -60,7 +60,7 @@ class Simulator:
 
 
         self.background = pygame.image.load("imgs/bg2.jpg")
-        self.backgroundRect = self.background.get_rect()
+        self.background_rect = self.background.get_rect()
 
         self.x_size, self.y_size = 1000, 480
         self.screen = pygame.display.set_mode((self.x_size, self.y_size))
@@ -72,7 +72,7 @@ class Simulator:
 
         
     
-    def calcPhysics(self):
+    def calc_physics(self):
         
         force = (self.movimiento_seleccionado*250) * (1 + random.random()/10 - 0.05)
 
@@ -92,22 +92,22 @@ class Simulator:
                  self.cart_pole_velocidad_angular * sintheta)
                              / self.TOTAL_MASS)
 
-        gravedadModificada = self.GRAVITY
+        gravedad_modificada = self.GRAVITY
 
         # Intento de rozamiento
         if self.cart_pole_angulo > 0:
             if self.cart_pole_velocidad_angular > 0:
-                gravedadModificada = gravedadModificada * 0.8
+                gravedad_modificada = gravedad_modificada * 0.8
             else:
-                gravedadModificada = gravedadModificada * 1.2
+                gravedad_modificada = gravedad_modificada * 1.2
         else:
             if self.cart_pole_velocidad_angular > 0:
-                gravedadModificada = gravedadModificada * 1.2
+                gravedad_modificada = gravedad_modificada * 1.2
             else:
-                gravedadModificada = gravedadModificada * 0.8
+                gravedad_modificada = gravedad_modificada * 0.8
 
             
-        thetaacc = ((gravedadModificada * sintheta - costheta* temp)
+        thetaacc = ((gravedad_modificada * sintheta - costheta* temp)
                    / (self.LENGTH * (self.FOURTHIRDS - self.MASSPOLE * costheta * costheta
                                                   / self.TOTAL_MASS)))
 
@@ -133,7 +133,7 @@ class Simulator:
 
     def rendering(self):
         # RENDERING
-        self.calcPhysics()
+        self.calc_physics()
 
         tetha = self.cart_pole_angulo
         length = 150
@@ -142,9 +142,9 @@ class Simulator:
         self.top_position = int(self.position[0] + math.sin(tetha)*length), \
                     int(self.position[1] - math.cos(tetha)*length)
 
-        self.fastMotion = False
+        self.fast_motion = False
         
-        if self.fastMotion:
+        if self.fast_motion:
             self.clock.tick(200)
             self.screen.fill((200,200,255))
         else:
@@ -152,7 +152,7 @@ class Simulator:
             self.clock.tick(1/self.TAU)
 
 
-        self.screen.blit(self.background, self.backgroundRect)
+        self.screen.blit(self.background, self.background_rect)
         
         base = pygame.Rect(0,0,75,50)
         base.center = self.position
@@ -165,17 +165,15 @@ class Simulator:
         # Carro
         draw.rect(self.screen, self.color_carro , base)
         #self.screen.blit(self.texturaCarro, base, pygame.Rect(0,0,75,50))
-        draw.line(self.screen, self.colorPendulo, self.position, self.top_position, 4)
-        draw.circle(self.screen, self.colorPelota, self.top_position, 10)
+        draw.line(self.screen, self.color_pendulo, self.position, self.top_position, 4)
+        draw.circle(self.screen, self.color_pelota, self.top_position, 10)
 
         # Texto
         font = pygame.font.SysFont("Arial", 18, bold = True)
-        textAngulo = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f} ".format(self.cart_pole_velocidad_angular, self.cart_pole_angulo) \
-                    , 1, (0,0,0))
 
     def printing(self):
         if self.imprimir_angulo:
-            self.screen.blit(textAngulo, (50, 30))
+            self.screen.blit(text_angulo, (50, 30))
 
         if self.imprimir_tiempo:
             # Chequeo si llego a la zona objetivo,
@@ -186,20 +184,20 @@ class Simulator:
                     # Primera vez que llega
                     self.en_objetivo = True;
                     self.en_objetivo_tiempo_de_inicio = time.time()
-                    tiempoTranscurrido = 0
+                    tiempo_transcurrido = 0
 
                 else:
-                    tiempoTranscurrido = time.time() - self.en_objetivo_tiempo_de_inicio
+                    tiempo_transcurrido = time.time() - self.en_objetivo_tiempo_de_inicio
     
-                self.en_objetivo_ultimo_tiempo = tiempoTranscurrido
+                self.en_objetivo_ultimo_tiempo = tiempo_transcurrido
                 
             else:    
                 self.en_objetivo = False
-                tiempoTranscurrido = 0
+                tiempo_transcurrido = 0
 
 
-            if (tiempoTranscurrido > self.en_objetivo_tiempo_maximo):
-                self.en_objetivo_tiempo_maximo = tiempoTranscurrido
+            if (tiempo_transcurrido > self.en_objetivo_tiempo_maximo):
+                self.en_objetivo_tiempo_maximo = tiempo_transcurrido
                 
             textTiempo = font.render("Tiempo Arriba: {0:.2f}".format(self.en_objetivo_ultimo_tiempo), 1, (0, 0, 0))
             textTiempoMaximo = font.render("Maximo: {0:.2f} segundos".format(self.en_objetivo_tiempo_maximo), 1, (0, 0, 0))
