@@ -228,13 +228,11 @@ def get_test_subdirs(test_parser, test_root, question_to_grade):
 
 def files_tests(test_dict):
     test_file = os.path.join(subdir_path, '%s.test' % t)
-    solution_file = os.path.join(subdir_path, '%s.solution' % t)
     test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
     test_dict = test_parser.TestParser(test_file).parse()
     if test_dict.get("disabled", "false").lower() == "true":
         test_dict['test_out_file'] = test_out_file
         test_class = getattr(projecttestClasses, test_dict['class'])
-        test_case = test_class(question, test_dict)
 
  def makefun(test_case, solution_file):
     if generate_solutions:
