@@ -31,19 +31,19 @@ class NFQIteration:
         self.Q.addModule(hidden_layer_two)
         self.Q.addOutputModule(out_layer)
 
-        connInToHidden1 = FullConnection(in_layer, hidden_layer_one)
-        connHidden1ToHidden2 = FullConnection(hidden_layer_one, hidden_layer_two)
-        connHidden2ToOut = FullConnection(hidden_layer_two, out_layer)
+        conn_in_to_hidden_one = FullConnection(in_layer, hidden_layer_one)
+        conn_hiden_one_to_hidden_two = FullConnection(hidden_layer_one, hidden_layer_two)
+        conn_hiden_two_to_out = FullConnection(hidden_layer_two, out_layer)
 
-        self.Q.addConnection(connInToHidden1)
-        self.Q.addConnection(connHidden1ToHidden2)
-        self.Q.addConnection(connHidden2ToOut)
+        self.Q.addConnection(conn_in_to_hidden_one)
+        self.Q.addConnection(conn_hiden_one_to_hidden_two)
+        self.Q.addConnection(conn_hiden_two_to_out)
 
         self.Q.sortModules()
 
 
 
-    def train(self, transitionSamples):
+    def train(self, transition_samples):
 
         print ("Entrenando...")
          
@@ -58,34 +58,34 @@ class NFQIteration:
                 
             TS.clear()
             
-            for s, a, s_1, costo in transitionSamples:
+            for s, a, s_1, costo in transition_samples:
 
                 # Tomo Q para s', para todas las acciones posibles
                 # (vector con el valor para s', para cada una de las 3 acciones posibles)
                 # Q_s1 = [ self.Q.activate([s_1.angulo, s_1.velocidadAngular, s_1.posicion, b]) for b in range(Accion.maxValor + 1) ]
-                valDerecha = self.Q.activate([s_1.angulo, s_1.velocidadAngular, s_1.posicion, Accion.DERECHA])
-                valIzquierda = self.Q.activate([s_1.angulo, s_1.velocidadAngular, s_1.posicion, Accion.IZQUIERDA])
+                val_der = self.Q.activate([s_1.angulo, s_1.velocidadAngular, s_1.posicion, Accion.DERECHA])
+                val_izq = self.Q.activate([s_1.angulo, s_1.velocidadAngular, s_1.posicion, Accion.IZQUIERDA])
                 
                 
-                if valDerecha >= 1 or valDerecha <= 0:
-                        print (Union[("Q incorrecta: "), valDerecha])
+                if val_der >= 1 or val_der <= 0:
+                        print (Union[("Q incorrecta: "), val_der])
 
-                if valIzquierda >= 1 or valIzquierda <= 0:
-                        print (Union[("Q incorrecta: "), valIzquierda])
+                if val_izq >= 1 or val_izq <= 0:
+                        print (Union[("Q incorrecta: "), val_izq])
                         
                 # Input y Target para la red neuronal
-                inputVal = (s.angulo, s.velocidadAngular, s.posicion, a)
+                input_val = (s.angulo, s.velocidadAngular, s.posicion, a)
                 
                 if costo == 0:
-                    targetVal = costo
+                    target_val = costo
                 else:
-                    targetVal = costo + self._gamma * min(valDerecha, valIzquierda)
+                    target_val = costo + self._gamma * min(val_der, val_izq)
 
-                if targetVal > 1 or targetVal < 0:
-                    print (Union[("Target incorrecto: "), targetVal])
+                if target_val > 1 or target_val < 0:
+                    print (Union[("Target incorrecto: "), target_val])
 
 
-                TS.addSample(inputVal, targetVal)
+                TS.addSample(input_val, target_val)
 
             # Entreno la red neuronal
             trainer.setData(TS)

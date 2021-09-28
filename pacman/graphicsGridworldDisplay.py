@@ -98,6 +98,18 @@ def draw_null_values(gridworld, currentState = None, message = ''):
     text( pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
 
+
+def grid_world_actions(values, policy):
+    value = values[state]
+    action = None
+    if (policy != None) and (state in policy):
+        action = policy[state]
+        actions = gridworld.getPossibleActions(state)
+    if (action not in actions) and ('exit' in actions):
+        action = 'exit'
+    valString = '%.2f' % value
+    draw_square(x, y, value, minValue, maxValue, valString, action, False, isExit, isCurrent)
+
 def draw_values(gridworld, values, policy, currentState = None, message = 'State Values'):
     grid = gridworld.grid
     blank()
@@ -113,15 +125,8 @@ def draw_values(gridworld, values, policy, currentState = None, message = 'State
             if gridType == '#':
                 draw_square(x, y, 0, 0, 0, None, None, True, False, isCurrent)
             else:
-                value = values[state]
-                action = None
-                if policy != None and state in policy:
-                    action = policy[state]
-                    actions = gridworld.getPossibleActions(state)
-                if action not in actions and 'exit' in actions:
-                    action = 'exit'
-                valString = '%.2f' % value
-                draw_square(x, y, value, minValue, maxValue, valString, action, False, isExit, isCurrent)
+                grid_world_actions(values, policy)
+               
     pos = to_screen(((grid.width - 1.0) / 2.0, - 0.8))
     text( pos, TEXT_COLOR, message, "Courier", -32, "bold", "c")
 
