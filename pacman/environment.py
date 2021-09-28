@@ -16,13 +16,13 @@
 
 class Environment:
 
-    def getCurrentState(self):
+    def get_current_state(self):
         """
         Returns the current state of enviornment
         """
         pass
 
-    def getPossibleActions(self, state):
+    def get_possible_actions(self, state):
         """
           Returns possible actions the agent
           can take in the given state. Can
@@ -31,7 +31,7 @@ class Environment:
         """
         pass
 
-    def doAction(self, action):
+    def do_action(self, action):
         """
           Performs the given action in the current
           environment state and updates the enviornment.
@@ -46,11 +46,11 @@ class Environment:
         """
         pass
 
-    def isTerminal(self):
+    def is_terminal(self):
         """
           Has the enviornment entered a terminal
           state? This means there are no successors
         """
-        state = self.getCurrentState()
-        actions = self.getPossibleActions(state)
+        state = self.get_current_state()
+        actions = self.get_possible_actions(state)
         return len(actions) == 0
