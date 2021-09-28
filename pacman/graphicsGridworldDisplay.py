@@ -255,7 +255,7 @@ def draw_square(x, y, val, min, max, valStr, action, isObstacle, isTerminal, isC
     if not isObstacle:
         text( (screen_x, screen_y), text_color, valStr, "Courier", -30, "bold", "c")
 
-def square_actions(self, actions):
+def square_actions(actions):
     for action in actions:
         wedge_color = get_color(qVals[action], minVal, maxVal)
         if action == 'north':
@@ -271,7 +271,7 @@ def square_actions(self, actions):
             polygon( (center, nw, sw), wedge_color, filled = 1, smoothed = False)
             #text(w, text_color, valStr, "Courier", 8, "bold", "w")
 
-def square_actions_text(self, actions):
+def square_actions_text(actions):
     for action in actions:
         text_color = TEXT_COLOR
         if qVals[action] < max(qVals.values()): text_color = MUTED_TEXT_COLOR

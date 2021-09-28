@@ -21,6 +21,8 @@ import re
 import sys
 import projectParams
 import random
+import testParser
+import testClasses
 from typing import Union
 random.seed(0)
 
@@ -224,14 +226,39 @@ def get_test_subdirs(test_parser, test_root, question_to_grade):
         return problem_dict['order'].split()
     return sorted(os.listdir(test_root))
 
+def files_tests(test_dict):
+    test_file = os.path.join(subdir_path, '%s.test' % t)
+    solution_file = os.path.join(subdir_path, '%s.solution' % t)
+    test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
+    test_dict = test_parser.TestParser(test_file).parse()
+    if test_dict.get("disabled", "false").lower() == "true":
+        continue
+    test_dict['test_out_file'] = test_out_file
+    test_class = getattr(projecttestClasses, test_dict['class'])
+    test_case = test_class(question, test_dict)
+
+ def makefun(test_case, solution_file):
+    if generate_solutions:
+         # write solution file to disk
+        return lambda grades: test_case.writeSolution(module_dict, solution_file)
+    else:
+        # read in solution dictionary and pass as an argument
+        test_dict = test_parser.TestParser(test_file).parse()
+        solution_dict = test_parser.TestParser(solution_file).parse()
+    if print_test_case:
+        return lambda grades: print_test(test_dict, solution_dict) or test_case.execute(grades, module_dict, solution_dict)
+    else:
+        return lambda grades: test_case.execute(grades, module_dict, solution_dict)
+
+# Note extra function is necessary for scoping reasons
+def make_fun_question(question):
+    return lambda grades: question.execute(grades)
 
 # evaluate student code
 def evaluate(generate_solutions, test_root, module_dict, exception_map=ERROR_HINT_MAP, edx_output=False, mute_output=False,
             print_test_case=False, question_to_grade=None, display=None):
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
-    import testParser
-    import testClasses
     for module in module_dict:
         setattr(sys.modules[__name__], module, module_dict[module])
 
@@ -253,33 +280,11 @@ def evaluate(generate_solutions, test_root, module_dict, exception_map=ERROR_HIN
         tests = filter(lambda t: re.match('[^#~.].*\.test\Z', t), os.listdir(subdir_path))
         tests = map(lambda t: re.match('(.*)\.test\Z', t).group(1), tests)
         for t in sorted(tests):
-            test_file = os.path.join(subdir_path, '%s.test' % t)
-            solution_file = os.path.join(subdir_path, '%s.solution' % t)
-            test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
-            test_dict = test_parser.TestParser(test_file).parse()
-            if test_dict.get("disabled", "false").lower() == "true":
-                continue
-            test_dict['test_out_file'] = test_out_file
-            test_class = getattr(projecttestClasses, test_dict['class'])
-            test_case = test_class(question, test_dict)
-            def makefun(test_case, solution_file):
-                if generate_solutions:
-                    # write solution file to disk
-                    return lambda grades: test_case.writeSolution(module_dict, solution_file)
-                else:
-                    # read in solution dictionary and pass as an argument
-                    test_dict = test_parser.TestParser(test_file).parse()
-                    solution_dict = test_parser.TestParser(solution_file).parse()
-                    if print_test_case:
-                        return lambda grades: print_test(test_dict, solution_dict) or test_case.execute(grades, module_dict, solution_dict)
-                    else:
-                        return lambda grades: test_case.execute(grades, module_dict, solution_dict)
-            question.addtest_case(test_case, makefun(test_case, solution_file))
+            files_tests(test_dict)
+            make_fun(test_case, solution_file)
+            question.addtest_case(test_case, make_fun(test_case, solution_file))
 
-        # Note extra function is necessary for scoping reasons
-        def makefun(question):
-            return lambda grades: question.execute(grades)
-        setattr(sys.modules[__name__], q, makefun(question))
+        setattr(sys.modules[__name__], q, make_fun_question(question))
         questions.append((q, question.getMaxPoints()))
 
     grades = grading.Grades(projectParams.PROJECT_NAME, questions, edx_output=edx_output, mute_output=mute_output)
