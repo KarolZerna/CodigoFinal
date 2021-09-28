@@ -19,7 +19,7 @@ class NetworkWriter(XMLHandling):
         """ append the network to an existing xml file """
         w = NetworkWriter(filename, newfile = False)
         netroot = w.newRootNode('Network')
-        w.writeNetwork(net, netroot)
+        w.write_connection(net, netroot)
         w.save()
         
     @staticmethod 
@@ -27,16 +27,10 @@ class NetworkWriter(XMLHandling):
         """ write the network as a new xml file """
         w = NetworkWriter(filename, newfile = True)
         netroot = w.newRootNode('Network')
-        w.writeNetwork(net, netroot)
+        w.write_connection(net, netroot)
         w.save()
-                
-    def writeNetwork(self, net, netroot):
-        """ write a Network into a new XML node """
-        netroot.setAttribute('name', net.name)
-        netroot.setAttribute('class', canonicClassString(net))
-        if net.argdict:
-            self.writeArgs(netroot, net.argdict)     
-        
+    
+    def modules(self, netroot):
         # the modules
         mods = self.newChild(netroot, 'Modules')
         # first write the input modules (in order)
@@ -49,14 +43,16 @@ class NetworkWriter(XMLHandling):
         # now the rest
         for m in net.modulesSorted:
             if m not in net.inmodules and m not in net.outmodules:
-                self.writeModule(mods, m, False, False)            
-        
+                self.writeModule(mods, m, False, False)   
+
+    def mother_connections(self, netroot):
         # the motherconnections
         if len(net.motherconnections) > 0:
             mothers = self.newChild(netroot, 'MotherConnections')
             for m in net.motherconnections:
                 self.writeBuildable(mothers, m)
-            
+
+    def connections(self, netroot):
         # the connections
         conns = self.newChild(netroot, 'Connections')
         for m in net.modulesSorted:
@@ -65,11 +61,22 @@ class NetworkWriter(XMLHandling):
         if isinstance(net, RecurrentNetwork):
             for c in net.recurrentConns:
                 self.writeConnection(conns, c, True)
+
+    def write_connection(self, net, netroot):
+        """ write a Network into a new XML node """
+        netroot.setAttribute('name', net.name)
+        netroot.setAttribute('class', canonicClassString(net))
+        if net.argdict:
+            self.writeArgs(netroot, net.argdict)     
+        
+        modules(netroot)         
+        mother_connections(netroot)
+        connections(netroot)
             
     def writeModule(self, rootnode, m, inmodule, outmodule):
         if isinstance(m, Network):
             mnode = self.newChild(rootnode, 'Network')
-            self.writeNetwork(m, mnode)
+            self.write_connection(m, mnode)
         else:
             mnode = self.writeBuildable(rootnode, m)
         if inmodule:
