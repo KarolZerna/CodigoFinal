@@ -19,7 +19,7 @@ import util
 from typing import Union
 
 class FeatureExtractor:
-    def getFeatures(self, state, action):
+    def get_features(self, state, action):
         """
           Returns a dict from features to counts
           Usually, the count will just be 1.0 for
@@ -28,13 +28,13 @@ class FeatureExtractor:
         util.raiseNotDefined()
 
 class IdentityExtractor(FeatureExtractor):
-    def getFeatures(self, state, action):
+    def get_features(self, state, action):
         feats = util.Counter()
         feats[(state,action)] = 1.0
         return feats
 
 class CoordinateExtractor(FeatureExtractor):
-    def getFeatures(self, state, action):
+    def get_features(self, state, action):
         feats = util.Counter()
         feats[state] = 1.0
         feats['x=%d' % state[0]] = 1.0
@@ -50,7 +50,7 @@ def closest_food(pos, food, ghosts, walls, area_coords=[], pills_coords=[]):
     fbd_coords = []
     for ghost in ghosts:
         fbd_coords.append((int(ghost[0]), int(ghost[1])))
-    coords = map((lambda coord: (int(coord[0]), int(coord[1]))), pills_coords)
+    
 
     fringe = [(pos[0], pos[1], 0)]
     expanded = set(fbd_coords)    
@@ -219,7 +219,7 @@ class SimpleExtractor(FeatureExtractor):
     # Detectar cuando se encuentre en un tunel: Dar la distancia a la salida mas cercana hacia donde se este mirando?
     # TODO: Si el entrenamiento da por debajo de 100 puntos en los primeros 10 episodios, reiniciar.
 
-    def getFeatures(self, state, action):
+    def get_features(self, state, action):
         # extract the grid of food and wall locations and get the ghost locations
         food = state.getFood()
         walls = state.getWalls()
@@ -245,7 +245,6 @@ class SimpleExtractor(FeatureExtractor):
         x, y = state.getPacmanPosition()
         dx, dy = Actions.directionToVector(action)
         next_x, next_y = int(x + dx), int(y + dy)
-        past_coord = coord_vect_sub((x, y), (dx, dy))
         ns_ghosts = [g for g in ghosts if not is_scared(state, g)]
 
         # count the number of ghosts 1-step away
