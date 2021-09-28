@@ -98,7 +98,7 @@ class ODESim:
 
         self.clk = pygame.time.Clock()
         self.fps = 1.0 / self.TIME_STEP
-        self.cartPole_x = 0.5
+        self.cart_pole_x = 0.5
 
         self.xMin = -2.0
         self.xMax = 2.0
@@ -166,7 +166,7 @@ class ODESim:
         pygame.draw.circle(self.screen, self.SPHERE2_COLOR, self.coord(x2, y2, integer=True), sph2_rad, 0)
 
         font = pygame.font.SysFont("Courier New",18)
-        fonttext = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f}   Posicion: {2:.1f}".format(self.cartPole_velocidadAngular, self.cartPole_angulo, self.cartPole_x) \
+        fonttext = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f}   Posicion: {2:.1f}".format(self.cartPole_velocidadAngular, self.cartPole_angulo, self.cart_pole_x) \
                     , 1, (0,0,0), (255,255,255))
 
         self.screen.blit(fonttext, (50,450))
@@ -218,7 +218,7 @@ class ODESim:
         self.cartPole_angulo = self.j2.getAngle()
         self.cartPole_velocidadAngular=self.body2.getAngularVel()[2]
 
-        self.cartPole_x=curr_pos
+        self.cart_pole_x=curr_pos
 
         # Next simulation step
         self.world.step(self.TIME_STEP)
