@@ -232,10 +232,9 @@ def files_tests(test_dict):
     test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
     test_dict = test_parser.TestParser(test_file).parse()
     if test_dict.get("disabled", "false").lower() == "true":
-        continue
-    test_dict['test_out_file'] = test_out_file
-    test_class = getattr(projecttestClasses, test_dict['class'])
-    test_case = test_class(question, test_dict)
+        test_dict['test_out_file'] = test_out_file
+        test_class = getattr(projecttestClasses, test_dict['class'])
+        test_case = test_class(question, test_dict)
 
  def makefun(test_case, solution_file):
     if generate_solutions:
