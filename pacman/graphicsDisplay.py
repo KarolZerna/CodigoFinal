@@ -80,7 +80,7 @@ CAPSULE_SIZE = 0.25
 # Drawing walls
 WALL_RADIUS = 0.15
 
-class InfoPane:
+class info_pane:
     def __init__(self, layout, grid_size):
         self.grid_size = grid_size
         self.width = (layout.width) * grid_size
@@ -202,20 +202,20 @@ class PacmanGraphics:
             # not mode == "pacman"
             self.removeStaticObjects(True)
             self.removeAgents()
-            del self.infoPane
+            del self.info_pane
         
         if self.last_mode == "training" and mode != "training": # Clear training screen
-            self.hideTrainingMessage()
+            self.hide_training_message()
                 
         if self.last_mode == "start":    # Clear start screen
-            self.hideStartMessage()
+            self.hide_start_message()
         
         #graphicsUtils.resetBindings()
 
         if mode == "pacman":            # Initialize pacman screen
             self.is_blue = is_blue
-            self.startGraphics(state)
-            self.drawStaticObjects(state)
+            self.start_graphics(state)
+            self.draw_static_objects(state)
             self.drawAgentObjects(state)
 
             # Information
@@ -224,10 +224,10 @@ class PacmanGraphics:
         if mode == "training":          # Initialize training screen
             if self.last_mode == "training":
                 self.training_screen_count += 1
-            self.showTrainingMessage()
+            self.show_training_message()
             
         if mode == "start":          # Initialize starting screen
-            self.showStartMessage()
+            self.show_start_message()
         
         # Save last mode
         self.last_mode = mode
@@ -268,7 +268,7 @@ class PacmanGraphics:
         keys = []
         keys = wait_for_keys()
         if 'Down' in keys:
-            self.hideStartMessage()
+            self.hide_start_message()
             if pos_y == y:
                 pos_y = y - 100
                 self.selection = 1
@@ -278,7 +278,7 @@ class PacmanGraphics:
             self.start_message = text ((pos_x,pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
 
         if 'Up' in keys:
-            self.hideStartMessage()
+            self.hide_start_message()
             if pos_y == y - 100:
                 pos_y = y
                 self.selection = 3
@@ -287,7 +287,7 @@ class PacmanGraphics:
                 self.selection -= 1
             self.start_message = text ((pos_x,pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
 
-    def showStartMessage(self):
+    def show_start_message(self):
         positions(pos_y, pos_x)
         keys = []
         wait_for_release()
@@ -299,10 +299,10 @@ class PacmanGraphics:
             while len(keys) != 0:
                 keys = keys_waiting() + keys_pressed()
                 sleep(0.05)
-        self.clearStartScreen()
+        self.clear_start_screen()
 
 
-    def clearStartScreen(self):
+    def clear_start_screen(self):
 
         remove_from_screen(self.start_message)
         remove_from_screen(self.start_message1)
@@ -315,12 +315,12 @@ class PacmanGraphics:
         remove_from_screen(self.start_message8)
         remove_from_screen(self.start_message9)
 
-    def hideStartMessage(self):
+    def hide_start_message(self):
         if self.start_message is not None:
             remove_from_screen(self.start_message)
             self.start_message = None
     
-    def showTrainingMessage(self):
+    def show_training_message(self):
         x = self.screen_width/2-self.grid_size-60
         y = self.screen_height/2-self.grid_size-5
         
@@ -339,24 +339,24 @@ class PacmanGraphics:
             
         refresh()
             
-    def hideTrainingMessage(self):
+    def hide_training_message(self):
         if self.training_message is not None:
             remove_from_screen(self.training_message)
             self.training_message = None
         refresh()
     
-    def showResultMessage(self, isWin):
+    def show_result_message(self, is_win):
         x = self.screen_width/2-self.grid_size
         y = self.screen_height/2-self.grid_size-5
         # TODO: Fondo atras del mensaje
         #self.resultMessageBackground = 
-        if isWin:
+        if is_win:
             self.result_message = text( (x,y), self.text_color, "WIN", "arcadepix", self.font_size, "bold")
         else:
             self.result_message = text( (x-20,y), self.text_color, "LOSS", "arcadepix", self.font_size, "bold")
         refresh()
     
-    def hideResultMessage(self):
+    def hide_result_message(self):
         if self.result_message is not None:
             remove_from_screen(self.result_message)
             self.result_message = None
@@ -377,17 +377,17 @@ class PacmanGraphics:
         return x,y
                 
 
-    def startGraphics(self, state):
+    def start_graphics(self, state):
         self.layout = state.layout
         layout = self.layout
         self.width = layout.width
         self.height = layout.height
         if not self.is_window_open:
             self.make_window(self.width, self.height)
-        self.infoPane = InfoPane(layout, self.grid_size)
-        self.currentState = layout
+        self.info_pane = info_pane(layout, self.grid_size)
+        self.current_state = layout
 
-    def drawDistributions(self, state):
+    def draw_distributions(self, state):
         walls = state.layout.walls
         dist = []
         for x in range(walls.width):
@@ -402,9 +402,9 @@ class PacmanGraphics:
                 distx.append(block)
         self.distribution_images = dist
 
-    def drawStaticObjects(self, state):
+    def draw_static_objects(self, state):
         layout = self.layout
-        self.wallsImages = self.drawWalls(layout.walls)
+        self.walls_images = self.drawWalls(layout.walls)
         self.food = self.drawFood(layout.food)
         self.capsules = self.drawCapsules(layout.capsules)
         refresh()
@@ -436,7 +436,7 @@ class PacmanGraphics:
             remove_from_screen(self.capsules[key])
             
     def removeWalls(self):
-        for image in self.wallsImages:
+        for image in self.walls_images:
             remove_from_screen(image)
             
     def removeStaticObjects(self, removeWalls=True):
@@ -451,7 +451,7 @@ class PacmanGraphics:
         self.removeStaticObjects()
         self.removeAgents()
         
-        self.drawStaticObjects(state)
+        self.draw_static_objects(state)
         
         self.previous_state = state
         
@@ -487,9 +487,9 @@ class PacmanGraphics:
             self.removeFood(newState._foodEaten, self.food)
         if newState._capsuleEaten != None:
             self.removeCapsule(newState._capsuleEaten, self.capsules)
-        self.infoPane.update_score(newState.score)
+        self.info_pane.update_score(newState.score)
         if 'ghostDistances' in dir(newState):
-            self.infoPane.update_ghost_distances(newState.ghostDistances)
+            self.info_pane.update_ghost_distances(newState.ghostDistances)
         #save_frame()
     
     def makeWindow(self, width, height):
@@ -841,7 +841,7 @@ class PacmanGraphics:
         # copy all distributions so we don't change their state
         distributions = map(lambda x: x.copy(), distributions)
         if self.distribution_images == None:
-            self.drawDistributions(self.previous_state)
+            self.draw_distributions(self.previous_state)
         for x in range(len(self.distribution_images)):
             for y in range(len(self.distribution_images[0])):
                 image = self.distribution_images[x][y]
@@ -867,7 +867,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
     def initialize_graphics(self, state, is_blue = False):
 
         self.is_blue = is_blue
-        PacmanGraphics.startGraphics(self, state)
+        PacmanGraphics.start_graphics(self, state)
         # Initialize distribution images
         walls = state.layout.walls
         dist = []
@@ -875,7 +875,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
 
         # Draw the rest
         self.distribution_images = None  # initialize lazily
-        self.drawStaticObjects(state)
+        self.draw_static_objects(state)
         self.drawAgentObjects(state)
 
         # Information
