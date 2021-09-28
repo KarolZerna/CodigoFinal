@@ -100,8 +100,8 @@ class ODESim:
         self.fps = 1.0 / self.TIME_STEP
         self.cart_pole_x = 0.5
 
-        self.xMin = -2.0
-        self.xMax = 2.0
+        self.x_min = -2.0
+        self.x_max = 2.0
 
         self.acumuladorVueltasPorMovimiento = 1
         self.vueltasPorMovimiento = 10
@@ -203,11 +203,11 @@ class ODESim:
 
         curr_pos=self.kbody.getPosition()[0]
 
-        if(curr_pos<self.xMin):
-            self.pos = curr_pos = self.xMin
+        if(curr_pos<self.x_min):
+            self.pos = curr_pos = self.x_min
             next_pos=(curr_pos,0.0,0.0)
-        elif(curr_pos>self.xMax):
-            self.pos = curr_pos = self.xMax
+        elif(curr_pos>self.x_max):
+            self.pos = curr_pos = self.x_max
             next_pos=(curr_pos,0.0,0.0)
 
 
