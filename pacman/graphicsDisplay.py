@@ -200,8 +200,8 @@ class PacmanGraphics:
         print (self.last_mode, mode)
         if self.last_mode == "pacman":   # Clear pacman screen
             # not mode == "pacman"
-            self.removeStaticObjects(True)
-            self.removeAgents()
+            self.remove_static_objects(True)
+            self.remove_agents()
             del self.info_pane
         
         if self.last_mode == "training" and mode != "training": # Clear training screen
@@ -216,7 +216,7 @@ class PacmanGraphics:
             self.is_blue = is_blue
             self.start_graphics(state)
             self.draw_static_objects(state)
-            self.drawAgentObjects(state)
+            self.draw_agent_objects(state)
 
             # Information
             self.previous_state = state
@@ -409,47 +409,47 @@ class PacmanGraphics:
         self.capsules = self.drawCapsules(layout.capsules)
         refresh()
 
-    def drawAgentObjects(self, state):
-        self.agentImages = [] # (agentState, image)
+    def draw_agent_objects(self, state):
+        self.agent_images = [] # (agentState, image)
         for index, agent in enumerate(state.agentStates):
             if agent.isPacman:
                 image = self.draw_pacman(agent, index)
-                self.agentImages.append( (agent, image) )
+                self.agent_images.append( (agent, image) )
             else:
                 image = self.draw_ghost(agent, index)
-                self.agentImages.append( (agent, image) )
+                self.agent_images.append( (agent, image) )
         refresh()
         
-    def removeAgents(self):
-        for agent, image in self.agentImages:
+    def remove_agents(self):
+        for agent, image in self.agent_images:
             for item in image:
                 remove_from_screen(item)
         
-    def removeAllFood(self):
+    def remove_all_food(self):
         for i in range(len(self.food)):
             for j in range(len(self.food[i])):
                 if self.food[i][j] is not None:
                     remove_from_screen(self.food[i][j])
                     
-    def removeAllCapsules(self):
+    def remove_all_capsules(self):
         for key in self.capsules:
             remove_from_screen(self.capsules[key])
             
-    def removeWalls(self):
+    def remove_walls(self):
         for image in self.walls_images:
             remove_from_screen(image)
             
-    def removeStaticObjects(self, removeWalls=True):
-        self.removeAllFood()
-        self.removeAllCapsules()
-        if removeWalls: # Prevent flash
-            self.removeWalls()
+    def remove_static_objects(self, remove_walls=True):
+        self.remove_all_food()
+        self.remove_all_capsules()
+        if remove_walls: # Prevent flash
+            self.remove_walls()
         
-    def resetStage(self, state):
+    def reset_stage(self, state):
         layout = state.layout
         
-        self.removeStaticObjects()
-        self.removeAgents()
+        self.remove_static_objects()
+        self.remove_agents()
         
         self.draw_static_objects(state)
         
@@ -457,39 +457,39 @@ class PacmanGraphics:
         
         refresh()
 
-    def swapImages(self, agentIndex, newState):
+    def swap_images(self, agent_index, new_state):
         """
           Changes an image from a ghost to a pacman or vis versa (for capture)
         """
-        prevState, prevImage = self.agentImages[agentIndex]
-        for item in prevImage: remove_from_screen(item)
-        if newState.isPacman:
-            image = self.draw_pacman(newState, agentIndex)
-            self.agentImages[agentIndex] = (newState, image )
+        prev_state, prev_image = self.agent_images[agent_index]
+        for item in prev_image: remove_from_screen(item)
+        if new_state.isPacman:
+            image = self.draw_pacman(new_state, agent_index)
+            self.agent_images[agent_index] = (new_state, image )
         else:
-            image = self.draw_ghost(newState, agentIndex)
-            self.agentImages[agentIndex] = (newState, image )
+            image = self.draw_ghost(new_state, agent_index)
+            self.agent_images[agent_index] = (new_state, image )
         refresh()
 
-    def update(self, newState):
-        agentIndex = newState._agentMoved
-        agentState = newState.agentStates[agentIndex]
+    def update(self, new_state):
+        agent_index = new_state._agentMoved
+        agentState = new_state.agentStates[agent_index]
 
-        if self.agentImages[agentIndex][0].isPacman != agentState.isPacman: self.swapImages(agentIndex, agentState)
-        prevState, prevImage = self.agentImages[agentIndex]
+        if self.agent_images[agent_index][0].isPacman != agentState.isPacman: self.swap_images(agent_index, agentState)
+        prev_state, prev_image = self.agent_images[agent_index]
         if agentState.isPacman:
-            self.animatePacman(agentState, prevState, prevImage)
+            self.animatePacman(agentState, prev_state, prev_image)
         else:
-            self.moveGhost(agentState, agentIndex, prevState, prevImage)
-        self.agentImages[agentIndex] = (agentState, prevImage)
+            self.moveGhost(agentState, agent_index, prev_state, prev_image)
+        self.agent_images[agent_index] = (agentState, prev_image)
 
-        if newState._foodEaten != None:
-            self.removeFood(newState._foodEaten, self.food)
-        if newState._capsuleEaten != None:
-            self.removeCapsule(newState._capsuleEaten, self.capsules)
-        self.info_pane.update_score(newState.score)
-        if 'ghostDistances' in dir(newState):
-            self.info_pane.update_ghost_distances(newState.ghostDistances)
+        if new_state._foodEaten != None:
+            self.removeFood(new_state._foodEaten, self.food)
+        if new_state._capsuleEaten != None:
+            self.removeCapsule(new_state._capsuleEaten, self.capsules)
+        self.info_pane.update_score(new_state.score)
+        if 'ghostDistances' in dir(new_state):
+            self.info_pane.update_ghost_distances(new_state.ghostDistances)
         #save_frame()
     
     def makeWindow(self, width, height):
@@ -578,7 +578,7 @@ class PacmanGraphics:
         else:
             return GHOST_COLORS[ghostIndex]
 
-    def draw_ghost(self, ghost, agentIndex):
+    def draw_ghost(self, ghost, agent_index):
         pos = self.getPosition(ghost)
         direction = self.getDirection(ghost)
         (screen_x, screen_y) = (self.to_screen(pos) )
@@ -586,7 +586,7 @@ class PacmanGraphics:
         for (x, y) in GHOST_SHAPE:
             coords.append((x*self.grid_size*GHOST_SIZE + screen_x, y*self.grid_size*GHOST_SIZE + screen_y))
 
-        colour = self.getGhostColor(ghost, agentIndex)
+        colour = self.getGhostColor(ghost, agent_index)
         body = polygon(coords, colour, filled = 1)
         WHITE = formatColor(1.0, 1.0, 1.0)
         BLACK = formatColor(0.0, 0.0, 0.0)
@@ -876,7 +876,7 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
         # Draw the rest
         self.distribution_images = None  # initialize lazily
         self.draw_static_objects(state)
-        self.drawAgentObjects(state)
+        self.draw_agent_objects(state)
 
         # Information
         self.previous_state = state
