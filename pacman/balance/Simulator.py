@@ -131,27 +131,7 @@ class Simulator:
         while self.cartPole_angulo < -math.pi:
             self.cartPole_angulo += 2.0 * math.pi
 
-
-
-    def run(self, accion):
-
-        if(self.acumuladorVueltasPorMovimiento == self.vueltasPorMovimiento):
-            self.acumuladorVueltasPorMovimiento = 0
-
-            self.movimientoSeleccionado = accion
-
-            # Bordes
-            if self.cartPole_x >= 1 and self.movimientoSeleccionado == 1:
-                self.cartPole_x = 1
-                self.movimientoSeleccionado = 0
-
-            if self.cartPole_x <= 0 and self.movimientoSeleccionado == -1:
-                self.cartPole_x = 0
-                self.movimientoSeleccionado = 0
-            
-        self.acumuladorVueltasPorMovimiento = self.acumuladorVueltasPorMovimiento + 1
-
-
+    def rendering(self):
         # RENDERING
         self.calcPhysics()
 
@@ -180,8 +160,8 @@ class Simulator:
         floor = pygame.Rect(0, 0, self.x_size, self.altura)
         floor.bottom = self.y_size
         draw.rect(self.screen, (20,20,20), floor)
-        
 
+    def car_and_text(self):
         # Carro
         draw.rect(self.screen, self.colorCarro , base)
         #self.screen.blit(self.texturaCarro, base, pygame.Rect(0,0,75,50))
@@ -193,11 +173,11 @@ class Simulator:
         textAngulo = font.render("Vel Angular: {0:.1f}   Angulo: {1:.1f} ".format(self.cartPole_velocidadAngular, self.cartPole_angulo) \
                     , 1, (0,0,0))
 
+    def printing(self):
         if self.imprimirAngulo:
             self.screen.blit(textAngulo, (50, 30))
 
         if self.imprimirTiempo:
-
             # Chequeo si llego a la zona objetivo,
             # y si es la primera vez que entra
             if abs(self.cartPole_angulo) <= self.targetValue:
@@ -226,8 +206,28 @@ class Simulator:
 
             self.screen.blit(textTiempo, (750, 30))
             #self.screen.blit(textUltimoTiempo, (750, 50))
-            self.screen.blit(textTiempoMaximo, (750, 50))
+            self.screen.blit(textTiempoMaximo, (750, 50))    
 
+    def run(self, accion):
+
+        if(self.acumuladorVueltasPorMovimiento == self.vueltasPorMovimiento):
+            self.acumuladorVueltasPorMovimiento = 0
+
+            self.movimientoSeleccionado = accion
+
+            # Bordes
+            if self.cartPole_x >= 1 and self.movimientoSeleccionado == 1:
+                self.cartPole_x = 1
+                self.movimientoSeleccionado = 0
+
+            if self.cartPole_x <= 0 and self.movimientoSeleccionado == -1:
+                self.cartPole_x = 0
+                self.movimientoSeleccionado = 0
+            
+        self.acumuladorVueltasPorMovimiento = self.acumuladorVueltasPorMovimiento + 1
+        rendering()
+        car_and_text()
+        printing()
         pygame.display.flip()
 
 
