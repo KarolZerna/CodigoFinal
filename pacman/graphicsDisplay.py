@@ -405,8 +405,8 @@ class PacmanGraphics:
     def draw_static_objects(self, state):
         layout = self.layout
         self.walls_images = self.draw_walls(layout.walls)
-        self.food = self.drawFood(layout.food)
-        self.capsules = self.drawCapsules(layout.capsules)
+        self.food = self.draw_food(layout.food)
+        self.capsules = self.draw_capsules(layout.capsules)
         refresh()
 
     def draw_agent_objects(self, state):
@@ -446,8 +446,6 @@ class PacmanGraphics:
             self.remove_walls()
         
     def reset_stage(self, state):
-        layout = state.layout
-        
         self.remove_static_objects()
         self.remove_agents()
         
@@ -484,9 +482,9 @@ class PacmanGraphics:
         self.agent_images[agent_index] = (agent_state, prev_image)
 
         if new_state._foodEaten != None:
-            self.removeFood(new_state._foodEaten, self.food)
+            self.remove_food(new_state._foodEaten, self.food)
         if new_state._capsuleEaten != None:
-            self.removeCapsule(new_state._capsuleEaten, self.capsules)
+            self.remove_capsule(new_state._capsuleEaten, self.capsules)
         self.info_pane.update_score(new_state.score)
         if 'ghostDistances' in dir(new_state):
             self.info_pane.update_ghost_distances(new_state.ghostDistances)
@@ -556,7 +554,6 @@ class PacmanGraphics:
             if 'q' in keys:
                 self.frame_time = 0.1
         if self.frame_time > 0.01 or self.frame_time < 0:
-            start = time.time()
             fx, fy = self.get_position(prev_pacman)
             px, py = self.get_position(pacman)
             frames = 4.0
@@ -663,7 +660,7 @@ class PacmanGraphics:
         return ( x, y )
 
 
-    def ne_quadrant(self, n_is_wall, e_is_wall):
+    def ne_quadrant(self, n_is_wall, e_is_wall, wall_color, screen, screen2, ne_is_wall):
         # NE quadrant
         if (not n_is_wall) and (not e_is_wall):
             # inner circle
@@ -680,7 +677,7 @@ class PacmanGraphics:
             board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
             board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(-0.5))), wall_color))
     
-    def nw_quadrant(self, n_is_wall, w_is_wall):
+    def nw_quadrant(self, n_is_wall, w_is_wall, wall_color, screen, screen2, nw_is_wall):
         # NW quadrant
         if (not n_is_wall) and (not w_is_wall):
             # inner circle
@@ -697,7 +694,7 @@ class PacmanGraphics:
             board_images.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(-1)*WALL_RADIUS)), wall_color))
             board_images.append(line(add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS+1)), add(screen, (self.grid_size*(-1)*WALL_RADIUS, self.grid_size*(-0.5))), wall_color))
     
-    def se_quadrant(self, s_is_wall, e_is_wall):
+    def se_quadrant(self, s_is_wall, e_is_wall, wall_color, screen, screen2, se_is_wall):
         # SE quadrant
         if (not s_is_wall) and (not e_is_wall):
            # inner circle
@@ -714,7 +711,7 @@ class PacmanGraphics:
             board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5, self.grid_size*(1)*WALL_RADIUS)), wall_color))
             board_images.append(line(add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS-1)), add(screen, (self.grid_size*WALL_RADIUS, self.grid_size*(0.5))), wall_color))
     
-    def sw_quadrant(self, s_is_wall, w_is_wall):
+    def sw_quadrant(self, s_is_wall, w_is_wall, wall_color, screen, screen2, sw_is_wall):
         # SW quadrant
         if (not s_is_wall) and (not w_is_wall):
         # inner circle
@@ -754,10 +751,10 @@ class PacmanGraphics:
                     ne_is_wall = self.is_wall(x_num+1, y_num+1, wall_matrix)
                     se_is_wall = self.is_wall(x_num+1, y_num-1, wall_matrix)
 
-                    ne_quadrant(n_is_wall, e_is_wall)
-                    nw_quadrant(n_is_wall, w_is_wall)
-                    se_quadrant(s_is_wall, e_is_wall)
-                    sw_quadrant(s_is_wall, w_is_wall)
+                    ne_quadrant(n_is_wall, e_is_wall, wall_color, screen, screen2, ne_is_wall)
+                    nw_quadrant(n_is_wall, w_is_wall, wall_color, screen, screen2, nw_is_wall)
+                    se_quadrant(s_is_wall, e_is_wall, wall_color, screen, screen2, se_is_wall)
+                    sw_quadrant(s_is_wall, w_is_wall, wall_color, screen, screen2, sw_is_wall)
 
             return board_images
 
@@ -768,14 +765,14 @@ class PacmanGraphics:
             return False
         return walls[x][y]
 
-    def drawFood(self, foodMatrix ):
-        foodImages = []
+    def draw_food(self, foodMatrix ):
+        food_images = []
         color = FOOD_COLOR
         for x_num, x in enumerate(foodMatrix):
             if self.capture and (x_num * 2) <= foodMatrix.width: color = TEAM_COLORS[0]
             if self.capture and (x_num * 2) > foodMatrix.width: color = TEAM_COLORS[1]
-            imageRow = []
-            foodImages.append(imageRow)
+            image_row = []
+            food_images.append(image_row)
             for y_num, cell in enumerate(x):
                 if cell: # There's food here
                     screen = self.to_screen((x_num, y_num ))
@@ -783,13 +780,13 @@ class PacmanGraphics:
                                   FOOD_SIZE * self.grid_size,
                                   outline_color = color, fill_color = color,
                                   width = 1)
-                    imageRow.append(dot)
+                    image_row.append(dot)
                 else:
-                    imageRow.append(None)
-        return foodImages
+                    image_row.append(None)
+        return food_images
 
-    def drawCapsules(self, capsules ):
-        capsuleImages = {}
+    def draw_capsules(self, capsules ):
+        capsule_images = {}
         for capsule in capsules:
             ( screen_x, screen_y ) = self.to_screen(capsule)
             dot = circle( (screen_x, screen_y),
@@ -797,43 +794,43 @@ class PacmanGraphics:
                               outline_color = CAPSULE_COLOR,
                               fill_color = CAPSULE_COLOR,
                               width = 1)
-            capsuleImages[capsule] = dot
-        return capsuleImages
+            capsule_images[capsule] = dot
+        return capsule_images
 
-    def removeFood(self, cell, foodImages ):
+    def remove_food(self, cell, food_images):
         x, y = cell
-        remove_from_screen(foodImages[x][y])
+        remove_from_screen(food_images[x][y])
 
-    def removeCapsule(self, cell, capsuleImages ):
+    def remove_capsule(self, cell, capsule_images):
         x, y = cell
-        remove_from_screen(capsuleImages[(x, y)])
+        remove_from_screen(capsule_images[(x, y)])
 
-    def drawExpandedCells(self, cells):
+    def draw_expanded_cells(self, cells):
         """
         Draws an overlay of expanded grid positions for search agents
         """
         n = float(len(cells))
-        baseColor = [1.0, 0.0, 0.0]
-        self.clearExpandedCells()
-        self.expandedCells = []
+        base_color = [1.0, 0.0, 0.0]
+        self.clear_expanded_cells()
+        self.expanded_cells = []
         for k, cell in enumerate(cells):
-            screenPos = self.to_screen( cell)
-            cellColor = formatColor(*[(n-k) * c * .5 / n + .25 for c in baseColor])
-            block = square(screenPos,
+            screen_pos = self.to_screen( cell)
+            cell_color = formatColor(*[(n-k) * c * .5 / n + .25 for c in base_color])
+            block = square(screen_pos,
                      0.5 * self.grid_size,
-                     color = cellColor,
+                     color = cell_color,
                      filled = 1, behind=2)
-            self.expandedCells.append(block)
+            self.expanded_cells.append(block)
             if self.frame_time < 0:
                 refresh()
 
-    def clearExpandedCells(self):
-        if 'expandedCells' in dir(self) and len(self.expandedCells) > 0:
-            for cell in self.expandedCells:
+    def clear_expanded_cells(self):
+        if 'expandedCells' in dir(self) and len(self.expanded_cells) > 0:
+            for cell in self.expanded_cells:
                 remove_from_screen(cell)
 
 
-    def updateDistributions(self, distributions):
+    def updated_distributions(self, distributions):
         "Draws an agent's belief distributions"
         # copy all distributions so we don't change their state
         distributions = map(lambda x: x.copy(), distributions)
@@ -856,18 +853,15 @@ class PacmanGraphics:
         refresh()
 
 class FirstPersonPacmanGraphics(PacmanGraphics):
-    def __init__(self, zoom = 1.0, showGhosts = True, capture = False, frame_time=0):
+    def __init__(self, zoom = 1.0, show_ghots = True, capture = False, frame_time=0):
         PacmanGraphics.__init__(self, zoom, frame_time=frame_time)
-        self.showGhosts = showGhosts
+        self.show_ghots = show_ghots
         self.capture = capture
 
     def initialize_graphics(self, state, is_blue = False):
 
         self.is_blue = is_blue
         PacmanGraphics.start_graphics(self, state)
-        # Initialize distribution images
-        walls = state.layout.walls
-        dist = []
         self.layout = state.layout
 
         # Draw the rest
@@ -881,25 +875,23 @@ class FirstPersonPacmanGraphics(PacmanGraphics):
     def lookAhead(self, config, state):
         if config.get_direction() == 'Stop':
             return
-        else:
-            pass
-            # Draw relevant ghosts
-            allGhosts = state.getGhostStates()
-            visibleGhosts = state.getVisibleGhosts()
-            for i, ghost in enumerate(allGhosts):
-                if ghost in visibleGhosts:
-                    self.draw_ghost(ghost, i)
-                else:
-                    self.current_ghost_images[i] = None
+        # Draw relevant ghosts
+        all_ghosts = state.getGhostStates()
+        visible_ghosts = state.getVisibleGhosts()
+        for i, ghost in enumerate(all_ghosts):
+            if ghost in visible_ghosts:
+                self.draw_ghost(ghost, i)
+            else:
+                self.current_ghost_images[i] = None
 
     def get_ghost_color(self, ghost, ghost_index):
         return GHOST_COLORS[ghost_index]
 
-    def get_position(self, ghostState):
-        if not self.showGhosts and not ghostState.isPacman and ghostState.get_position()[1] > 1:
+    def get_position(self, ghost_state):
+        if not self.show_ghots and not ghost_state.isPacman and ghost_state.get_position()[1] > 1:
             return (-1000, -1000)
         else:
-            return PacmanGraphics.get_position(self, ghostState)
+            return PacmanGraphics.get_position(self, ghost_state)
 
 def add(x, y):
     return (x[0] + y[0], x[1] + y[1])
