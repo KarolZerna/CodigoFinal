@@ -74,7 +74,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         states = mdp.getStates()
         
         # For each state, update with new value in new_values.
-        for i in range(0,iterations):
+        for _ in range(0,iterations):
             new_values = util.Counter()
             for state in states:
                 action = self.getAction(state) # Pick the best action using the policy.
@@ -101,11 +101,11 @@ class ValueIterationAgent(ValueEstimationAgent):
           Q*(s,a) = sum[s'] T(s,a,s')[R(s,a,s')+a.V_{k}(s)]
         """
         total = 0
-        transStatesAndProbs = self.mdp.getTransitionStatesAndProbs(state, action)
+        trans_states_and_probs = self.mdp.getTransitionStatesAndProbs(state, action)
         
-        for tranStateAndProb in transStatesAndProbs:
-            tstate = tranStateAndProb[0]
-            prob = tranStateAndProb[1]
+        for trans_states_and_prob in trans_states_and_probs:
+            tstate = trans_states_and_prob[0]
+            prob = trans_states_and_prob[1]
             reward = self.mdp.getReward(state, action, tstate)
             value = self.getValue(tstate)
             total += prob * (reward + self.discount * value)

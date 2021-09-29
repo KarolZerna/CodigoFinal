@@ -16,28 +16,28 @@ import random
 
 class MarkovDecisionProcess:
 
-    def getStates(self):
+    def get_states(self):
         """
         Return a list of all states in the MDP.
         Not generally possible for large MDPs.
         """
         pass
 
-    def getStartState(self):
+    def get_start_state(self):
         """
         Return the start state of the MDP.
         """
         pass
 
-    def getPossibleActions(self, state):
+    def get_possible_actions(self, state):
         """
         Return list of possible actions from 'state'.
         """
         pass
 
-    def getTransitionStatesAndProbs(self, state, action):
+    def get_transition_states_and_probs(self, state, action):
         """
-        Returns list of (nextState, prob) pairs
+        Returns list of (next_state, prob) pairs
         representing the states reachable
         from 'state' by taking 'action' along
         with their transition probabilities.
@@ -48,15 +48,15 @@ class MarkovDecisionProcess:
         """
         pass
 
-    def getReward(self, state, action, nextState):
+    def get_reward(self, state, action, next_state):
         """
-        Get the reward for the state, action, nextState transition.
+        Get the reward for the state, action, next_state transition.
 
         Not available in reinforcement learning.
         """
         pass
 
-    def isTerminal(self, state):
+    def is_terminal(self, state):
         """
         Returns true if the current state is a terminal state.  By convention,
         a terminal state has zero future rewards.  Sometimes the terminal state(s)

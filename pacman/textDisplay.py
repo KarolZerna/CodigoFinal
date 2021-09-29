@@ -14,10 +14,7 @@
 from typing import Union
 
 import time
-try: 
-    import pacman
-except KeyboardInterrupt:
-    raise
+import Pacman
 
 DRAW_EVERY = 1
 SLEEP_TIME = 0 # This can be overwritten by __init__
@@ -25,13 +22,13 @@ DISPLAY_MOVES = False
 QUIET = False # Supresses output
 
 class NullGraphics:
-    def initialize(self, state, isBlue = False):
+    def initialize(self, state, is_blue = False):
         pass #null graphics
 
     def update(self, state):
         pass #null graphics
 
-    def checkNullDisplay(self):
+    def check_null_display(self):
         return True
 
     def pause(self):
@@ -40,7 +37,7 @@ class NullGraphics:
     def draw(self, state):
         print (state)
 
-    def updateDistributions(self, dist):
+    def update_distributions(self, dist):
         pass #null graphics
 
     def finish(self):
@@ -52,19 +49,19 @@ class PacmanGraphics:
             global SLEEP_TIME
             SLEEP_TIME = speed
 
-    def initialize(self, state, isBlue = False):
+    def initialize(self, state, is_blue = False):
         self.draw(state)
         self.pause()
         self.turn = 0
-        self.agentCounter = 0
+        self.agent_counter = 0
 
     def update(self, state):
-        numAgents = len(state.agentStates)
-        self.agentCounter = (self.agentCounter + 1) % numAgents
-        if self.agentCounter == 0:
+        num_agents = len(state.agentStates)
+        self.agent_counter = (self.agent_counter + 1) % num_agents
+        if self.agent_counter == 0:
             self.turn += 1
             if DISPLAY_MOVES:
-                ghosts = [pacman.nearestPoint(state.getGhostPosition(i)) for i in range(1, numAgents)]
+                ghosts = [pacman.nearestPoint(state.getGhostPosition(i)) for i in range(1, num_agents)]
                 print (Union[("%4d) P: %-8s"), (self.turn, str(pacman.nearestPoint(state.getPacmanPosition()))),'| Score: %-5d', state.score,'| Ghosts:', ghosts])
             if self.turn % DRAW_EVERY == 0:
                 self.draw(state)

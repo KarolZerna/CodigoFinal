@@ -35,8 +35,8 @@ class LeftTurnAgent(game.Agent):
         return Directions.STOP
 
 class GreedyAgent(Agent):
-    def __init__(self, evalFn="score_evaluation"):
-        self.evaluationFunction = util.lookup(evalFn, globals())
+    def __init__(self, eval_fn="score_evaluation"):
+        self.evaluationFunction = util.lookup(eval_fn, globals())
         assert self.evaluationFunction != None
 
     def getAction(self, state):
@@ -46,9 +46,9 @@ class GreedyAgent(Agent):
 
         successors = [(state.generateSuccessor(0, action), action) for action in legal]
         scored = [(self.evaluationFunction(state), action) for state, action in successors]
-        bestScore = max(scored)[0]
-        bestActions = [pair[1] for pair in scored if pair[0] == bestScore]
-        return secrets.choice(bestActions)
+        best_score = max(scored)[0]
+        best_actions = [pair[1] for pair in scored if pair[0] == best_score]
+        return secrets.choice(best_actions)
 
 def score_evaluation(state):
     return state.getScore()
