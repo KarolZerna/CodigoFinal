@@ -252,8 +252,9 @@ class PacmanGraphics:
         y += 50
         self.start_message4 = text ((x+68,y), self.text_color, "Demo","arcadepix", self.font_size, "bold")
         pos_x = x - 20
-        self.start_message = text ((pos_x, y-100), self.text_color, ">","arcadepix", self.font_size, "bold")
         pos_y = y - 100
+        self.start_message = text ((pos_x, pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
+        
 
 
     def options (self):
@@ -765,12 +766,12 @@ class PacmanGraphics:
             return False
         return walls[x][y]
 
-    def draw_food(self, foodMatrix ):
+    def draw_food(self, food_matrix):
         food_images = []
         color = FOOD_COLOR
-        for x_num, x in enumerate(foodMatrix):
-            if self.capture and (x_num * 2) <= foodMatrix.width: color = TEAM_COLORS[0]
-            if self.capture and (x_num * 2) > foodMatrix.width: color = TEAM_COLORS[1]
+        for x_num, x in enumerate(food_matrix):
+            if self.capture and (x_num * 2) <= food_matrix.width: color = TEAM_COLORS[0]
+            if self.capture and (x_num * 2) > food_matrix.width: color = TEAM_COLORS[1]
             image_row = []
             food_images.append(image_row)
             for y_num, cell in enumerate(x):
