@@ -137,23 +137,7 @@ class info_pane:
             for i, d in enumerate(distances):
                 changeText(self.ghost_distance_text[i], d)
 
-    def draw_ghost(self):
-        pass #Empty
 
-    def draw_pacman(self):
-        pass #Empty
-
-    def draw_warning(self):
-        pass #Empty
-
-    def clear_icon(self):
-        pass #Empty
-
-    def update_message(self, message):
-        pass #Empty
-
-    def clear_message(self):
-        pass #Empty
     
     def __del__(self):
         remove_from_screen(self.score_text)
