@@ -226,7 +226,7 @@ def get_test_subdirs(test_parser, test_root, question_to_grade):
         return problem_dict['order'].split()
     return sorted(os.listdir(test_root))
 
-def files_tests(test_dict):
+def files_tests():
     test_file = os.path.join(subdir_path, '%s.test' % t)
     test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
     test_dict = test_parser.TestParser(test_file).parse()
@@ -276,7 +276,7 @@ def evaluate(generate_solutions, test_root, module_dict, exception_map=ERROR_HIN
         tests = filter(lambda t: re.match('[^#~.].*\.test\Z', t), os.listdir(subdir_path))
         tests = map(lambda t: re.match('(.*)\.test\Z', t).group(1), tests)
         for _ in sorted(tests):
-            files_tests(test_dict)
+            files_tests()
             make_fun(test_case, solution_file)
             question.addtest_case(test_case, make_fun(test_case, solution_file))
 

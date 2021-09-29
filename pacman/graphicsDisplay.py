@@ -232,7 +232,7 @@ class PacmanGraphics:
         # Save last mode
         self.last_mode = mode
     
-    def positions(self, pos_y, pos_x):
+    def positions(self, pos_y=0, pos_=0):
         x = self.screen_width/2-self.grid_size-200
         y = self.screen_height/2-self.grid_size-20
 
