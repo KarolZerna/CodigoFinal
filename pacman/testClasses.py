@@ -173,9 +173,9 @@ class TestCase(object):
     def test_partial(self, grades, points, max_points):
         grades.addPoints(points)
         extra_credit = max(0, points - max_points)
-        regularCredit = points - extra_credit
+        regular_credit = points - extra_credit
 
-        grades.add_message('%s: %s (%s of %s points)' % ("PASS" if points >= max_points else "FAIL", self.path, regularCredit, max_points))
+        grades.add_message('%s: %s (%s of %s points)' % ("PASS" if points >= max_points else "FAIL", self.path, regular_credit, max_points))
         if extra_credit > 0:
             grades.add_message('EXTRA CREDIT: %s points' % (extra_credit,))
 

@@ -112,7 +112,6 @@ def grid_world_actions(values, policy):
 def draw_values(gridworld, values, policy, current_state = None, message = 'State Values'):
     grid = gridworld.grid
     blank()
-    value_list = [values[state] for state in gridworld.getStates()] + [0.0]
     for x in range(grid.width):
         for y in range(grid.height):
             state = (x, y)
@@ -143,9 +142,6 @@ def draw_q_values(gridworld, q_values, current_state = None, message = 'State-Ac
             actions = gridworld.getPossibleActions(state)
             if actions == None or len(actions) == 0:
                 actions = [None]
-            best_q = max([q_values[(state, action)] for action in actions])
-            #best_actions = [action for action in actions if q_values[(state, action)] == best_q]
-
             q = util.Counter()
             val_strings = {}
             for action in actions:
@@ -290,10 +286,6 @@ def draw_square_q(x, y, q_vals, min_val, max_val, val_strs, best_actions, is_cur
     ne = (screen_x+0.5*GRID_SIZE, screen_y-0.5*GRID_SIZE)
     se = (screen_x+0.5*GRID_SIZE, screen_y+0.5*GRID_SIZE)
     sw = (screen_x-0.5*GRID_SIZE, screen_y+0.5*GRID_SIZE)
-    # n = (screen_x, screen_y-0.5*GRID_SIZE+5)
-    # s = (screen_x, screen_y+0.5*GRID_SIZE-5)
-    # w = (screen_x-0.5*GRID_SIZE+5, screen_y)
-    # e = (screen_x+0.5*GRID_SIZE-5, screen_y)
     actions = q_vals.keys()
     square_actions(actions)
     square( (screen_x, screen_y),
