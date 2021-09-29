@@ -232,7 +232,7 @@ class PacmanGraphics:
         # Save last mode
         self.last_mode = mode
     
-    def positions(self, pos_y=0, pos_=0):
+    def positions(self):
         x = self.screen_width/2-self.grid_size-200
         y = self.screen_height/2-self.grid_size-20
 
@@ -288,7 +288,7 @@ class PacmanGraphics:
             self.start_message = text ((pos_x,pos_y), self.text_color, ">","arcadepix", self.font_size, "bold")
 
     def show_start_message(self):
-        positions(pos_y, pos_x)
+        positions()
         keys = []
         wait_for_release()
         while True:
