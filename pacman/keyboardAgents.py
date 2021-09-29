@@ -15,6 +15,8 @@
 from game import Agent
 from game import Directions
 import random
+from random import SystemRandom
+from Crypto.Random.random import choice
 
 class KeyboardAgent(Agent):
     """
@@ -34,6 +36,7 @@ class KeyboardAgent(Agent):
         self.keys = []
 
     def getAction( self, state):
+        cryptogen = SystemRandom()
         from graphicsUtils import keys_waiting
         from graphicsUtils import keys_pressed
         keys = keys_waiting() + keys_pressed()

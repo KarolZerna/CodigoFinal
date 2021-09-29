@@ -17,6 +17,7 @@ from game import Grid
 from game import Directions
 import os
 import random
+from Crypto.Random.random import choice
 
 VISIBILITY_MATRIX_CACHE = {}
 

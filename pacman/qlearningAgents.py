@@ -14,6 +14,7 @@
 
 import random,util,math,game, featureExtractors
 from learningAgents import ReinforcementAgent
+from Crypto.Random.random import choice
 
 class QLearningAgent(ReinforcementAgent):
     """

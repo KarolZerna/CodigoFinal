@@ -1,5 +1,6 @@
 import math, sys, time, random
 from pygame import draw
+from random import SystemRandom
 
 class Simulator:
     
@@ -73,8 +74,8 @@ class Simulator:
         
     
     def calc_physics(self):
-        
-        force = (self.movimiento_seleccionado*250) * (1 + random.random()/10 - 0.05)
+        cryptogen = SystemRandom()
+        force = (self.movimiento_seleccionado*250) * (1 + cryptogen.random()/10 - 0.05)
 
         if self.movimiento_seleccionado != 0:
             self.movimiento_seleccionado = 0

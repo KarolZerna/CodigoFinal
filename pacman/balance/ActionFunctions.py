@@ -1,5 +1,6 @@
 from RLObjects import Posicion, Accion, Estado
 import random
+from random import SystemRandom
 
 
 _epsilon = 0.1
@@ -17,7 +18,8 @@ def get_siguiente_accion_greedy(estado, q_state):
     
 
 def get_siguiente_accion_epsilon_greedy(estado, q_estado):
-    random_num = random.random()
+    cryptogen = SystemRandom()
+    random_num = cryptogen.random()
 
     if random_num <= _epsilon:
         accion = random.randint(0, Accion.maxValor)

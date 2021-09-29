@@ -17,6 +17,7 @@ from game import Agent
 import random
 import game
 import util
+from Crypto.Random.random import choice
 
 class LeftTurnAgent(game.Agent):
     "An agent that turns left at every opportunity"
