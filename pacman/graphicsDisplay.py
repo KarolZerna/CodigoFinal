@@ -674,7 +674,7 @@ class PacmanGraphics:
         if (not n_is_wall) and (e_is_wall):
             # horizontal line
             board_images.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
-        if (n_is_wall) and (e_is_wall) and (not neIsWall):
+        if (n_is_wall) and (e_is_wall) and (not ne_is_wall):
             # outer circle
             board_images.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (180,271), 'arc'))
             board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
@@ -691,7 +691,7 @@ class PacmanGraphics:
         if (not n_is_wall) and (w_is_wall):
             # horizontal line
             board_images.append(line(add(screen, (0, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(-1)*WALL_RADIUS)), wall_color))
-        if (n_is_wall) and (w_is_wall) and (not nwIsWall):
+        if (n_is_wall) and (w_is_wall) and (not nw_is_wall):
             # outer circle
             board_images.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(-2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (270,361), 'arc'))
             board_images.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(-1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(-1)*WALL_RADIUS)), wall_color))
@@ -708,7 +708,7 @@ class PacmanGraphics:
         if (not s_is_wall) and (e_is_wall):
             # horizontal line
             board_images.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5+1, self.grid_size*(1)*WALL_RADIUS)), wall_color))
-        if (s_is_wall) and (e_is_wall) and (not seIsWall):
+        if (s_is_wall) and (e_is_wall) and (not se_is_wall):
             # outer circle
             board_images.append(circle(add(screen2, (self.grid_size*2*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (90,181), 'arc'))
             board_images.append(line(add(screen, (self.grid_size*2*WALL_RADIUS-1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*0.5, self.grid_size*(1)*WALL_RADIUS)), wall_color))
@@ -725,7 +725,7 @@ class PacmanGraphics:
         if (not s_is_wall) and (w_is_wall):
             # horizontal line
             board_images.append(line(add(screen, (0, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5)-1, self.grid_size*(1)*WALL_RADIUS)), wall_color))
-        if (s_is_wall) and (w_is_wall) and (not swIsWall):
+        if (s_is_wall) and (w_is_wall) and (not sw_is_wall):
             # outer circle
             board_images.append(circle(add(screen2, (self.grid_size*(-2)*WALL_RADIUS, self.grid_size*(2)*WALL_RADIUS)), WALL_RADIUS * self.grid_size-1, wall_color, wall_color, (0,91), 'arc'))
             board_images.append(line(add(screen, (self.grid_size*(-2)*WALL_RADIUS+1, self.grid_size*(1)*WALL_RADIUS)), add(screen, (self.grid_size*(-0.5), self.grid_size*(1)*WALL_RADIUS)), wall_color))
@@ -745,14 +745,14 @@ class PacmanGraphics:
                     screen2 = self.to_screen(pos)
                     
                     # draw each quadrant of the square based on adjacent walls
-                    w_is_wall = self.isWall(x_num-1, y_num, wall_matrix)
-                    e_is_wall = self.isWall(x_num+1, y_num, wall_matrix)
-                    n_is_wall = self.isWall(x_num, y_num+1, wall_matrix)
-                    s_is_wall = self.isWall(x_num, y_num-1, wall_matrix)
-                    nwIsWall = self.isWall(x_num-1, y_num+1, wall_matrix)
-                    swIsWall = self.isWall(x_num-1, y_num-1, wall_matrix)
-                    neIsWall = self.isWall(x_num+1, y_num+1, wall_matrix)
-                    seIsWall = self.isWall(x_num+1, y_num-1, wall_matrix)
+                    w_is_wall = self.is_wall(x_num-1, y_num, wall_matrix)
+                    e_is_wall = self.is_wall(x_num+1, y_num, wall_matrix)
+                    n_is_wall = self.is_wall(x_num, y_num+1, wall_matrix)
+                    s_is_wall = self.is_wall(x_num, y_num-1, wall_matrix)
+                    nw_is_wall = self.is_wall(x_num-1, y_num+1, wall_matrix)
+                    sw_is_wall = self.is_wall(x_num-1, y_num-1, wall_matrix)
+                    ne_is_wall = self.is_wall(x_num+1, y_num+1, wall_matrix)
+                    se_is_wall = self.is_wall(x_num+1, y_num-1, wall_matrix)
 
                     ne_quadrant(n_is_wall, e_is_wall)
                     nw_quadrant(n_is_wall, w_is_wall)
@@ -761,7 +761,7 @@ class PacmanGraphics:
 
             return board_images
 
-    def isWall(self, x, y, walls):
+    def is_wall(self, x, y, walls):
         if x < 0 or y < 0:
             return False
         if x >= walls.width or y >= walls.height:
