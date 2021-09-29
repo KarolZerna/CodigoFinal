@@ -22,7 +22,7 @@ def get_siguiente_accion_epsilon_greedy(estado, q_estado):
     random_num = cryptogen.random()
 
     if random_num <= _epsilon:
-        accion = random.randint(0, Accion.maxValor)
+        accion = cryptogen.randrange(0, Accion.maxValor)
     else:
         accion = get_siguiente_accion_greedy(estado, Q)
 
@@ -32,7 +32,7 @@ def get_siguiente_accion_epsilon_greedy(estado, q_estado):
 
 def get_siguiente_accion_random(estado):
 
-    accion = random.randint(0, Accion.maxValor)
+    accion = cryptogen.randrange(0, Accion.maxValor)
     return accion
 
 

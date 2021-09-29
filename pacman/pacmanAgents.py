@@ -18,6 +18,7 @@ import random
 import game
 import util
 from Crypto.Random.random import choice
+import secrets
 
 class LeftTurnAgent(game.Agent):
     "An agent that turns left at every opportunity"
@@ -47,7 +48,7 @@ class GreedyAgent(Agent):
         scored = [(self.evaluationFunction(state), action) for state, action in successors]
         bestScore = max(scored)[0]
         bestActions = [pair[1] for pair in scored if pair[0] == bestScore]
-        return random.choice(bestActions)
+        return secrets.choice(bestActions)
 
 def score_evaluation(state):
     return state.getScore()

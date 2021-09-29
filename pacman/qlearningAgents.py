@@ -15,6 +15,7 @@
 import random,util,math,game, featureExtractors
 from learningAgents import ReinforcementAgent
 from Crypto.Random.random import choice
+import secrets
 
 class QLearningAgent(ReinforcementAgent):
     """
@@ -80,7 +81,7 @@ class QLearningAgent(ReinforcementAgent):
                         if self.getQValue(state, action) == best_value]
     
         if not len(best_actions): return None
-        else: return random.choice(best_actions)
+        else: return secrets.choice(best_actions)
 
     def getAction(self, state):
         """
@@ -99,7 +100,7 @@ class QLearningAgent(ReinforcementAgent):
         
         
         if util.flipCoin(self.epsilon):
-            action = random.choice(legal_actions)
+            action = secrets.choice(legal_actions)
         else:
             action = self.getPolicy(state)
 
